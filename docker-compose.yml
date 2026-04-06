@@ -1,0 +1,27 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: blog
+    restart: unless-stopped
+    ports:
+      - "20001:80"
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - traefik-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.blog.rule=Host(`blog.ramseskools.nl`)"
+      - "traefik.http.routers.blog.entrypoints=web"
+      - "traefik.http.routers.blog.middlewares=redirect-https@file"
+      - "traefik.http.routers.blog-secure.rule=Host(`blog.ramseskools.nl`)"
+      - "traefik.http.routers.blog-secure.entrypoints=websecure"
+      - "traefik.http.routers.blog-secure.tls=true"
+      - "traefik.http.routers.blog-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.blog-secure.middlewares=custom-errors@file"
+      - "traefik.http.services.blog.loadbalancer.server.port=80"
+
+networks:
+  traefik-proxy:
+    external: true

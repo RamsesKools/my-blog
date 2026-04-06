@@ -1,0 +1,19 @@
+site_name: Ramses Kools
+site_url: https://blog.ramseskools.nl
+
+theme:
+  name: material
+
+plugins:
+  - blog:
+      blog_dir: blog
+      draft_on_serve: true
+
+nav:
+  - Home: index.md
+  - Blog: blog/index.md
+  - Projects: projects.md
+  - About: about.md
+
+extra_css:
+  - assets/custom.css
