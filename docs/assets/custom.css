@@ -1,1 +1,176 @@
-/* Theme overrides — populated in feat-blog-design-theme */
+/* Version: derived from my-design.css v1.0.2-homepage
+   Derivation: design tokens and color palette copied directly; typography and spacing adapted
+   for MkDocs Material's --md-* custom property system instead of custom component classes.
+   Changes: removed all component classes (nav, hero, cards, etc.) — Material handles layout.
+   Added: [data-md-color-scheme="default"] block mapping design tokens to --md-* variables.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+
+/* Design tokens */
+:root {
+    --c-bg:             #F8F7F6;  /* Stone-white — page background */
+    --c-surface:        #FFFFFF;  /* White — card and component backgrounds */
+    --c-dark:           #1B2629;  /* Dark Teal — primary text, dark surfaces */
+    --c-mid:            #2E3D45;  /* Slate — secondary dark, headers on dark surfaces */
+    --c-blue:           #3E77DC;  /* ACD Blue — primary accent, interactive, links, CTA */
+    --c-blue-light:     #D6E4FA;  /* ACD Blue tint — tag/badge backgrounds */
+    --c-blue-muted:     #A8C3F0;  /* ACD Blue mid — borders, subtle accents */
+    --c-blue-hover:     #2F66CC;  /* ACD Blue dark — hover state on blue buttons */
+    --c-blue-text:      #1E4A9C;  /* ACD Blue deep — text on blue-light backgrounds */
+    --c-green:          #70AE6E;  /* Sage Green — secondary accent, success */
+    --c-green-light:    #DFF0DE;  /* Sage tint — tag/badge backgrounds */
+    --c-green-border:   #A8D9A6;  /* Sage mid — border on green tags */
+    --c-green-text:     #2D6B2B;  /* Sage deep — text on green-light backgrounds */
+    --c-text:           #1B2629;  /* Dark Teal — primary text */
+    --c-text-secondary: #4A6169;  /* Secondary body text */
+    --c-text-muted:     #7A9099;  /* Muted labels and metadata */
+    --c-border:         rgba(27, 38, 41, 0.12);  /* Default component borders */
+    --c-border-strong:  rgba(27, 38, 41, 0.22);  /* Stronger borders, outline buttons */
+    --c-neutral:        #ECEAE8;  /* Warm grey — neutral badge backgrounds */
+    --font:             'Geist', system-ui, sans-serif;
+    --font-mono:        'Geist Mono', monospace;
+    --r:                3px;
+}
+
+/* Map design tokens to Material's light scheme */
+[data-md-color-scheme="default"] {
+    --md-primary-fg-color:          var(--c-blue);        /* ACD Blue */
+    --md-primary-fg-color--light:   var(--c-blue-muted);  /* ACD Blue mid */
+    --md-primary-fg-color--dark:    var(--c-blue-hover);  /* ACD Blue dark */
+    --md-primary-bg-color:          var(--c-surface);     /* White */
+    --md-accent-fg-color:           var(--c-blue);        /* ACD Blue */
+
+    --md-default-bg-color:          var(--c-bg);             /* Stone-white */
+    --md-default-fg-color:          var(--c-text);           /* Dark Teal */
+    --md-default-fg-color--light:   var(--c-text-secondary); /* Secondary text */
+    --md-default-fg-color--lighter: var(--c-text-muted);     /* Muted text */
+
+    --md-code-bg-color:             var(--c-surface);  /* White */
+    --md-code-fg-color:             var(--c-mid);      /* Slate */
+
+    --md-typeset-a-color:           var(--c-blue);     /* ACD Blue */
+}
+
+/* Typography */
+body,
+.md-typeset {
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--c-text);
+}
+
+.md-typeset code,
+.md-typeset pre,
+.md-typeset kbd {
+    font-family: var(--font-mono);
+}
+
+/* Page background */
+.md-main {
+    background: var(--c-bg);  /* Stone-white */
+}
+
+/* Header/nav */
+.md-header {
+    background: var(--c-surface);              /* White */
+    border-bottom: 0.5px solid var(--c-border);
+    box-shadow: none;
+    color: var(--c-text);
+}
+
+.md-header__title {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-text);  /* Dark Teal */
+    letter-spacing: -0.01em;
+}
+
+.md-tabs {
+    background: var(--c-surface);              /* White */
+    border-bottom: 0.5px solid var(--c-border);
+}
+
+.md-tabs__link {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+.md-tabs__link--active,
+.md-tabs__link:hover {
+    color: var(--c-blue);  /* ACD Blue */
+}
+
+/* Sidebar */
+.md-nav__title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--c-text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.md-nav__link {
+    font-size: 14px;
+    color: var(--c-text-secondary);
+}
+
+.md-nav__link--active,
+.md-nav__link:hover {
+    color: var(--c-blue);  /* ACD Blue */
+}
+
+/* Content area */
+.md-content {
+    max-width: 760px;
+}
+
+/* Headings */
+.md-typeset h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: var(--c-dark);  /* Dark Teal */
+    border-bottom: 0.5px solid var(--c-border);
+    padding-bottom: 0.5rem;
+}
+
+.md-typeset h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--c-dark);  /* Dark Teal */
+    border-bottom: none;
+}
+
+/* Links */
+.md-typeset a {
+    color: var(--c-blue);  /* ACD Blue */
+    text-decoration: none;
+    transition: color 150ms ease;
+}
+
+.md-typeset a:hover {
+    color: var(--c-blue-hover);  /* ACD Blue dark */
+}
+
+/* Footer */
+.md-footer {
+    background: var(--c-dark);  /* Dark Teal */
+    color: var(--c-bg);
+}
+
+.md-footer-meta {
+    background: var(--c-mid);  /* Slate */
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

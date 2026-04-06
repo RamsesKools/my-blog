@@ -3,17 +3,19 @@ site_url: https://blog.ramseskools.nl
 
 theme:
   name: material
+  logo: assets/logo-rk.svg
+  favicon: assets/favicon.svg
 
 plugins:
   - blog:
       blog_dir: blog
       draft_on_serve: true
 
+extra_css:
+  - assets/custom.css
+
 nav:
   - Home: index.md
   - Blog: blog/index.md
   - Projects: projects.md
   - About: about.md
-
-extra_css:
-  - assets/custom.css
