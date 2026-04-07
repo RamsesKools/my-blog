@@ -12,15 +12,15 @@ services:
       - traefik-proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.blog.rule=Host(`blog.ramseskools.nl`)"
-      - "traefik.http.routers.blog.entrypoints=web"
-      - "traefik.http.routers.blog.middlewares=redirect-https@file"
-      - "traefik.http.routers.blog-secure.rule=Host(`blog.ramseskools.nl`)"
-      - "traefik.http.routers.blog-secure.entrypoints=websecure"
-      - "traefik.http.routers.blog-secure.tls=true"
-      - "traefik.http.routers.blog-secure.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.blog-secure.middlewares=custom-errors@file"
-      - "traefik.http.services.blog.loadbalancer.server.port=80"
+      - "traefik.http.routers.blog-preview.rule=Host(`blog-preview.ramseskools.nl`)"
+      - "traefik.http.routers.blog-preview.entrypoints=web"
+      - "traefik.http.routers.blog-preview.middlewares=redirect-https@file"
+      - "traefik.http.routers.blog-preview-secure.rule=Host(`blog-preview.ramseskools.nl`)"
+      - "traefik.http.routers.blog-preview-secure.entrypoints=websecure"
+      - "traefik.http.routers.blog-preview-secure.tls=true"
+      - "traefik.http.routers.blog-preview-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.blog-preview-secure.middlewares=custom-errors@file"
+      - "traefik.http.services.blog-preview.loadbalancer.server.port=80"
 
 networks:
   traefik-proxy:
