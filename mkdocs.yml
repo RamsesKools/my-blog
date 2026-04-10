@@ -3,8 +3,15 @@ site_url: https://blog.ramseskools.nl
 
 theme:
   name: material
+  font: false
   logo: assets/logo-rk.svg
   favicon: assets/favicon.svg
+  palette:
+    scheme: default
+    primary: custom
+    accent: custom
+  features:
+    - navigation.tabs
 
 plugins:
   - blog:
