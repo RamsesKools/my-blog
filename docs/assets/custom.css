@@ -9,47 +9,78 @@
 
 /* Design tokens */
 :root {
-    --c-bg:             #F8F7F6;  /* Stone-white — page background */
-    --c-surface:        #FFFFFF;  /* White — card and component backgrounds */
-    --c-dark:           #1B2629;  /* Dark Teal — primary text, dark surfaces */
-    --c-mid:            #2E3D45;  /* Slate — secondary dark, headers on dark surfaces */
-    --c-blue:           #3E77DC;  /* ACD Blue — primary accent, interactive, links, CTA */
-    --c-blue-light:     #D6E4FA;  /* ACD Blue tint — tag/badge backgrounds */
-    --c-blue-muted:     #A8C3F0;  /* ACD Blue mid — borders, subtle accents */
-    --c-blue-hover:     #2F66CC;  /* ACD Blue dark — hover state on blue buttons */
-    --c-blue-text:      #1E4A9C;  /* ACD Blue deep — text on blue-light backgrounds */
-    --c-green:          #70AE6E;  /* Sage Green — secondary accent, success */
-    --c-green-light:    #DFF0DE;  /* Sage tint — tag/badge backgrounds */
-    --c-green-border:   #A8D9A6;  /* Sage mid — border on green tags */
-    --c-green-text:     #2D6B2B;  /* Sage deep — text on green-light backgrounds */
-    --c-text:           #1B2629;  /* Dark Teal — primary text */
-    --c-text-secondary: #4A6169;  /* Secondary body text */
-    --c-text-muted:     #7A9099;  /* Muted labels and metadata */
-    --c-border:         rgba(27, 38, 41, 0.12);  /* Default component borders */
-    --c-border-strong:  rgba(27, 38, 41, 0.22);  /* Stronger borders, outline buttons */
-    --c-neutral:        #ECEAE8;  /* Warm grey — neutral badge backgrounds */
-    --font:             'Geist', system-ui, sans-serif;
-    --font-mono:        'Geist Mono', monospace;
-    --r:                3px;
+    --c-bg: #F8F7F6;
+    /* Stone-white — page background */
+    --c-surface: #FFFFFF;
+    /* White — card and component backgrounds */
+    --c-dark: #1B2629;
+    /* Dark Teal — primary text, dark surfaces */
+    --c-mid: #2E3D45;
+    /* Slate — secondary dark, headers on dark surfaces */
+    --c-blue: #3E77DC;
+    /* ACD Blue — primary accent, interactive, links, CTA */
+    --c-blue-light: #D6E4FA;
+    /* ACD Blue tint — tag/badge backgrounds */
+    --c-blue-muted: #A8C3F0;
+    /* ACD Blue mid — borders, subtle accents */
+    --c-blue-hover: #2F66CC;
+    /* ACD Blue dark — hover state on blue buttons */
+    --c-blue-text: #1E4A9C;
+    /* ACD Blue deep — text on blue-light backgrounds */
+    --c-green: #70AE6E;
+    /* Sage Green — secondary accent, success */
+    --c-green-light: #DFF0DE;
+    /* Sage tint — tag/badge backgrounds */
+    --c-green-border: #A8D9A6;
+    /* Sage mid — border on green tags */
+    --c-green-text: #2D6B2B;
+    /* Sage deep — text on green-light backgrounds */
+    --c-text: #1B2629;
+    /* Dark Teal — primary text */
+    --c-text-secondary: #4A6169;
+    /* Secondary body text */
+    --c-text-muted: #7A9099;
+    /* Muted labels and metadata */
+    --c-border: rgba(27, 38, 41, 0.12);
+    /* Default component borders */
+    --c-border-strong: rgba(27, 38, 41, 0.22);
+    /* Stronger borders, outline buttons */
+    --c-neutral: #ECEAE8;
+    /* Warm grey — neutral badge backgrounds */
+    --font: 'Geist', system-ui, sans-serif;
+    --font-mono: 'Geist Mono', monospace;
+    --r: 3px;
 }
 
 /* Map design tokens to Material's light scheme */
 [data-md-color-scheme="default"] {
-    --md-primary-fg-color:          var(--c-blue);        /* ACD Blue */
-    --md-primary-fg-color--light:   var(--c-blue-muted);  /* ACD Blue mid */
-    --md-primary-fg-color--dark:    var(--c-blue-hover);  /* ACD Blue dark */
-    --md-primary-bg-color:          var(--c-surface);     /* White */
-    --md-accent-fg-color:           var(--c-blue);        /* ACD Blue */
+    --md-primary-fg-color: var(--c-blue);
+    /* ACD Blue */
+    --md-primary-fg-color--light: var(--c-blue-muted);
+    /* ACD Blue mid */
+    --md-primary-fg-color--dark: var(--c-blue-hover);
+    /* ACD Blue dark */
+    --md-primary-bg-color: var(--c-surface);
+    /* White */
+    --md-accent-fg-color: var(--c-blue);
+    /* ACD Blue */
 
-    --md-default-bg-color:          var(--c-bg);             /* Stone-white */
-    --md-default-fg-color:          var(--c-text);           /* Dark Teal */
-    --md-default-fg-color--light:   var(--c-text-secondary); /* Secondary text */
-    --md-default-fg-color--lighter: var(--c-text-muted);     /* Muted text */
+    --md-default-bg-color: var(--c-bg);
+    /* Stone-white */
+    --md-default-fg-color: var(--c-text);
+    /* Dark Teal */
+    --md-default-fg-color--light: var(--c-text-secondary);
+    /* Secondary text */
+    --md-default-fg-color--lighter: var(--c-text-muted);
+    /* Muted text */
 
-    --md-code-bg-color:             var(--c-surface);  /* White */
-    --md-code-fg-color:             var(--c-mid);      /* Slate */
+    --md-code-bg-color: var(--c-surface);
+    /* White */
+    --md-code-fg-color: var(--c-mid);
+    /* Slate */
 
-    --md-typeset-a-color:           var(--c-blue);     /* ACD Blue */
+    --md-typeset-a-color: var(--c-blue);
+    /* ACD Blue */
 }
 
 /* Typography */
@@ -69,14 +100,16 @@ body,
 
 /* Page background */
 .md-main {
-    background: var(--c-bg);  /* Stone-white */
+    background: var(--c-bg);
+    /* Stone-white */
 }
 
 /* Header/nav */
 .md-header,
 .md-header[hidden],
 .md-header--shadow {
-    background: var(--c-surface);              /* White */
+    background: var(--c-surface);
+    /* White */
     border-bottom: none;
     box-shadow: none !important;
     color: var(--c-text);
@@ -86,12 +119,14 @@ body,
     font-family: var(--font-mono);
     font-size: 15px;
     font-weight: 500;
-    color: var(--c-text);  /* Dark Teal */
+    color: var(--c-text);
+    /* Dark Teal */
     letter-spacing: -0.01em;
 }
 
 .md-tabs {
-    background: var(--c-neutral);              /* Warm grey */
+    background: var(--c-neutral);
+    /* Warm grey */
     border-top: 0.5px solid var(--c-border);
     border-bottom: 0.5px solid var(--c-border);
 }
@@ -105,13 +140,15 @@ body,
 }
 
 .md-tabs__item--active .md-tabs__link {
-    color: var(--c-blue);  /* ACD Blue */
+    color: var(--c-blue);
+    /* ACD Blue */
     opacity: 1;
     border-bottom: 2px solid var(--c-blue);
 }
 
 .md-tabs__link:hover {
-    color: var(--c-blue);  /* ACD Blue */
+    color: var(--c-blue);
+    /* ACD Blue */
     opacity: 1;
 }
 
@@ -131,7 +168,8 @@ body,
 
 .md-nav__link--active,
 .md-nav__link:hover {
-    color: var(--c-blue);  /* ACD Blue */
+    color: var(--c-blue);
+    /* ACD Blue */
 }
 
 /* Content area */
@@ -144,7 +182,8 @@ body,
     font-size: 2rem;
     font-weight: 500;
     letter-spacing: -0.03em;
-    color: var(--c-dark);  /* Dark Teal */
+    color: var(--c-dark);
+    /* Dark Teal */
     border-bottom: 0.5px solid var(--c-border);
     padding-bottom: 0.5rem;
 }
@@ -153,29 +192,34 @@ body,
     font-size: 1.2rem;
     font-weight: 500;
     letter-spacing: -0.02em;
-    color: var(--c-dark);  /* Dark Teal */
+    color: var(--c-dark);
+    /* Dark Teal */
     border-bottom: none;
 }
 
 /* Links */
 .md-typeset a {
-    color: var(--c-blue);  /* ACD Blue */
+    color: var(--c-blue);
+    /* ACD Blue */
     text-decoration: none;
     transition: color 150ms ease;
 }
 
 .md-typeset a:hover {
-    color: var(--c-blue-hover);  /* ACD Blue dark */
+    color: var(--c-blue-hover);
+    /* ACD Blue dark */
 }
 
 /* Footer */
 .md-footer {
-    background: var(--c-dark);  /* Dark Teal */
+    background: var(--c-dark);
+    /* Dark Teal */
     color: var(--c-bg);
 }
 
 .md-footer-meta {
-    background: var(--c-mid);  /* Slate */
+    background: var(--c-mid);
+    /* Slate */
 }
 
 @media (prefers-reduced-motion: reduce) {
