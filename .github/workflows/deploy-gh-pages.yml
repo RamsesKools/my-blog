@@ -17,7 +17,7 @@ jobs:
     outputs:
       ref: ${{ steps.resolve.outputs.ref }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -72,11 +72,11 @@ jobs:
             echo "ref=${{ needs.tag.outputs.ref }}" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ steps.ref.outputs.ref }}
 
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
 
       - name: Deploy to GitHub Pages
         run: uv run mkdocs gh-deploy --force
