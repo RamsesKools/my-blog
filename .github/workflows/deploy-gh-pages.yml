@@ -37,7 +37,7 @@ jobs:
       - name: Determine CalVer version
         id: calver
         if: steps.check.outputs.has_tag != 'true'
-        uses: energostack/calver-action@v2
+        uses: energostack/calver-action@v1.0.3
         with:
           date_format: "%Y.%m.%d"
 
