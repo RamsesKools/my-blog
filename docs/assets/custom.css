@@ -172,9 +172,36 @@ body,
     /* ACD Blue */
 }
 
+/* Repository widget: keep icon + version tag, hide name and popularity counts */
+.md-source__repository {
+    display: none;
+}
+
+.md-source__fact--stars,
+.md-source__fact--forks,
+.md-source__fact--repositories {
+    display: none;
+}
+
 /* Content area */
+.md-grid {
+    max-width: min(92vw, 1400px);
+}
+
 .md-content {
-    max-width: 760px;
+    width: 100%;
+}
+
+.md-content__inner {
+    max-width: clamp(44rem, 76vw, 86rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 76.1875em) {
+    .md-content__inner {
+        max-width: min(100%, 52rem);
+    }
 }
 
 /* Headings */
