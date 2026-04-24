@@ -199,8 +199,15 @@ body,
 }
 
 @media screen and (max-width: 76.1875em) {
-    .md-content__inner {
+    /* .md-content__inner {
         max-width: min(100%, 52rem);
+    } */
+
+    /* This should allow the logo to be present */
+    /* Source: https://github.com/squidfunk/mkdocs-material/issues/1676 */
+    /* todo fix it */
+    .md-header-nav__button.md-logo {
+        display: block;
     }
 }
 

@@ -1,4 +1,4 @@
-site_name: Ramses Kools
+site_name: My blog
 site_url: https://blog.ramseskools.nl
 repo_url: https://github.com/RamsesKools/my-blog
 
@@ -18,7 +18,7 @@ theme:
 
 plugins:
   - blog:
-      blog_dir: blog
+      blog_dir: .
       draft_on_serve: true
 
 markdown_extensions:
@@ -26,13 +26,10 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
-
+          format: !!python/name:pymdownx.superfences.fence_code_format ""
 extra_css:
   - assets/custom.css
 
 nav:
-  - Home: index.md
-  - Blog: blog/index.md
-  - Projects: projects.md
+  - Blog: index.md
   - About: about.md

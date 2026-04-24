@@ -1,3 +1,1 @@
-# Welcome
-
-Work in progress.
+# Blog
