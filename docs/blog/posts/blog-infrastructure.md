@@ -9,7 +9,6 @@ I like to write things down to structure my thinking.
 Some of those things might be interesting to others too, so I decided to put them on a blog.
 This post is about the blog itself: how it's built, deployed, and what tools I use.
 
-
 <!-- more -->
 
 ## Design principles
@@ -18,22 +17,21 @@ A few things I wanted from the start:
 
 - **Everything in Git.** Content, config, styling - all versioned together in one repo.
 - **Markdown for content.** It has everything I need and keeps things portable.
-- **Free and open-source tooling.** No vendor lock-in, no subscriptions.
-- **Build in public.** The [repo is public](https://github.com/RamsesKools/my-blog).
+- **Free and open-source tooling.**
+- **[Build in public](https://buildinpublic.com/manifesto).** The [repo is public](https://github.com/RamsesKools/my-blog).
 Anyone can look behind the curtain and see how everything works.
 I'm certainly not the first to set things up this way, but I think it's nice for visitors to be able to poke around.
 
 ## The stack
 
 | Tool | Role |
-|---|---|
+| --- | --- |
 | [MkDocs Material](https://squidfunnel.github.io/mkdocs-material/) | Static site generator with a blog plugin |
 | [uv](https://docs.astral.sh/uv/) | Python package manager (`pyproject.toml` + `uv.lock`) |
 | [GitHub Pages](https://pages.github.com/) | Public hosting (free, connected to my own domain) |
 | [GitHub Actions](https://docs.github.com/en/actions) | CI/CD for public deployments |
 | [Dagu](https://dagu.readthedocs.io/) | Task runner on my homeserver for preview deployments |
-| [Traefik](https://traefik.io/traefik/) | Reverse proxy with automatic HTTPS |
-| [nginx](https://nginx.org/) + Docker Compose | Serves the preview site |
+| [nginx](https://nginx.org/) docker container | Serves the preview site |
 
 MkDocs Material deserves a special mention.
 It turns a folder of Markdown files into a clean, responsive website with search, navigation, and a built-in blog plugin.
@@ -63,8 +61,7 @@ A [Dagu](https://dagu.readthedocs.io/) DAG on my homeserver polls the repo every
 When it detects new commits, it pulls and runs `mkdocs build`.
 The output lands in a `site/` directory that nginx serves as static files, exposed through Traefik at `blog-preview.ramseskools.nl`.
 
-This means I always have a live version of the blog running on my homeserver that I can check from any device on my network.
-No manual steps needed.
+This means I always have a live version of the blog running on my homeserver that I can check from any device on my network, or any device connected to my network via VPN.
 
 ### Public
 
@@ -84,6 +81,7 @@ Every save updates the page instantly.
 2. **Drafts.**
 Posts with `draft: true` in the frontmatter are visible during local serving but excluded from production builds.
 This lets me work on posts without publishing them.
+    - Offcourse it is also possible to use branches for this purpose and normally I would do so. But since I will be the only one working in this repo I do without branches and Pull-Requests.
 3. **Reproducible environment.**
 Dependencies are locked with `uv.lock`, so the build is identical everywhere.
 Clone the repo, run `uv run mkdocs serve`, done.
