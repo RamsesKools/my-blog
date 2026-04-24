@@ -172,14 +172,9 @@ body,
     /* ACD Blue */
 }
 
-/* Repository widget: keep icon + version tag, hide name and popularity counts */
-.md-source__repository {
-    display: none;
-}
-
+/* Repository widget: show repo name + version tag, hide popularity counts */
 .md-source__fact--stars,
-.md-source__fact--forks,
-.md-source__fact--repositories {
+.md-source__fact--forks {
     display: none;
 }
 

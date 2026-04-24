@@ -1,6 +1,7 @@
 site_name: My blog
 site_url: https://blog.ramseskools.nl
 repo_url: https://github.com/RamsesKools/my-blog
+repo_name: RamsesKools/my-blog
 
 theme:
   name: material
