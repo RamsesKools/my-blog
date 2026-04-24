@@ -71,6 +71,24 @@ A GitHub Actions workflow picks that up, tags the commit with a [CalVer](https:/
 The public site lives at `blog.ramseskools.nl`.
 GitHub Pages hosting is free and lets me use my own domain.
 
+## Domain & DNS
+
+I bought the domain from [mijn.host](https://mijn.host).
+I chose this registar because (when I was searching) it had the lowest yearly renewal costs for `.nl` domains.
+After that I transferred it to [Cloudflare](https://www.cloudflare.com/), whose free tier covers everything I need: DNS management, analytics, and more.
+The domain transfer was quite straightforward, described well [here](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/).
+
+Hooking the domain up to GitHub Pages involves two sides:
+
+**Repository side** — a `CNAME` file at the root of the repo containing the custom domain (`blog.ramseskools.nl`).
+GitHub Pages reads this file to know which domain to serve the site on.
+MkDocs places it in `docs/CNAME` so it gets copied into the build output automatically.
+
+**DNS side** — a `CNAME` record in Cloudflare pointing the `blog` subdomain to `ramseskools.github.io`.
+When a visitor hits `blog.ramseskools.nl`, Cloudflare resolves it to GitHub's servers, which then match it against the `CNAME` file and serve the right site.
+
+The full setup steps are documented in the [GitHub Pages custom domain guide](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
+
 ## Development workflow
 
 Day-to-day writing looks like this:
