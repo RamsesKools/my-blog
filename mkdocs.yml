@@ -21,6 +21,10 @@ plugins:
   - blog:
       blog_dir: .
       draft_on_serve: true
+  - blog:
+      blog_dir: likes
+      draft_on_serve: true
+      blog_toc: true
 
 markdown_extensions:
   - pymdownx.superfences:
@@ -33,4 +37,5 @@ extra_css:
 
 nav:
   - Blog: index.md
+  - Things I Like: likes/index.md
   - About: about.md
