@@ -17,6 +17,13 @@ theme:
   features:
     - navigation.tabs
 
+watch:
+  - likes_index_plugin.py
+  - docs/likes/posts
+
+hooks:
+  - likes_index_plugin.py
+
 plugins:
   - blog:
       blog_dir: .
