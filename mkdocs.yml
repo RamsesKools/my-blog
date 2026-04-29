@@ -31,15 +31,11 @@ plugins:
   - blog:
       blog_dir: likes
       draft_on_serve: true
-      blog_toc: true
       archive: false
-      categories_allowed:
-        - People
-        - Tools
-        - Products
-        - Websites
-        - Movies
-        - Games
+      categories: false
+      authors: false
+      pagination: false
+      post_readtime: false
 
 markdown_extensions:
   - pymdownx.superfences:
