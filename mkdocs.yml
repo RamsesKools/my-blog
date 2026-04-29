@@ -19,7 +19,7 @@ theme:
 
 watch:
   - likes_index_plugin.py
-  - docs/likes/posts
+  - docs/likes/feed/posts
 
 hooks:
   - likes_index_plugin.py
@@ -29,13 +29,12 @@ plugins:
       blog_dir: .
       draft_on_serve: true
   - blog:
-      blog_dir: likes
+      blog_dir: likes/feed
       draft_on_serve: true
       archive: false
       categories: false
       authors: false
       pagination: false
-      post_readtime: false
 
 markdown_extensions:
   - pymdownx.superfences:

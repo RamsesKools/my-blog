@@ -1,6 +1,7 @@
 # Things I Like
 
-A running list of people, tools, products, websites, movies, and games that I genuinely enjoy.
+A list of **people**, tools, products, websites, movies, and games that I genuinely enjoy.
+Subscribe to the [feed](feed/index.md) to see new additions as they come in.
 
 ## People I like
 

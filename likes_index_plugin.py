@@ -13,23 +13,25 @@ posts in that category, sorted by date descending.
 
 import re
 from pathlib import Path
+from re import Match
+from typing import Any
 import yaml
 
 
 PLACEHOLDER = re.compile(r"<!-- likes:(.+?) -->")
 
 
-def _read_posts(docs_dir: str) -> list[dict]:
-    posts_dir = Path(docs_dir) / "likes" / "posts"
-    posts = []
+def _read_posts(docs_dir: str) -> list[dict[str, Any]]:
+    posts_dir = Path(docs_dir) / "likes" / "feed" / "posts"
+    posts: list[dict[str, Any]] = []
     for md_file in posts_dir.glob("*.md"):
         text = md_file.read_text(encoding="utf-8")
         if not text.startswith("---"):
             continue
         end = text.index("---", 3)
-        front = yaml.safe_load(text[3:end])
+        front: dict[str, Any] = yaml.safe_load(text[3:end])
         body = text[end + 3:].lstrip("\n")
-        title = None
+        title: str | None = None
         for line in body.splitlines():
             if line.startswith("# "):
                 title = line[2:].strip()
@@ -45,21 +47,29 @@ def _read_posts(docs_dir: str) -> list[dict]:
     return posts
 
 
-def _build_list(posts: list[dict], category: str) -> str:
+def _build_list(posts: list[dict[str, Any]], category: str) -> str:
     matching = [p for p in posts if p["category"] == category]
     matching.sort(key=lambda p: p["date"], reverse=True)
     if not matching:
         return "*Nothing here yet.*"
-    lines = [f"- [{p['title']}](posts/{p['slug']}.md)" for p in matching]
-    return "\n".join(lines)
+    rows = []
+    for p in matching:
+        date_str = p["date"].strftime("%Y-%m-%d") if hasattr(p["date"], "strftime") else str(p["date"])
+        rows.append(
+            f'<a class="likes-row" href="feed/posts/{p["slug"]}/">'
+            f'<span class="likes-title">{p["title"]}</span>'
+            f'<span class="likes-date">{date_str}</span>'
+            f'</a>'
+        )
+    return '<div class="likes-list">\n' + "\n".join(rows) + "\n</div>"
 
 
-def on_page_markdown(markdown, page, config, files, **kwargs):
+def on_page_markdown(markdown: str, page: Any, config: Any, **__: Any) -> str:
     if page.file.src_path != "likes/index.md":
         return markdown
     posts = _read_posts(config["docs_dir"])
 
-    def replace(m):
+    def replace(m: Match[str]) -> str:
         return _build_list(posts, m.group(1).strip())
 
     return PLACEHOLDER.sub(replace, markdown)
