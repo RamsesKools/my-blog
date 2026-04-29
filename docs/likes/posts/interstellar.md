@@ -1,7 +1,7 @@
 ---
 date: 2026-04-24
-tags:
-  - movies
+categories:
+  - Movies
 ---
 
 # Interstellar (2014)
