@@ -2,6 +2,7 @@
 date: 2026-04-01
 categories:
   - Movies
+rating: 9
 ---
 
 # Interstellar (2014)
@@ -31,6 +32,5 @@ Some things in the story don't really fit that well:
   - If there is a plague killing of all living things, then it should be possible to create 'clean-zones' underground or in encapsulated domes.
   - If it is not possible to get rid of 'the plague', then it should also not be possible to prevent it from getting on board of your spacecrafts, and into your space-habitats.
   - Getting everyone into space has to be more difficult than creating suitable clean living spaces on earth for everyone.
-
 
 Still a near-perfect film and one I will keep coming back to!
