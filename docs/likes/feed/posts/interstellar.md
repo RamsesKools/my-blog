@@ -3,6 +3,7 @@ date: 2026-04-01
 categories:
   - Movies
 rating: 9
+draft: true
 ---
 
 # Interstellar (2014)

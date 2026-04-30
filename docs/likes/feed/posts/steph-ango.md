@@ -14,4 +14,4 @@ What I like about Steph is not just the tools he builds, but how he thinks and s
 His writing on [stephango.com](https://stephango.com) covers quality software, personal tools, and how to build things that last.
 He seems to genuinely embody the ideas he writes about, which is rare.
 
-The Obsidian philosophy (local-first, plain files, no lock-in) feels like a direct expression of those values.
+The [Obsidian](obsidian.md) philosophy (local-first, plain files, no lock-in) feels like a direct expression of those values.

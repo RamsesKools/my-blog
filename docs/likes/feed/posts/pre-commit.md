@@ -2,6 +2,7 @@
 date: 2026-04-24
 categories:
   - Tools
+draft: true
 ---
 
 # pre-commit
