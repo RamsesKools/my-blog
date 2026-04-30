@@ -28,6 +28,8 @@ plugins:
   - blog:
       blog_dir: .
       draft_on_serve: true
+      post_url_format: "{slug}"
+      archive: false
   - blog:
       blog_dir: likes/feed
       draft_on_serve: true
@@ -35,6 +37,7 @@ plugins:
       categories: false
       authors: false
       pagination: false
+      post_url_format: "../{slug}"
 
 markdown_extensions:
   - pymdownx.superfences:

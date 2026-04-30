@@ -56,7 +56,7 @@ def _build_list(posts: list[dict[str, Any]], category: str) -> str:
     for p in matching:
         date_str = p["date"].strftime("%Y-%m-%d") if hasattr(p["date"], "strftime") else str(p["date"])
         rows.append(
-            f'<a class="likes-row" href="feed/posts/{p["slug"]}/">'
+            f'<a class="likes-row" href="{p["slug"]}/">'
             f'<span class="likes-title">{p["title"]}</span>'
             f'<span class="likes-date">{date_str}</span>'
             f'</a>'
