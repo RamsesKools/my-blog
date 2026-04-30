@@ -61,7 +61,7 @@ A [Dagu](https://dagu.readthedocs.io/) DAG on my homeserver polls the repo every
 When it detects new commits, it pulls and runs `mkdocs build`.
 The output lands in a `site/` directory that nginx serves as static files, exposed through Traefik at `blog-preview.ramseskools.nl`.
 
-This means I always have a live version of the blog running on my homeserver that I can check from any device on my network, or any device connected to my network via VPN.
+This means I always have a live version of the blog running on my homeserver, accessible from any device on my network or via VPN.
 
 ### Public
 
@@ -76,7 +76,7 @@ GitHub Pages hosting is free and lets me use my own domain.
 I bought the domain from [mijn.host](https://mijn.host).
 I chose this registar because (when I was searching) it had the lowest yearly renewal costs for `.nl` domains.
 After that I transferred it to [Cloudflare](https://www.cloudflare.com/), whose free tier covers everything I need: DNS management, analytics, and more.
-The domain transfer was quite straightforward, described well [here](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/).
+The domain transfer was quite straightforward, [well documented by Cloudflare](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/).
 
 Hooking the domain up to GitHub Pages involves two sides:
 
@@ -99,7 +99,8 @@ Every save updates the page instantly.
 2. **Drafts.**
 Posts with `draft: true` in the frontmatter are visible during local serving but excluded from production builds.
 This lets me work on posts without publishing them.
-    - Offcourse it is also possible to use branches for this purpose and normally I would do so. But since I will be the only one working in this repo I do without branches and Pull-Requests.
+    - Of course branches work too, and normally I would use them.
+    But since I'm the only one working in this repo I will skip using branches and pull-requests for most changes.
 3. **Reproducible environment.**
 Dependencies are locked with `uv.lock`, so the build is identical everywhere.
 Clone the repo, run `uv run mkdocs serve`, done.

@@ -256,3 +256,45 @@ body,
         transition: none !important;
     }
 }
+
+/* Likes index — borderless clickable rows */
+.likes-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.likes-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.45rem 0.25rem;
+    color: var(--c-text);
+    text-decoration: none;
+    border-radius: var(--r);
+    transition: background 120ms ease, color 120ms ease;
+}
+
+.likes-row:hover {
+    background: var(--c-neutral);
+    color: var(--c-blue);
+}
+
+.likes-row:hover .likes-date {
+    color: var(--c-blue-muted);
+}
+
+.likes-title {
+    flex: 1;
+    font-size: 0.95rem;
+    color: inherit;
+}
+
+.likes-date {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    color: var(--c-text-muted);
+    white-space: nowrap;
+}
