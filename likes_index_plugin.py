@@ -1,79 +1,76 @@
 """
 MkDocs hook that auto-generates per-category post lists in docs/likes/index.md.
 
-In index.md, write a section like:
+In index.md, wrap each section in a block comment like:
 
+    <!-- likes:Tools
     ## Tools I like
     Your description here.
-    <!-- likes:Tools -->
+    -->
 
-The hook replaces each <!-- likes:<Category> --> comment with a bullet list of
-posts in that category, sorted by date descending.
+The hook renders the heading, description, and post list when the category has
+posts, and removes the entire block when it is empty.
+
+Draft handling: the post list is sourced from the blog plugin's resolved post
+list, so any post excluded by the blog plugin (drafts, future-dated, etc.) is
+automatically omitted here too.
 """
 
 import re
-from pathlib import Path
 from re import Match
 from typing import Any
-import yaml
-from pymdownx.slugs import slugify as _slugify  # type: ignore[import-untyped]
 
-_slugify_post = _slugify(case="lower")
+PLACEHOLDER = re.compile(r"<!-- likes:(.+?)\n(.*?)-->", re.DOTALL)
 
-
-PLACEHOLDER = re.compile(r"<!-- likes:(.+?) -->")
+_posts: list[dict[str, Any]] = []
 
 
-def _read_posts(docs_dir: str) -> list[dict[str, Any]]:
-    posts_dir = Path(docs_dir) / "likes" / "feed" / "posts"
-    posts: list[dict[str, Any]] = []
-    for md_file in posts_dir.glob("*.md"):
-        text = md_file.read_text(encoding="utf-8")
-        if not text.startswith("---"):
+def on_files(_files: Any, *, config: Any, **__: Any) -> None:
+    _posts.clear()
+    for _name, plugin in config["plugins"].items():
+        posts = getattr(getattr(plugin, "blog", None), "posts", None)
+        if posts is None:
             continue
-        end = text.index("---", 3)
-        front: dict[str, Any] = yaml.safe_load(text[3:end])
-        body = text[end + 3:].lstrip("\n")
-        title: str | None = None
-        for line in body.splitlines():
-            if line.startswith("# "):
-                title = line[2:].strip()
-                break
-        if title and front.get("categories") and front.get("date"):
-            slug = front.get("slug") or _slugify_post(title, "-")
-            for cat in front["categories"]:
-                posts.append({
-                    "title": title,
-                    "date": front["date"],
-                    "category": cat,
-                    "slug": slug,
-                })
-    return posts
+        for post in posts:
+            categories = post.meta.get("categories") or []
+            date = getattr(getattr(post, "config", None), "date", None)
+            created = getattr(date, "created", None)
+            slug = post.url.rstrip("/").rsplit("/", 1)[-1]
+            if post.title and categories and created:
+                for cat in categories:
+                    _posts.append({
+                        "title": post.title,
+                        "date": created,
+                        "category": cat,
+                        "slug": slug,
+                    })
+
+on_files.mkdocs_priority = -75  # type: ignore[attr-defined]  # run after blog plugin (priority -50)
 
 
-def _build_list(posts: list[dict[str, Any]], category: str) -> str:
-    matching = [p for p in posts if p["category"] == category]
+def _build_list(category: str, section: str) -> str:
+    matching = [p for p in _posts if p["category"] == category]
     matching.sort(key=lambda p: p["date"], reverse=True)
     if not matching:
-        return "*Nothing here yet.*"
+        return ""
     rows = []
     for p in matching:
-        date_str = p["date"].strftime("%Y-%m-%d") if hasattr(p["date"], "strftime") else str(p["date"])
+        date_str = p["date"].strftime("%Y-%m-%d")
         rows.append(
             f'<a class="likes-row" href="{p["slug"]}/">'
             f'<span class="likes-title">{p["title"]}</span>'
             f'<span class="likes-date">{date_str}</span>'
             f'</a>'
         )
-    return '<div class="likes-list">\n' + "\n".join(rows) + "\n</div>"
+    list_html = '<div class="likes-list">\n' + "\n".join(rows) + "\n</div>"
+    return section + "\n" + list_html
 
 
-def on_page_markdown(markdown: str, page: Any, config: Any, **__: Any) -> str:
+def on_page_markdown(markdown: str, page: Any, **__: Any) -> str:
     if page.file.src_path != "likes/index.md":
         return markdown
-    posts = _read_posts(config["docs_dir"])
 
     def replace(m: Match[str]) -> str:
-        return _build_list(posts, m.group(1).strip())
+        return _build_list(m.group(1).strip(), m.group(2).strip())
 
     return PLACEHOLDER.sub(replace, markdown)
