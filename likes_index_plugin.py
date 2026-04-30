@@ -16,6 +16,9 @@ from pathlib import Path
 from re import Match
 from typing import Any
 import yaml
+from pymdownx.slugs import slugify as _slugify  # type: ignore[import-untyped]
+
+_slugify_post = _slugify(case="lower")
 
 
 PLACEHOLDER = re.compile(r"<!-- likes:(.+?) -->")
@@ -37,12 +40,13 @@ def _read_posts(docs_dir: str) -> list[dict[str, Any]]:
                 title = line[2:].strip()
                 break
         if title and front.get("categories") and front.get("date"):
+            slug = front.get("slug") or _slugify_post(title, "-")
             for cat in front["categories"]:
                 posts.append({
                     "title": title,
                     "date": front["date"],
                     "category": cat,
-                    "slug": md_file.stem,
+                    "slug": slug,
                 })
     return posts
 
