@@ -42,6 +42,26 @@ dagu start /opt/dagu/dags/blog-preview-deploy.yaml -- MODE=force
 dagu start /opt/dagu/dags/blog-preview-deploy.yaml -- MODE=deploy
 ```
 
+## Embedding videos
+
+Videos are stored in `docs/assets/` and embedded using a plain HTML `<video>` tag with an absolute path:
+
+```html
+<div style="text-align: center;">
+  <video controls autoplay loop muted playsinline style="max-width: 100%;">
+    <source src="/assets/your-video.mp4" type="video/mp4">
+  </video>
+</div>
+```
+
+The leading `/` is required — MkDocs' `use_directory_urls: true` restructures page URLs, so relative paths from within a post don't resolve correctly. Absolute paths from `docs/assets/` always work.
+
+Convert screen recordings before committing:
+
+```bash
+ffmpeg -i input.mov -vcodec h264 -acodec aac -crf 28 -preset slow docs/assets/output.mp4
+```
+
 ### Deployment to GitHub Pages
 
 The public site at `https://blog.ramseskools.nl` is deployed via the GitHub Actions workflow `.github/workflows/deploy-gh-pages.yml`.

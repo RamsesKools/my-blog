@@ -20,15 +20,17 @@ theme:
 watch:
   - likes_index_plugin.py
   - docs/likes/feed/posts
+  - docs/posts
 
 hooks:
   - likes_index_plugin.py
 
 plugins:
   - blog:
-      blog_dir: .
+      blog_dir: blog
+      post_dir: posts
       draft_on_serve: true
-      post_url_format: "{slug}"
+      post_url_format: "../{slug}"
       archive: false
   - blog:
       blog_dir: likes/feed
@@ -49,6 +51,6 @@ extra_css:
   - assets/custom.css
 
 nav:
-  - Blog: index.md
+  - Blog: blog/index.md
   - Things I Like: likes/index.md
   - About: about.md

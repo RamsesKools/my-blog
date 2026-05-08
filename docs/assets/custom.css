@@ -193,6 +193,15 @@ body,
     margin-right: auto;
 }
 
+/* Center content on pages with ToC hidden (e.g. the overview page).
+   The left sidebar (nav) is 12.1rem wide but the right sidebar is absent,
+   so we add an equal right margin to .md-content to re-balance the flex row. */
+@media screen and (min-width: 76.25em) {
+    .md-sidebar--secondary[hidden] ~ .md-content {
+        margin-right: 12.1rem;
+    }
+}
+
 @media screen and (max-width: 76.1875em) {
     /* .md-content__inner {
         max-width: min(100%, 52rem);
