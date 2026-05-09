@@ -18,7 +18,9 @@ The [Obsidian](obsidian.md) philosophy (local-first, plain files, no lock-in) fe
 
 ![The wilderness of Kepano's mind](wilderness_kepano.png)
 
-Image from [Stephango's personal page](https://stephango.com/about) titled *'The wilderness of my mind'*.
+/// caption
+*'The wilderness of my mind'*. Image from [Stephango's personal page](https://stephango.com/about)
+///
 
 ## Some ideas worth reading about
 

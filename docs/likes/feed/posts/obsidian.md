@@ -30,6 +30,10 @@ A nice feature of Obsidian is the graph view, which visualizes exactly that know
   </video>
 </div>
 
+/// caption
+The graph view simulation over time of my private Obsidian vault.
+///
+
 ## Age of AI
 
 As a starter now in the age of AI I think it is more important then after to own my own data.

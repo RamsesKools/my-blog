@@ -40,6 +40,7 @@ plugins:
       post_url_format: "../{slug}"
 
 markdown_extensions:
+  - pymdownx.blocks.caption
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
