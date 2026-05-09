@@ -6,22 +6,22 @@ I'm an AI and data engineer based in Amersfoort, Netherlands.
 I currently work as a **Senior AI Engineer** at [Future Facts](https://futurefacts.nl), a data and AI consultancy that is part of the Hot ITem Groep, which in turn is part of [Conclusion](https://www.conclusion.com/en-nl/intelligence).
 
 My background is a bit unusual for someone in this field.
-I studied Chemistry at the University of Amsterdam and completed a Bachelor and Masters degree.
+I studied Chemistry at the University of Amsterdam and completed a Bachelor's and Master's degree.
 My master specialised in computational and theoretical chemistry, which meant building simulation algorithms in C++, running large workloads on compute clusters, and extracting insight from the produced data.
 My studies taught me many things, but these are some skills I still use daily in my work: a research mindset, the ability to write code for complex systems, and the ability to communicate results clearly.
 
 **Zenz Technologies (2019 - 2021)** After graduating I joined [Zenz Technologies](https://www.zenztech.com/), a software company in Amsterdam building decision support systems for revenue management.
-There I worked as a consultant and developer, implementing and customising data processing and visualisation tools for clients, as well as developing the in-house-build C++ libraries.
+There I worked as a consultant and developer, implementing and customising data processing and visualisation tools for clients, as well as developing the in-house-built C++ libraries.
 
 **Future Facts (2022 - Today)** In February 2022 I joined Future Facts, where I have been ever since.
 Here I started in the Fast Track together with 9 other colleagues.
 In the Fast Track we learned the basics of big data engineering in the cloud and working as a consultant in data & AI.
 A whole new world of possibilities opened up for me and I've been diving deeper into this world of advanced data analytics, big data, and cloud engineering ever since.
 
-Through Future Facs, I have worked with two major companies (so far):
+Through Future Facts, I have worked with two major companies (so far):
 
 **KLM (2022 - 2024)**  At KLM I was embedded in a software development department in a hybrid role spanning data engineering, DevOps, and software development.
-My work included modernising the C++ development toolchain and CI/CD practices, contributing to an automatic passenger rebooking system in C++, and working on a machine learning prediction project as a data and AI engineer.
+My work included modernising the C++ development toolchain and CI/CD practices, contributing to an automatic passenger rebooking system, and working on a machine learning prediction project as a data and AI engineer.
 I also helped establish a C++ software engineering community within KLM.
 
 **PostNL (2024 - present)**  At PostNL I work as an AWS Data Engineer, helping develop and maintain a data warehouse environment that supports multiple business units in their data-driven decision making.
