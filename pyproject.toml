@@ -1,7 +1,8 @@
 [project]
-name = "my-blog"
-version = "0.1.0"
-requires-python = ">=3.11"
 dependencies = [
-    "mkdocs-material>=9.5,<10",
+  "mkdocs-material>=9.5,<10",
+  "click==8.2.1", # pin on click because https://github.com/squidfunk/mkdocs-material/issues/8478#issue-3476831556
 ]
+name = "my-blog"
+requires-python = ">=3.11"
+version = "0.1.0"

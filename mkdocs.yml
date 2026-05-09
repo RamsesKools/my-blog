@@ -17,10 +17,27 @@ theme:
   features:
     - navigation.tabs
 
+watch:
+  - likes_index_plugin.py
+
+hooks:
+  - likes_index_plugin.py
+
 plugins:
   - blog:
-      blog_dir: .
+      blog_dir: blog
+      post_dir: posts
       draft_on_serve: true
+      post_url_format: "../{slug}"
+      archive: false
+  - blog:
+      blog_dir: likes/feed
+      draft_on_serve: true
+      archive: false
+      categories: false
+      authors: false
+      pagination: false
+      post_url_format: "../{slug}"
 
 markdown_extensions:
   - pymdownx.superfences:
@@ -32,5 +49,6 @@ extra_css:
   - assets/custom.css
 
 nav:
-  - Blog: index.md
+  - Blog: blog/index.md
+  - Things I Like: likes/index.md
   - About: about.md
