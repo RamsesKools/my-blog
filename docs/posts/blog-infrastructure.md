@@ -1,5 +1,4 @@
 ---
-draft: false
 date: 2026-04-24
 ---
 
@@ -59,7 +58,7 @@ flowchart TB
 Every commit I push to `main` gets picked up automatically.
 A [Dagu](https://dagu.readthedocs.io/) DAG on my homeserver polls the repo every 5 minutes.
 When it detects new commits, it pulls and runs `mkdocs build`.
-The output lands in a `site/` directory that nginx serves as static files, exposed through Traefik at `blog-preview.ramseskools.nl`.
+The output lands in a `site/` directory that nginx serves as static files, exposed through Traefik at [blog-preview.ramseskools.nl](https://blog-preview.ramseskools.nl).
 
 This means I always have a live version of the blog running on my homeserver, accessible from any device on my network or via VPN.
 
@@ -68,7 +67,7 @@ This means I always have a live version of the blog running on my homeserver, ac
 When I'm happy with the state of things, I create a GitHub Release (or trigger the workflow manually).
 A GitHub Actions workflow picks that up, tags the commit with a [CalVer](https://calver.org/) version (`YYYY.MM.DD`), and runs `mkdocs gh-deploy` to push the built site to GitHub Pages.
 
-The public site lives at `blog.ramseskools.nl`.
+The public site lives at [blog.ramseskools.nl](https://blog.ramseskools.nl).
 GitHub Pages hosting is free and lets me use my own domain.
 
 ## Domain & DNS
@@ -112,5 +111,7 @@ The whole project is plain text in a Git repo, which makes it easy for tools lik
 The setup is intentionally simple right now.
 A few things I'll probably add over time:
 
-- **Pre-commit hooks** for linting and link checking (I've set this up for another MkDocs project and it works well).
 - **More content.** The best infrastructure is the one that gets used.
+- **RSS feed.** So people (or agents) can subscribe to updates from my blog.
+- **Dark Theme.** This 'light theme' is a custom theme I've put some effort into designing. I would love to design a personal dark theme as well.
+- **Pre-commit hooks** for linting and link checking (I've set this up for another MkDocs project and it works well).
