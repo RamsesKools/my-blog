@@ -115,3 +115,4 @@ A few things I'll probably add over time:
 - **RSS feed.** So people (or agents) can subscribe to updates from my blog.
 - **Dark Theme.** This 'light theme' is a custom theme I've put some effort into designing. I would love to design a personal dark theme as well.
 - **Pre-commit hooks** for linting and link checking (I've set this up for another MkDocs project and it works well).
+- **Dutch translation.** Even though Dutch is my native language, I've decided to write this blog in English. I might create a 'dutch/english' language button to switch between the two.
