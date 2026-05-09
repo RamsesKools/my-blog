@@ -25,7 +25,7 @@ What is unique to Obsidian is the ability to link notes to each other, which ena
 A nice feature of Obsidian is the graph view, which visualizes exactly that knowledge graph. On top of that, you can create a simulation of how this graph evolved over time — I've created a video of this below.
 
 <div style="text-align: center;">
-  <video controls autoplay loop muted playsinline style="max-width: 100%;">
+  <video controls muted playsinline style="max-width: 100%;">
     <source src="/assets/obsidian-graph.mp4" type="video/mp4">
   </video>
 </div>
