@@ -4,7 +4,7 @@ categories:
   - Tools
 ---
 
-# Obsidian
+# <img src="/assets/obsidian-logo.svg" alt="Obsidian logo" style="height:1em; vertical-align:middle; display:inline;"> Obsidian
 
 [Obsidian](https://obsidian.md) is the note-taking app I use for most of my writing.
 It is focused on smooth editing of local Markdown files and it has an amazing plugin ecosystem.
