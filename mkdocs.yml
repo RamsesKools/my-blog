@@ -19,8 +19,6 @@ theme:
 
 watch:
   - likes_index_plugin.py
-  - docs/likes/feed/posts
-  - docs/posts
 
 hooks:
   - likes_index_plugin.py
