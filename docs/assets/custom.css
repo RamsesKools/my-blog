@@ -235,6 +235,19 @@ body,
     border-bottom: none;
 }
 
+/* Heading links inherit heading color */
+.md-typeset h1 a,
+.md-typeset h2 a,
+.md-typeset h3 a {
+    color: inherit;
+}
+
+.md-typeset h1 a:hover,
+.md-typeset h2 a:hover,
+.md-typeset h3 a:hover {
+    color: var(--c-blue-hover);
+}
+
 /* Links */
 .md-typeset a {
     color: var(--c-blue);

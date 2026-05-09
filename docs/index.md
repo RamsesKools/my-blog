@@ -13,12 +13,13 @@ Consider all the writing on this website a view into my mind.
 Also keep in mind that everything I write is highly opinionated.
 
 Below you find an overview of my latest blog posts and new pages with things I like.
-You can also read more [about me](about.md).
 
-## Latest posts
+**You can also read more [about me](about.md)**.
+
+## [Latest posts](blog/index.md)
 
 <!-- overview:latest-posts -->
 
-## Latest things I like
+## [Latest things I like](likes/index.md)
 
 <!-- overview:latest-likes -->
