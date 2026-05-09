@@ -4,7 +4,7 @@ categories:
   - People
 ---
 
-# <img src="/assets/kepano-logo.svg" alt="Steph Ango logo" style="height:1em; vertical-align:middle; display:inline; border-radius:50%;"> Steph Ango
+# <img src="/assets/kepano-logo.svg" alt="Steph Ango logo" style="height:1em; vertical-align:middle; display:inline;"> Steph Ango
 
 CEO of [Obsidian](https://obsidian.md), writer and entrepeneur.
 
