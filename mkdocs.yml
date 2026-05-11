@@ -5,6 +5,7 @@ repo_name: RamsesKools/my-blog
 
 theme:
   name: material
+  custom_dir: overrides
   font: false
   logo: assets/logo-rk.svg
   favicon: assets/favicon.svg
