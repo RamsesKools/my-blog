@@ -1,5 +1,5 @@
 ---
-date: 2026-04-30
+date: 2026-05-12
 categories:
   - Tools
 ---
@@ -36,13 +36,19 @@ The graph view simulation over time of my private Obsidian vault.
 
 ## Age of AI
 
-As a starter now in the age of AI I think it is more important then after to own my own data.
-Big companies have started
+I've started using AI-agents and integrating them wherever I'm working on my computer. Agents that I already use a lot are [Claude Code](https://www.anthropic.com/product/claude-code), [Github Copilot](https://github.com/features/copilot), and [ChatGPT Codex](https://chatgpt.com/codex/).
+At the moment I don't run these AI models locally on my own hardware and I don't trust the companies that provide the models with all my private data.
+However, I do really see the power of being able to 'chat' with my own notes as context.
+That is why I think it is very important to write in a format that is easily understandable for both humans and AI systems; Markdown is that format.
 
-Todo; write about how markdown format is the perfect format as AI context.
-Furthermore write how CLI tools are the perfect tool for AI systems to interact programmatically with a system and Obsidian has an amazing CLI tool.
+### Owning your data in the age of AI
 
-### Privacy in the age of AI
+In my opinion, owning your own data nowadays is really important for multiple reasons, but I'll mention two here.
+First of all, if you don't keep your data private then someone will take it and use it to train their AI models.
+But what is probably the more important reason for me personally, is that if someone else owns my data, then I can't leverage it properly myself.
 
-I find it really important in this age of AI that I don't have to worry about some company taking my data and using it to train its latest AI models.
-I don't have to worry that my private notes and thoughts end up in some LLM training dataset.
+I'll describe this last point based on my previous note-taking app: OneNote.
+All my notes were 'locked' into this platform and it was not trivial to get them out.
+With some effort I did find a method, and exported everything and imported everything into my Obsidian Vault, but that's is besides the point I'm trying to make.
+While my notes were in OneNote I was confined to the feature available in the platform.
+
