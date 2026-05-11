@@ -18,6 +18,7 @@
             font-weight="700">R</text>
     </mask>
   </defs>
+  <rect x="1" y="1" width="162" height="98" rx="3" ry="3" fill="#FFF"/>
   <g>
     <path d="M 4 0 H 82.5 V 100 H 4 A 4 4 0 0 1 0 96 V 4 A 4 4 0 0 1 4 0 Z" fill="#3E77DC" mask="url(#mask-left)"/>
     <path d="M 82 0 H 160 A 4 4 0 0 1 164 4 V 96 A 4 4 0 0 1 160 100 H 82 V 0 Z M 87 5 H 159 V 95 H 87 V 5 Z" fill-rule="evenodd" fill="#3E77DC"/>
