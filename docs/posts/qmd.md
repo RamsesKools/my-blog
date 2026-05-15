@@ -1,9 +1,8 @@
 ---
-date: 2026-05-15
-draft: true
+date: 2026-05-18
 ---
 
-# QMD: semantic search for your markdown world
+# QMD: semantic search for your markdown files
 
 I've moved to Markdown as my primary writing format across everything I do.
 This blog, presentations via [Marp](https://marp.app/), notes in [Obsidian](../likes/feed/posts/obsidian.md), and all documentation in repositories.
@@ -12,7 +11,7 @@ This blog, presentations via [Marp](https://marp.app/), notes in [Obsidian](../l
 
 ## Markdown is king
 
-What I love about Markdown is the same thing I loved about LaTeX when I was a student writing reports and my thesis: content is completely separated from layout and style.
+What I love about Markdown is the same thing I loved about [LaTeX](https://www.latex-project.org/) when I was a student writing reports and my thesis: content is completely separated from layout and style.
 This allows for better focus, because I focus on only one thing at a time.
 
 What I also like about markdown, is that it is an ideal format for git version control.
@@ -26,7 +25,9 @@ Also when you feed it into an AI system, almost everything is pure content, so i
 ## How to find what I'm looking for?
 
 In roughly 9 months of using Obsidian I've accumulated over 1,170 notes (this number is a bit inflated, since it includes 612 imported notes from OneNote).
-Additionally, a lot of documentation is written in Confluence, and using a Confluence-->MD exporter script that I've build (I might share this at some later point), I've again hundred-thousands of files that can contain valuable context for my work.
+I also work with a lot of documentation that is written on Confluence.
+Adding this documentation as context to my local AI agents can be very powerful.
+Using a Confluence to markdown exporter app that I've build (I might share this at some later point), I've again added hundred to thousands of markdown files.
 Filename or keyword search starts to feel like a blunt instrument.
 Often I know what I am looking for conceptually, but I cannot quite remember the exact phrase.
 
