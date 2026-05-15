@@ -1,5 +1,5 @@
 ---
-date: 2026-05-18
+date: 2026-05-15
 ---
 
 # QMD: semantic search for your local markdown files
