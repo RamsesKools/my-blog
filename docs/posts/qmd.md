@@ -2,7 +2,7 @@
 date: 2026-05-18
 ---
 
-# QMD: semantic search for your markdown files
+# QMD: semantic search for your local markdown files
 
 I've moved to Markdown as my primary writing format across everything I do.
 This blog, presentations via [Marp](https://marp.app/), notes in [Obsidian](../likes/feed/posts/obsidian.md), and all documentation in repositories.
