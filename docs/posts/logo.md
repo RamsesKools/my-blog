@@ -68,5 +68,5 @@ Pick two colors, type your initials, and download the result.
   src="/assets/logo-generator/logo-generator-embed.html"
   title="Logo generator"
   loading="lazy"
-  style="width:100%;border:0.5px solid #e5e5e5;border-radius:4px;height:520px;"></iframe>
+  style="width:100%;border:0.5px solid #e5e5e5;border-radius:4px;height:320px;"></iframe>
 <!-- markdownlint-enable MD033 -->
