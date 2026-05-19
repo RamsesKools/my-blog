@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Generator (embed)</title>
+    <!--
+        Embeddable logo generator. To copy to another repo, you need:
+          - this file
+          - assets/logo-engine.js
+          - assets/embed-logo-generator.yml
+          - assets/fonts/ (fonts.css + woff2 files, and fonts-export.css for PNG export)
+        Then iframe it from your blog post.
+    -->
+    <style>
+        :root {
+            --r: 4px;
+            --c-bg: #fff;
+            --c-surface: #fafafa;
+            --c-border: #e5e5e5;
+            --c-border-strong: #d4d4d4;
+            --c-text: #171717;
+            --c-text-secondary: #404040;
+            --c-text-muted: #737373;
+            --c-blue: #3e77dc;
+            --c-blue-hover: #2f63c4;
+            --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--c-bg);
+            color: var(--c-text);
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            font-size: 14px;
+        }
+
+        .wrap {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 560px) {
+            .wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--c-surface);
+            border: 0.5px solid var(--c-border);
+            border-radius: var(--r);
+            padding: 0.75rem 0.9rem;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .row:last-child {
+            margin-bottom: 0;
+        }
+
+        .row label.field-label {
+            font-size: 13px;
+            color: var(--c-text-secondary);
+            width: 90px;
+            flex-shrink: 0;
+        }
+
+        .row input[type="text"] {
+            flex: 1;
+            min-width: 0;
+            padding: 4px 8px;
+            background: var(--c-bg);
+            border: 0.5px solid var(--c-border-strong);
+            border-radius: var(--r);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--c-text);
+        }
+
+        .row input[type="color"] {
+            flex: 1;
+            min-width: 0;
+            height: 28px;
+            padding: 2px;
+            background: var(--c-bg);
+            border: 0.5px solid var(--c-border-strong);
+            border-radius: var(--r);
+            cursor: pointer;
+        }
+
+        .row input[type="color"]:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: var(--font-mono);
+            color: var(--c-text-muted);
+        }
+
+        .btn {
+            padding: 6px 12px;
+            font-size: 13px;
+            font-family: var(--font-mono);
+            background: var(--c-bg);
+            border: 0.5px solid var(--c-border-strong);
+            border-radius: var(--r);
+            color: var(--c-text-secondary);
+            cursor: pointer;
+            transition: border-color 150ms ease, color 150ms ease;
+        }
+
+        .btn:hover {
+            border-color: var(--c-blue);
+            color: var(--c-blue);
+        }
+
+        .btn.primary {
+            background: var(--c-blue);
+            border-color: var(--c-blue);
+            color: #fff;
+        }
+
+        .btn.primary:hover {
+            background: var(--c-blue-hover);
+            border-color: var(--c-blue-hover);
+            color: #fff;
+        }
+
+        .export-row {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .preview {
+            background: repeating-conic-gradient(#eee 0% 25%, #f7f7f7 0% 50%) 0 0 / 12px 12px;
+            border: 0.5px solid var(--c-border);
+            border-radius: var(--r);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+            padding: 1.25rem;
+        }
+
+        .preview svg {
+            max-width: 100%;
+            max-height: 240px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="panel">
+            <div class="row">
+                <label class="field-label" for="color">Primary</label>
+                <input type="color" id="color" value="#3E77DC">
+            </div>
+            <div class="row">
+                <label class="field-label" for="color_bg">Background</label>
+                <input type="color" id="color_bg" value="#ffffff" disabled>
+            </div>
+            <div class="row">
+                <span class="field-label"></span>
+                <label class="toggle">
+                    <input type="checkbox" id="color_bg-transparent" checked>
+                    transparent inside
+                </label>
+            </div>
+            <div class="row">
+                <label class="field-label" for="left_text">Left text</label>
+                <input type="text" id="left_text" value="R" maxlength="25">
+            </div>
+            <div class="row">
+                <label class="field-label" for="right_text">Right text</label>
+                <input type="text" id="right_text" value="K" maxlength="25">
+            </div>
+            <div class="export-row">
+                <button class="btn primary" id="btn-svg">Download SVG</button>
+                <button class="btn" id="btn-png">Download PNG</button>
+            </div>
+        </div>
+
+        <div class="preview" id="preview"></div>
+    </div>
+
+    <script src="assets/logo-engine.js"></script>
+    <script>
+        // ---- State: fixed config loaded from YAML, plus 4 UI-editable fields ----
+        const CONFIG_URL = 'assets/embed-logo-generator.yml';
+
+        const ui = {
+            color: document.getElementById('color'),
+            color_bg: document.getElementById('color_bg'),
+            color_bg_transparent: document.getElementById('color_bg-transparent'),
+            left_text: document.getElementById('left_text'),
+            right_text: document.getElementById('right_text'),
+            preview: document.getElementById('preview'),
+        };
+
+        let fixedConfig = {};
+        let exportFontCss = null;
+
+        function parseYaml(text) {
+            const out = {};
+            for (const raw of text.split('\n')) {
+                const line = raw.replace(/#.*$/, '').trim();
+                if (!line) continue;
+                const i = line.indexOf(':');
+                if (i < 1) continue;
+                const key = line.slice(0, i).trim();
+                const val = line.slice(i + 1).trim().replace(/^["']|["']$/g, '');
+                if (val === '') continue;
+                out[key] = val;
+            }
+            return out;
+        }
+
+        function getParams() {
+            const p = Object.assign({}, fixedConfig);
+            p.color = ui.color.value;
+            p.color_bg = ui.color_bg_transparent.checked ? 'transparent' : ui.color_bg.value;
+            p.left_text = ui.left_text.value;
+            p.right_text = ui.right_text.value;
+            // Booleans coerced from YAML strings
+            p.continuous_rounding = fixedConfig.continuous_rounding === 'true' || fixedConfig.continuous_rounding === true;
+            p.transparent_outside = fixedConfig.transparent_outside === 'true' || fixedConfig.transparent_outside === true;
+            return p;
+        }
+
+        // ---- Auto-fit text width (mirrors logo-generator.html fitToText) ----
+        function fitToText(side) {
+            const text = side === 'left' ? ui.left_text.value : ui.right_text.value;
+            if (!text) return;
+            const height = Number(fixedConfig[`${side}_height`]) || 100;
+            const fontFamily = fixedConfig.font_family || 'Geist';
+            const fontWeight = fixedConfig.font_weight || 600;
+            const fontSizeRatio = Number(fixedConfig.font_size_ratio) || 0.55;
+            const fontSize = height * fontSizeRatio;
+
+            const ns = 'http://www.w3.org/2000/svg';
+            const svg = document.createElementNS(ns, 'svg');
+            svg.style.cssText = 'position:absolute;visibility:hidden;left:-9999px;';
+            document.body.appendChild(svg);
+            const t = document.createElementNS(ns, 'text');
+            t.setAttribute('font-family', `${fontFamily}, sans-serif`);
+            t.setAttribute('font-size', fontSize);
+            t.setAttribute('font-weight', fontWeight);
+            t.textContent = text;
+            svg.appendChild(t);
+            const bbox = t.getBBox();
+            document.body.removeChild(svg);
+
+            const textPadding = Number(fixedConfig.text_padding) || 0;
+            const align = fixedConfig[`${side}_text_align`] || 'center';
+            const pad = fontSize * textPadding;
+            const newWidth = Math.ceil(bbox.width + (align === 'center' ? 2 * pad : pad));
+            fixedConfig[`${side}_width`] = newWidth;
+        }
+
+        function render() {
+            fitToText('left');
+            fitToText('right');
+            ui.preview.innerHTML = generateLogoSVG(getParams());
+        }
+
+        // ---- Background transparent toggle ----
+        function applyBgTransparent() {
+            ui.color_bg.disabled = ui.color_bg_transparent.checked;
+        }
+
+        ui.color_bg_transparent.addEventListener('change', () => {
+            applyBgTransparent();
+            render();
+        });
+
+        // ---- Wire inputs ----
+        for (const el of [ui.color, ui.color_bg, ui.left_text, ui.right_text]) {
+            el.addEventListener('input', render);
+        }
+
+        // ---- Export ----
+        function triggerDownload(blob, name) {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = name;
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+        }
+
+        document.getElementById('btn-svg').addEventListener('click', () => {
+            const p = getParams();
+            const svg = generateLogoSVG(p);
+            triggerDownload(new Blob([svg], { type: 'image/svg+xml' }), `${p.filename || 'logo'}.svg`);
+        });
+
+        document.getElementById('btn-png').addEventListener('click', () => {
+            const p = getParams();
+            const filename = p.filename || 'logo';
+            const maxDim = Number(p.output_size) || 400;
+
+            const lw = Number(p.left_width), lh = Number(p.left_height);
+            const rw = Number(p.right_width), rh = Number(p.right_height);
+            const bo = Number(p.box_offset) || 0;
+            const svgW = lw + Number(p.gap || 0) + rw;
+            const svgH = Math.max(Math.max(0, bo) + lh, Math.max(0, -bo) + rh);
+            const scale = maxDim / Math.max(svgW, svgH);
+            const canvasW = Math.round(svgW * scale);
+            const canvasH = Math.round(svgH * scale);
+
+            const baseSvg = generateLogoSVG(p);
+            const svgWithFont = exportFontCss
+                ? baseSvg.replace(/(<svg[^>]*>)/, `$1<defs><style>${exportFontCss}</style></defs>`)
+                : baseSvg;
+
+            const blob = new Blob([svgWithFont], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const img = new Image();
+            img.onload = () => {
+                const rasterize = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = canvasW;
+                    canvas.height = canvasH;
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvasW, canvasH);
+                    canvas.toBlob(b => triggerDownload(b, `${filename}.png`), 'image/png');
+                    URL.revokeObjectURL(url);
+                };
+                if (typeof img.decode === 'function') img.decode().then(rasterize).catch(rasterize);
+                else setTimeout(rasterize, 150);
+            };
+            img.src = url;
+        });
+
+        // ---- Load fixed config, then initial render ----
+        fetch(CONFIG_URL)
+            .then(r => r.ok ? r.text() : Promise.reject(r.status))
+            .then(text => {
+                fixedConfig = parseYaml(text);
+
+                // Seed editable fields from YAML defaults
+                if (fixedConfig.color && /^#[0-9a-fA-F]{6}$/.test(fixedConfig.color)) {
+                    ui.color.value = fixedConfig.color;
+                }
+                if (fixedConfig.color_bg === 'transparent') {
+                    ui.color_bg_transparent.checked = true;
+                } else if (fixedConfig.color_bg && /^#[0-9a-fA-F]{6}$/.test(fixedConfig.color_bg)) {
+                    ui.color_bg_transparent.checked = false;
+                    ui.color_bg.value = fixedConfig.color_bg;
+                }
+                applyBgTransparent();
+                if (fixedConfig.left_text) ui.left_text.value = fixedConfig.left_text;
+                if (fixedConfig.right_text) ui.right_text.value = fixedConfig.right_text;
+
+                // Load the page font so the preview uses it
+                if (fixedConfig.font_css) {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = fixedConfig.font_css;
+                    document.head.appendChild(link);
+                }
+
+                // Load base64-embedded font CSS for PNG export
+                if (fixedConfig.font_export_css) {
+                    fetch(fixedConfig.font_export_css)
+                        .then(r => r.ok ? r.text() : Promise.reject(r.status))
+                        .then(css => { exportFontCss = css; })
+                        .catch(err => console.warn('Could not load font_export_css:', err));
+                }
+            })
+            .catch(err => console.warn('Could not load embed-logo-generator.yml:', err))
+            .finally(render);
+    </script>
+</body>
+
+</html>

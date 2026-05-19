@@ -57,3 +57,16 @@ The idea was that if I ever change my color, font, or any other property about m
 
 This might have been a bit of over-engineering, since I was solving future problems that may never happen.
 But it kept the design system honest: every logo is just a row in a YAML file, not a hand-crafted asset that drifts over time.
+
+## Try it yourself
+
+Below is a slimmed-down version of the generator, embedded right here.
+Pick two colors, type your initials, and download the result.
+
+<!-- markdownlint-disable MD033 -->
+<iframe
+  src="/assets/logo-generator/logo-generator-embed.html"
+  title="Logo generator"
+  loading="lazy"
+  style="width:100%;border:0.5px solid #e5e5e5;border-radius:4px;height:520px;"></iframe>
+<!-- markdownlint-enable MD033 -->

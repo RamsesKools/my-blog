@@ -1,0 +1,43 @@
+# embed-logo-generator.yml
+# Fixed configuration for the embeddable logo generator.
+# Everything not exposed by the embed UI is set here and applied at load time.
+
+# Path to self-hosted fonts CSS (relative to the HTML page).
+font_css: "assets/fonts/fonts.css"
+# Base64-embedded font CSS for PNG export.
+font_export_css: "assets/fonts/fonts-export.css"
+
+# --- Defaults for the user-editable fields (UI overrides at runtime) ---
+color: "#3E77DC"
+color_bg: "transparent"
+left_text: "R"
+right_text: "K"
+
+# --- Fixed options (not exposed in the embed UI) ---
+transparent_outside: true
+
+left_width: 82
+right_width: 82
+left_height: 100
+right_height: 100
+gap: 0
+corner_radius: 4
+stroke_width: 3
+
+font_family: "Geist"
+font_size_ratio: 1
+font_weight: 700
+left_text_align: right
+right_text_align: left
+text_padding: 0.05
+left_valign: middle
+right_valign: middle
+
+left_mode: filled_cutout
+right_mode: outline_filled_letter
+continuous_rounding: true
+box_offset: 0
+
+# --- Export settings ---
+output_size: 400
+filename: "logo-rk"

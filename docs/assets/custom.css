@@ -279,6 +279,21 @@ body,
     }
 }
 
+/* Inline row of logos in blog posts */
+.md-typeset .logo-row {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+}
+
+.md-typeset .logo-row img {
+    height: 48px;
+    width: auto;
+}
+
 /* Likes index — borderless clickable rows */
 .likes-list {
     display: flex;

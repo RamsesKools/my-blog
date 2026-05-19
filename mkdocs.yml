@@ -41,6 +41,7 @@ plugins:
       post_url_format: "../{slug}"
 
 markdown_extensions:
+  - attr_list
   - pymdownx.blocks.caption
   - pymdownx.superfences:
       custom_fences:
