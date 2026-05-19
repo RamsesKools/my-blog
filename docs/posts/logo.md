@@ -42,7 +42,7 @@ Rather than hand-tweaking SVG paths, I decided to write a tool to generate the l
 After an afternoon of tinkering I had a [logo generator](https://ramseskools.nl/logo-generator.html) that fit my needs and let me fine-tune every property: colors, font, box sizes, corner radius, stroke width, alignment, padding.
 
 The generator gave me a live preview and export to SVG, PNG, or a YAML snippet for my config.
-From the same generator I could produce my `[R|K]` logo, but also page-titles in the same style: `[my|blog]`, `[home|server]`, `[logo|generator]`, and so on.
+From the same generator I could produce my `[R|K]` logo, but also page-titles in the same style: `[Ramses|Kools]`, `[home|server]`, `[logo|generator]`, and so on.
 That turned out to be the unlock: one tool, one visual language, many logos.
 
 ![ramses.kools logo](../assets/logo-ramseskools.svg)
