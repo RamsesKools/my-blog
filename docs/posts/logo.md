@@ -48,7 +48,7 @@ That turned out to be the unlock: one tool, one visual language, many logos.
 ![ramses.kools logo](../assets/logo-ramseskools.svg)
 ![home.server logo](../assets/logo-homeserver.svg)
 ![logo.generator logo](../assets/logo-generator.svg)
-{: .logo-row }
+{: .image-row }
 
 ## CLI for batch generation
 

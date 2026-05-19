@@ -279,8 +279,8 @@ body,
     }
 }
 
-/* Inline row of logos in blog posts */
-.md-typeset .logo-row {
+/* Inline row of images, e.g. logos or screenshots */
+.md-typeset .image-row {
     display: flex;
     gap: 1.5rem;
     align-items: center;
@@ -289,7 +289,7 @@ body,
     margin: 1.5rem 0;
 }
 
-.md-typeset .logo-row img {
+.md-typeset .image-row img {
     height: 48px;
     width: auto;
 }
