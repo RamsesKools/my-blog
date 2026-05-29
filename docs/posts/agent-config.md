@@ -1,5 +1,5 @@
 ---
-date: 2026-05-29
+date: 2026-06-01
 draft: true
 ---
 
@@ -13,14 +13,101 @@ This post is about how to personalize all your AI-Agents in one place.
 
 <!-- more -->
 
-## Two types of AI-Agent personalization
+## What the hell am I talking about? AI-Agents what?
 
-There are really two configuration problems to solve:
+<!-- TODO CHECK THIS section writing here before publishing.-->
 
-1. **System-wide setup**: your personal preferences, global rules, and the tooling that should follow you across every project.
+> Let me first briefly introduce the concepts of LLMs, AI-Agents, and AI-Assisted programming.
+
+I've been using LLM-based AI tools since ChatGPT first became popular in 2023.
+This started out with me writing and copy+pasting questions or problems into ChatGPT.
+Despite many problems, this was still an amazingly helpful tool.
+
+Since Github Copilot came out I've been keeping track of IDE extensions that let you bring the AI tool directly into your PC.
+Since Anthorpic came with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) I have really kicked off my journey with AI-assisted programming.
+Claude Code runs directly on your computer, can read your files and use your tools.
+You can build a script, run it, debug it, test it, all just by instructing Claude Code to do so in the language for your choice.
+
+ChatGPT already showed that modifying the system prompt can save you a lot of time and helps with customzing the behavior of the model.
+Now with the new models, MCP servers, and agent skills it is even more powerfull and more important to keep track of the instructions and context.
+MCP servers can help you connect your AI-system to other systems, and skills can teach your model to use these MCP server and other tools.
+
+Even though I think Claude Code was the first tool that worked really well and showed me the power of AI-assisted programming, nowadays there are multiple different AI that all do basically the same thing.
+Just to name the other 3 most popular AI-Assisted coding tools: Github Copilot, ChatGPT Codex, and Cursor.
+At the moment I'm actively using 3 of these tools: I have a personal Anthropic subscription for Claude Code, a Github Copilot license and a ChatGPT Enterprise Codex license through the company I'm working for.
+
+All of these tools are really powerfull, especially when given the right context and instructed in the correct way.
+
+## Two places where we customize AI-agent behavior locally
+
+I configure and setup my AI-Agents in two places:
+
+1. **System-wide setup**: my personal preferences, global rules, and the tooling that should follow me across every project.
 2. **Project-specific setup**: the build commands, conventions, and architecture notes that live in a single repo.
 
 The principle for both is the same: have one source of truth, and let each agent framework read from it.
+Additionally, I want to store the configuration in a git-repository, which allows me to version it, and also let's me use the same configuration easily on multiple devices.
+
+## The different types of customization and context
+
+### Context via `AGENTS.md` or `CLAUDE.md`
+
+Just a small markdown file with some additional context to enhance the system prompt for each chat: `AGENTS.md`, `CLAUDE.md`, `copilot-instructions.md` 
+  
+  We should try to keep these small, since they will always be loaded.
+
+### Skills
+
+<!--TODO How is this different from COMMANDS? comment on that.-->
+
+Skills are essentially just markdown files teaching the AI-Agent to do a specific task.
+Each AI-agent framework have their own way to detect and trigger when a skill should be used.
+Since skills are just markdown files, they can be used be any AI-agent framework.
+While this might seem simple, it is really powerfull if used correctly.
+
+One thing that can be very powerfull is to combine a skill with a CLI application.
+For example, the github cli tool `gh` combined with it's skills allows your AI-agent to interact with everything in your github repository: commits, branches, pull-requests, issues, github actions workflow runs, and more.
+
+### Plugins or extensions
+
+These are still an emerging concept, but in essence this is a combination of tools, skills, agents, hooks, and mcp servers that together add specific functionalities on one topic.
+For example, you can have a plugin for interacting with excel files, or a plugin for interacting with Google Calendar.
+
+<!--Add links to Claude code market place, plugin documentation and Codex/copilot plugin support/documentation-->
+
+At the moment Claude Code is leading with this and they have a decently mature plugin marketplace. Besides that Codex is starting to do the same and they are compatible with Claude Code's market place. Github Copilot has extensions which try to do the same thing, but in a slightly different way, and therefore this is not really compatible with the plugin ecosystem of Claude.
+
+### Agents and subagents
+
+These can be seen as personas for your AI-agent framework.
+They allow you to
+
+- Set a custom system prompt.
+- Customize which model is used and 'how hard it thinks'.
+- Customize what tools, skills and MCP-servers it can use, and which it can't use.
+
+An example agent can be a code-reviewer agent, which you can set to only have read-access to files and for example allow it to write commands on a pull-request.
+Agents and subagents become really powerfull when you allow one agent to offload work to another **subagent**.
+For example, when you write code, you can use a powerfull model (for example: Claude Opus 4.8) to implement a feature, and then instruct it to use a sub-agent that uses a smaller model (for example: Claude Haiku 4.5) to fix linting and formatting issues.
+This can really help to keep 
+
+### Hooks
+
+<!--TODO -->
+
+> Hooks allow you to execute custom shell commands at key points during agent execution, enabling you to add validation, logging, security scanning, or workflow automation.
+
+But to be honest, I'm not yet really using hooks, so I can't say much more about it then mention what they are.
+
+### Framework settings
+
+<!--TODO write briefly what settings are-->
+
+- Each framework can be configured with settings.
+  - Allow/disallow access to files and tools.
+  - Configure mcp server
+  - Configure access to plugin marketplace
+  - 
 
 ## AGENTS.md is the standard now
 
@@ -28,20 +115,17 @@ The cross-framework standard for agent context is [`AGENTS.md`](https://agents.m
 It is plain Markdown at the root of your repo, no schema required.
 
 In December 2025 the [Agentic AI Foundation was announced under the Linux Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-agentic-ai-foundation), co-founded by OpenAI (contributing `AGENTS.md`), Anthropic (contributing [MCP](https://modelcontextprotocol.io/)), and Block (contributing [goose](https://block.github.io/goose/)).
-At the time of the announcement they reported over 60,000 open-source projects had already adopted `AGENTS.md`.
+They report that over 60,000 open-source projects have already adopted `AGENTS.md`.
 
 The big holdout is Claude Code, which still reads [`CLAUDE.md`](https://docs.anthropic.com/en/docs/claude-code/memory) instead.
 The community workaround is a one-line `CLAUDE.md` containing `@AGENTS.md`, which uses Claude Code's [import syntax](https://docs.anthropic.com/en/docs/claude-code/memory#import-files) to pull in the same file.
 The feature request is tracked at [anthropics/claude-code#6235](https://github.com/anthropics/claude-code/issues/6235).
 
-## System-wide: one folder, many symlinks
+## System-wide AI-Agent configuration: one folder, many symlinks
 
-For my personal global setup I want everything in a single git repo.
-That way I can clone it on a new laptop and have all my agent configuration follow me.
+I clone my personal agent config git repo to the central `~/agent-config/` directory, then use symlinks to make each tools expected files available for them in their expected location.
 
-The pattern that works is a canonical `~/agent-config/` directory, then symlink each tool's expected location at it.
-Tools like [`ruler`](https://github.com/intellectronica/ruler) and [`aikado`](https://github.com/aikado/aikado) automate this.
-[Rushi's symlink approach](https://rushi.dev/notes/agent-config-symlinks) is a good writeup of the manual version.
+<!--TODO link my github ai agent config repo and improve this writing -->
 
 Roughly the layout looks like this:
 
@@ -66,11 +150,11 @@ ln -s ~/agent-config/skills ~/.claude/skills
 ln -s ~/agent-config/skills ~/.codex/skills
 ```
 
-The whole `~/agent-config/` directory is a single git repo I push to a GitHub repository.
-Clone it on a new machine, run a small `setup.sh` to create the symlinks, and every agent is configured.
+After cloning this repo on a new machine, I run a small `setup.sh` to create the symlinks, and every agent is configured.
 
-One caveat: Codex uses [TOML for its config](https://github.com/openai/codex/blob/main/docs/config.md) and everyone else uses JSON.
-You cannot symlink between them, so MCP servers end up as three hand-maintained files.
+There are offcourse some caveats, not all the configuration is uniform, so I still need to maintain separate config files also.
+For example: Codex uses [TOML for its config](https://github.com/openai/codex/blob/main/docs/config.md) and everyone else uses JSON.
+That is why for example MCP servers, and framework settings, end up as three hand-maintained files.
 
 ## Project-level: AGENTS.md at the root, then bridges
 
@@ -79,8 +163,8 @@ For a single project the pattern is simpler.
 The setup I'm using on this blog and a few other repos:
 
 - **`AGENTS.md`** at the root: the source of truth for project context, build commands, conventions, and "must follow" rules.
-- **`CLAUDE.md`** as a one-liner with just `@AGENTS.md` inside.
-- **`.github/copilot-instructions.md`** as a symlink to `../AGENTS.md` (or also a one-line file if you're on Windows).
+  - This can be used by Github Copilot and Codex automatically when placed in the correct locations.
+  - For Claude Code we have rename the file to `CLAUDE.md` when symlinking it, or we create a `CLAUDE.md` file with `@AGENTS.md` locally.
 
 That covers Claude Code, Codex, and Copilot with one editable file.
 
@@ -110,23 +194,15 @@ For these, the realistic options are:
 
 I am leaning toward option 3 for anything beyond a single hobby repo.
 
-## A precedence model worth documenting
-
-One thing that helps once you have more than one agent and more than one repo is to write down which layer wins when configs conflict.
-
-The model I use:
-
-- **Layer 1: org policy**. Security rules, mandatory style, license headers. Distributed via [Claude managed settings](https://docs.anthropic.com/en/docs/claude-code/settings) or [Codex requirements.toml](https://github.com/openai/codex/blob/main/docs/config.md). Cannot be overridden.
-- **Layer 2: repo conventions**. The `AGENTS.md` family. Tech stack, build commands, architectural patterns.
-- **Layer 3: developer-local**. `CLAUDE.local.md`, personal Cursor rules, local Codex overrides. Never committed.
-
-Writing this down in your root `AGENTS.md` saves a lot of "wait, which file overrides what" conversations later.
+<!-- TODO rewrite this after making up my mind on what AI-agent config I want  -->
 
 ## What I would do today
 
 If you are starting from zero and want a sensible setup in under an hour:
 
 1. Create `AGENTS.md` at the repo root, keep it under 200 lines. Project description, stack, build/test/lint commands, must-follow rules.
+    - Only put things in here that are **always** how you want to work with you AI-agent.
+    - For example: preferred agent behavior, writing style, information about who you are and what you do, and your other general preferences.
 2. Add a one-line `CLAUDE.md` with `@AGENTS.md`.
 3. Symlink (or one-line) `.github/copilot-instructions.md` to `AGENTS.md`.
 4. Accept that MCP, hooks, and subagents are separate files per tool, and only invest in a generator once you have three or more repos with the same setup.
