@@ -4,7 +4,7 @@ categories:
   - Tools
 ---
 
-# Raycast
+# <img src="/assets/raycast-logo.png" alt="Raycast logo" style="height:1em; vertical-align:middle; display:inline;"> Raycast
 
 [Raycast](https://www.raycast.com/) is the launcher I now reach for dozens of times a day, all from a single `option + space` shortcut.
 That one menu handles clipboard history, window management, app launching, a calculator, and a lot more.
