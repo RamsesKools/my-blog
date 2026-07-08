@@ -21,7 +21,6 @@ automatically omitted here too.
 """
 
 import re
-from datetime import timedelta
 from re import Match
 from typing import Any
 
@@ -65,12 +64,15 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
 on_files.mkdocs_priority = -75  # type: ignore[attr-defined]  # run after blog plugin (priority -50)
 
 
-def _latest_window(posts: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    if not posts:
-        return []
+def _latest_groups(posts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Newest first, whole same-date groups, stop adding groups once we have 3+."""
     sorted_posts = sorted(posts, key=lambda p: p["date"], reverse=True)
-    cutoff = sorted_posts[0]["date"] - timedelta(days=7)
-    return [p for p in sorted_posts if p["date"] >= cutoff]
+    selected: list[dict[str, Any]] = []
+    for post in sorted_posts:
+        if len(selected) >= 3 and post["date"].date() != selected[-1]["date"].date():
+            break
+        selected.append(post)
+    return selected
 
 
 def _render_rows(posts: list[dict[str, Any]]) -> str:
@@ -116,15 +118,15 @@ def on_page_markdown(markdown: str, page: Any, **__: Any) -> str:
         def replace_overview(m: Match[str]) -> str:
             key = m.group(1).strip()
             if key == "latest-posts":
-                return _render_rows(_latest_window(_blog_posts))
+                return _render_rows(_latest_groups(_blog_posts))
             if key == "latest-likes":
                 seen: set[str] = set()
                 unique: list[dict[str, Any]] = []
-                for p in _latest_window(_likes_posts):
+                for p in _likes_posts:
                     if p["slug"] not in seen:
                         seen.add(p["slug"])
                         unique.append(p)
-                return _render_rows(unique)
+                return _render_rows(_latest_groups(unique))
             return m.group(0)
         return OVERVIEW_PLACEHOLDER.sub(replace_overview, markdown)
 

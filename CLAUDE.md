@@ -31,7 +31,7 @@ This is the one piece of non-obvious machinery. It is registered both as a `hook
 It does two things:
 
 1. In `docs/likes/index.md`, expands `<!-- likes:CategoryName ... -->` block comments into a section header plus an HTML list of all "likes" posts whose frontmatter `categories:` includes that category. Posts without categories are skipped.
-2. In `docs/index.md`, replaces `<!-- overview:latest-posts -->` and `<!-- overview:latest-likes -->` with rows for items published in the 7-day window ending at the most recent post's date (not a rolling window from today).
+2. In `docs/index.md`, replaces `<!-- overview:latest-posts -->` and `<!-- overview:latest-likes -->` with rows for the latest items: whole same-date groups are added newest first, and no further group is added once the list has at least 3 items (so ties can make the list longer than 3).
 
 Rendered rows use the `.likes-list` / `.likes-row` / `.likes-title` / `.likes-date` classes styled in `docs/assets/custom.css`.
 
