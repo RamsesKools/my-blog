@@ -12,6 +12,14 @@ So all of it now lives in one `~/.agents` folder and repo, and every agent reads
 
 <!-- more -->
 
+## What is a coding agent anyway?
+
+New to this? Here is a quick explanation.
+A coding agent is an LLM-powered tool that runs on your machine, in your terminal or IDE.
+Instead of copy-pasting snippets into a chat window, the agent reads your files, runs commands, writes code, and debugs its own work.
+The catch: an agent is only as good as the context and instructions you give it.
+Tell it once how you like to work and it stops asking, which is exactly what all this configuration is about.
+
 ## Two layers of agent config
 
 The first thing to get right is what belongs where.
@@ -31,10 +39,14 @@ That is exactly the same problem classic dotfiles solve for shell config, which 
 Agent config is also more than just an `AGENTS.md`.
 Each tool has a whole surface of things to configure:
 
-- **Context**: the `AGENTS.md` / `CLAUDE.md` instructions themselves.
+- **Context**: the `AGENTS.md` / `CLAUDE.md` instructions themselves, loaded at the start of every session.
 - **Settings and permissions**: which commands the agent may run without asking, which files and directories it may read, environment variables.
 - **Skills**: reusable task instructions the agent loads on demand, following the [Agent Skills standard](https://agentskills.io/).
-- **And more**: MCP servers, hooks, custom subagents, slash commands, model preferences.
+- **MCP servers**: connections to external systems like GitHub, Jira, or your calendar.
+- **And more**: hooks that run shell commands at key moments, custom subagents with their own model and tool access, slash commands, model preferences.
+
+Skills deserve a special mention, because they get really powerful when you pair them with a CLI tool.
+A small skill that teaches the agent the [`gh` CLI](https://cli.github.com/) suddenly lets it work with pull requests, issues, and workflow runs, no MCP server needed.
 
 My repo currently covers the first three: the shared context file, a `skills/` folder all agents read, and a sanitized settings template for the permission rules.
 The rest still lives per tool, which says something about how young this space is (more on that below).
@@ -68,9 +80,12 @@ On a fresh machine I don't even run it myself: the `fresh.sh` bootstrap from [my
 
 The result: edit `AGENTS.md` once, commit, and all three agents pick it up on their next session, on every machine.
 
-## The CLAUDE.md workaround
+## AGENTS.md standardization
 
-The file format at the center of this is [AGENTS.md](https://agents.md/), an open standard for agent instructions that most coding agents now read natively.
+The file format at the center of this is [AGENTS.md](https://agents.md/), an open standard for agent instructions.
+It has genuinely become the standard: over 60,000 open-source projects have adopted it, and in December 2025 OpenAI contributed it to the newly formed [Agentic AI Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-agentic-ai-foundation) under the Linux Foundation, alongside Anthropic's [MCP](https://modelcontextprotocol.io/).
+Codex, Copilot, Cursor, and most other coding agents read it natively.
+
 Claude Code is the notable holdout: it still wants a `CLAUDE.md` (tracked in [anthropics/claude-code#6235](https://github.com/anthropics/claude-code/issues/6235)).
 The documented workaround is a `CLAUDE.md` containing exactly one line:
 
@@ -103,6 +118,8 @@ There is a small ecosystem forming around the same idea:
 - [yzhao062/agent-config](https://github.com/yzhao062/agent-config) takes a generation approach: one `AGENTS.md` as source, per-agent files generated from it.
 - [AgentsMesh](https://samplexbro.github.io/agentsmesh/) goes furthest: write rules, skills, MCP servers, and permissions once, then generate native config for 15+ tools.
 - [agentsync](https://github.com/dallay/agentsync) is a CLI that symlinks configs, skills, and MCP definitions from a central `.agents/` directory into each tool's location.
+- [ruler](https://github.com/intellectronica/ruler) merges rule files from a `.ruler/` directory and distributes them to 30+ agents with one `ruler apply`.
+- [Kaushik Gopal's aikado setup](https://kau.sh/blog/agents-md/) is another take on the symlink approach: one personal repo that every tool's config path points back to.
 - [This dev.to post](https://dev.to/opensite/how-to-sync-ai-coding-agent-skills-across-every-platform-one-repo-zero-copy-paste-ba0) even syncs skills to cloud agents via browser automation, because there is no API for it.
 
 That list also shows how immature this space still is.
