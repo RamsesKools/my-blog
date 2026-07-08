@@ -5,7 +5,7 @@ categories:
 draft: true
 ---
 
-# pre-commit
+# <img src="/assets/pre-commit.png" alt="pre-commit logo" style="height:1em; vertical-align:middle; display:inline;"> pre-commit
 
 [pre-commit](https://pre-commit.com) is a framework for managing and running git hooks.
 

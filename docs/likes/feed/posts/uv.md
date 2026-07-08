@@ -5,7 +5,7 @@ categories:
 draft: true
 ---
 
-# uv
+# <img src="/assets/uv.png" alt="uv logo" style="height:1em; vertical-align:middle; display:inline;"> uv
 
 [uv](https://docs.astral.sh/uv/) is a Python package and project manager written in Rust, built by [Astral](https://astral.sh).
 
