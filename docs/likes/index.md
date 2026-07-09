@@ -1,7 +1,7 @@
 # Things I Like
 
 A list of **people**, tools, movies, and other things that I genuinely enjoy.
-Subscribe to the [feed](feed/index.md) to see new additions as they come in.
+Subscribe to the [[feed]] to see new additions as they come in.
 
 <!-- likes:People
 ## People I like

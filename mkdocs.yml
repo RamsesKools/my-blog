@@ -25,6 +25,9 @@ hooks:
   - likes_index_plugin.py
 
 plugins:
+  - search
+  - ezlinks:
+      wikilinks: true
   - blog:
       blog_dir: blog
       post_dir: posts

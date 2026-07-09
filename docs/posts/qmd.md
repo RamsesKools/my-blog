@@ -8,7 +8,7 @@ tags:
 # QMD: semantic search for your local markdown files
 
 I've moved to Markdown as my primary writing format across everything I do.
-This blog, presentations via [Marp](https://marp.app/), notes in [Obsidian](../likes/feed/posts/obsidian.md), and all documentation in repositories.
+This blog, presentations via [Marp](https://marp.app/), notes in [[obsidian]], and all documentation in repositories.
 
 <!-- more -->
 
@@ -51,7 +51,7 @@ In practice this will mean that if you search for "meeting note with my colleagu
 The retrieval part of RAG can be built in a number of ways, but semantic search is the most common.
 
 About a year and a half ago I got to experiment with this hands-on.
-I was the tech lead at [Future Facts](../about.md#future-facts-2022---today) on a small internship project with [SpikeUp](https://spikeup.ai).
+I was the tech lead at [[about|Future Facts]] on a small internship project with [SpikeUp](https://spikeup.ai).
 SpikeUp is a Dutch foundation that offers refugees a training program to get started in the world of Data and AI, which I've been supporting by offering free mentorship and trainings since 2023.
 Together, me and the SpikeUp interns built an AWS-native RAG system from scratch.
 

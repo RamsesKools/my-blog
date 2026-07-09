@@ -96,4 +96,4 @@ From there I kept iterating: adding the semantic tokens, splitting the single ar
 Every time I changed the CSS and liked the result, I had Claude update the `DESIGN.md` based on that decision.
 This loop (generate, tweak, promote the change back into the spec) keeps running, and it is what makes the document actually mine rather than a generic template.
 
-It also ties back to my [logo generator](logo.md): the logo, the palette, and the `DESIGN.md` are all just configuration now, so every new thing I build starts out already looking like me.
+It also ties back to my [[logo|logo generator]]: the logo, the palette, and the `DESIGN.md` are all just configuration now, so every new thing I build starts out already looking like me.

@@ -14,12 +14,12 @@ Also keep in mind that everything I write is highly opinionated.
 
 Below you find an overview of my latest blog posts and new pages with things I like.
 
-**You can also read more [about me](about.md)**.
+**You can also read more [[about|about me]]**.
 
-## [Latest posts](blog/index.md)
+## [[blog|Latest posts]]
 
 <!-- overview:latest-posts -->
 
-## [Latest things I like](likes/index.md)
+## [[likes|Latest things I like]]
 
 <!-- overview:latest-likes -->

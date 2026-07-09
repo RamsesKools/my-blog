@@ -23,7 +23,7 @@ Each of those was a small decision I made once, and each one makes my machine fe
 The trouble is that all of it lived on one laptop.
 Every new machine meant reconstructing that from memory, and my memory is really not good enough for this.
 The same annoyance shows up with AI agents: without a proper global agent context, you end up re-explaining your preferences to every agent in every repo.
-That part got its own repo and [its own post](agent-config.md).
+That part got its own repo and [[agent-config|its own post]].
 
 The dotfiles crowd solved this a long time ago.
 [dotfiles.github.io](https://dotfiles.github.io/) collects the community wisdom, and puts it nicely: "Your dotfiles might be the most important files on your machine."
@@ -133,11 +133,11 @@ The top issue for me for now is that the repo installs the GitHub CLI, but you n
 A classic chicken-and-egg problem that is still on the TODO list.
 
 The repo itself is private, because it contains work-specific workspace lists.
-In the spirit of [building in public](blog-infrastructure.md) I published a depersonalized snapshot at [github.com/RamsesKools/macbook-setup-example](https://github.com/RamsesKools/macbook-setup-example).
+In the spirit of [[blog-infrastructure|building in public]] I published a depersonalized snapshot at [github.com/RamsesKools/macbook-setup-example](https://github.com/RamsesKools/macbook-setup-example).
 I don't intend to keep that example very up to date, but it does show what my current setup looks like.
 
 ## The AI agent layer
 
 One deliberate design decision: configuration for AI coding agents (Claude Code, Codex, GitHub Copilot CLI) lives in its own `~/.agents` repo, not in the dotfiles.
 `fresh.sh` clones it and runs its symlink setup as one of the steps, but the content evolves on its own rhythm.
-How that works, and why one file can configure three different agents, is the subject of [the next post](agent-config.md).
+How that works, and why one file can configure three different agents, is the subject of [[agent-config|the next post]].

@@ -11,4 +11,4 @@ Visionary filmmaker known for ambitious, mind-bending narratives. His films push
 
 <!-- more -->
 
-Director of *The Dark Knight Trilogy*, *Inception*, [*Interstellar*](../interstellar-2014/), *Tenet*, and *Oppenheimer*. What I admire most is his commitment to practical effects, IMAX cinematography, and storytelling that respects the audience's intelligence.
+Director of *The Dark Knight Trilogy*, *Inception*, [[interstellar (2014)|*Interstellar*]], *Tenet*, and *Oppenheimer*. What I admire most is his commitment to practical effects, IMAX cinematography, and storytelling that respects the audience's intelligence.

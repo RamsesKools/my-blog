@@ -9,7 +9,7 @@ tags:
 
 # Interstellar (2014)
 
-[Christopher Nolan](../christopher-nolan/) is already one of my all-time favorite directors with amazing movies such as: the Batman trilogy, The Prestige, Inception and Tenet.
+[[christopher nolan]] is already one of my all-time favorite directors with amazing movies such as: the Batman trilogy, The Prestige, Inception and Tenet.
 Science-Fiction movies are also one of my all-time favorite genres to watch, so it is not surprising that I was absolutely blown away by this movie.
 
 <!-- more -->

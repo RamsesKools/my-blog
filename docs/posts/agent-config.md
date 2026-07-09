@@ -35,7 +35,7 @@ It should follow me across machines and apply in every repo.
 
 The global layer is the one that gets messy.
 Without a system it ends up scattered over `~/.claude/`, `~/.codex/`, and whatever Copilot reads, drifting apart per tool and per machine.
-That is exactly the same problem classic dotfiles solve for shell config, which is why this repo is a natural sibling of [my computer-setup repo](computer-setup.md).
+That is exactly the same problem classic dotfiles solve for shell config, which is why this repo is a natural sibling of [[computer-setup|my computer-setup repo]].
 
 ## More than a context file
 
@@ -79,7 +79,7 @@ Each tool reads from it in its own way:
 
 `setup-symlinks.sh` creates the symlinks and is idempotent.
 Any pre-existing real file is backed up before being replaced, so running it never loses data.
-On a fresh machine I don't even run it myself: the `fresh.sh` bootstrap from [my computer-setup post](computer-setup.md) clones this repo and runs it as one of its steps.
+On a fresh machine I don't even run it myself: the `fresh.sh` bootstrap from [[computer-setup|my computer-setup post]] clones this repo and runs it as one of its steps.
 
 The result: edit `AGENTS.md` once, commit, and all three agents pick it up on their next session, on every machine.
 

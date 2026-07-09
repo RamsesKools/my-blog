@@ -33,7 +33,7 @@ On top of that there is a plugin ecosystem that extends it further: a [color pic
 A few things I lean on every day:
 
 - **Calculator.** Powerful inline math right in the menu, no separate app needed.
-- **[Color picker](https://www.raycast.com/thomas/color-picker).** I used this one to pull colors out of a photo when [building my personal palette](../../../posts/creating-my-design.md).
+- **[Color picker](https://www.raycast.com/thomas/color-picker).** I used this one to pull colors out of a photo when [[how i created my personal design|building my personal palette]].
 - **App and file search.** Fast, fuzzy, and it just finds what I am looking for.
 - **[Kill process](https://www.raycast.com/rolandleth/kill-process).** Killing a stuck application was not trivial on macOS at first, so Raycast's task-manager-style kill is great.
 - **Volume control.** I bound volume up/down to `control + shift + arrow up/down`.
