@@ -273,6 +273,29 @@ body,
     /* Slate */
 }
 
+/* Search box styling */
+.md-search__input::placeholder {
+    color: var(--c-text-secondary);
+    /* Darker placeholder text for better readability */
+    opacity: 0.7;
+}
+
+.md-search__input {
+    background-color: var(--c-blue-light) !important;
+    /* Light blue background */
+    border: 0.5px solid var(--c-blue-muted) !important;
+    /* Blue outline for definition */
+}
+
+.md-search__input:hover {
+    background-color: var(--c-blue-muted) !important;
+    /* Darker blue on hover */
+    border-color: var(--c-blue) !important;
+    /* Darker blue outline for visual feedback */
+    box-shadow: 2px 2px 6px rgba(62, 119, 220, 0.15) !important;
+    /* Blue shadow on bottom-right */
+}
+
 @media (prefers-reduced-motion: reduce) {
     * {
         transition: none !important;
