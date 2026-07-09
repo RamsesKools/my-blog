@@ -48,6 +48,52 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format ""
+extra:
+  tags:
+    Tools:
+      bg: "#D6E4FA"
+      text: "#1E4A9C"
+    DevOps:
+      bg: "#DFF0DE"
+      text: "#2D6B2B"
+    Infrastructure:
+      bg: "#D6E4FA"
+      text: "#1E4A9C"
+    MkDocs:
+      bg: "#D6E4FA"
+      text: "#1E4A9C"
+    People:
+      bg: "#FFE0D6"
+      text: "#C65D3B"
+    Products:
+      bg: "#F3E5AB"
+      text: "#8B7500"
+    Websites:
+      bg: "#E8D5F2"
+      text: "#6A2F7D"
+    Movies:
+      bg: "#D4E8FF"
+      text: "#1A4D7A"
+    Games:
+      bg: "#D4FFE8"
+      text: "#1A7A4D"
+    Design:
+      bg: "#FFE5D0"
+      text: "#B85C1F"
+    Workflow:
+      bg: "#F4EFE7"
+      text: "#6B5D52"
+    AI:
+      bg: "#E8F0FF"
+      text: "#1A3A8A"
+      border: "1px solid #1A3A8A"
+    Sci-Fi:
+      bg: "#F0E6FF"
+      text: "#4A1A6F"
+    Book:
+      bg: "#F5E6D3"
+      text: "#6B4423"
+
 extra_css:
   - assets/custom.css
 

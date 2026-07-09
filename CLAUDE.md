@@ -73,6 +73,24 @@ tags:
 
 Tags render as pill-shaped chips above the post title. Once a `docs/tags.md` index page is added (future work), tag chips become clickable links to filter posts by tag.
 
+##### Customizing tag colors
+
+Tag colors are defined in `mkdocs.yml` under `extra.tags`. Each tag entry specifies `bg` (background), `text` (text color), and optionally `border`:
+
+```yaml
+extra:
+  tags:
+    Tools:
+      bg: "#D6E4FA"
+      text: "#1E4A9C"
+    AI:
+      bg: "#E8F0FF"
+      text: "#1A3A8A"
+      border: "1px solid #1A3A8A"
+```
+
+Tag colors are generated at build time (via the `on_config` and `on_post_build` hooks in `likes_index_plugin.py`) and appended to the final `site/assets/custom.css` file. No source file changes needed — just edit the YAML config and rebuild.
+
 #### Created and updated dates
 
 Use `date:` as a dict to distinguish **created** and **updated** dates:

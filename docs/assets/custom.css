@@ -420,77 +420,7 @@ body,
     line-height: 1.2;
 }
 
-/* Tag color customization by tag name */
-.md-tag-pill[data-tag="Tools"] {
-    background: var(--c-blue-light);
-    color: var(--c-blue-text);
-}
-
-.md-tag-pill[data-tag="DevOps"] {
-    background: var(--c-green-light);
-    color: var(--c-green-text);
-}
-
-.md-tag-pill[data-tag="Infrastructure"] {
-    background: var(--c-blue-light);
-    color: var(--c-blue-text);
-}
-
-.md-tag-pill[data-tag="MkDocs"] {
-    background: var(--c-blue-light);
-    color: var(--c-blue-text);
-}
-
-.md-tag-pill[data-tag="People"] {
-    background: #FFE0D6;
-    color: #C65D3B;
-}
-
-.md-tag-pill[data-tag="Products"] {
-    background: #F3E5AB;
-    color: #8B7500;
-}
-
-.md-tag-pill[data-tag="Websites"] {
-    background: #E8D5F2;
-    color: #6A2F7D;
-}
-
-.md-tag-pill[data-tag="Movies"] {
-    background: #D4E8FF;
-    color: #1A4D7A;
-}
-
-.md-tag-pill[data-tag="Games"] {
-    background: #D4FFE8;
-    color: #1A7A4D;
-}
-
-.md-tag-pill[data-tag="Design"] {
-    background: #FFE5D0;
-    color: #B85C1F;
-}
-
-.md-tag-pill[data-tag="Workflow"] {
-    background: #F4EFE7;
-    color: #6B5D52;
-}
-
-.md-tag-pill[data-tag="AI"] {
-    background: #E8F0FF;
-    color: #1A3A8A;
-    border: 1px solid #1A3A8A;
-}
-
-.md-tag-pill[data-tag="Sci-Fi"] {
-    background: #F0E6FF;
-    color: #4A1A6F;
-}
-
-.md-tag-pill[data-tag="Book"] {
-    background: #F5E6D3;
-    color: #6B4423;
-}
+/* Tag colors are generated dynamically from mkdocs.yml in generated-tags.css */
 
 /* Post metadata and tags section headers */
 .md-post__title {
