@@ -3,6 +3,9 @@ date: 2026-04-24
 categories:
   - Tools
 draft: true
+tags:
+  - Tools
+  - DevOps
 ---
 
 # <img src="/assets/pre-commit.png" alt="pre-commit logo" style="height:1em; vertical-align:middle; display:inline;"> pre-commit

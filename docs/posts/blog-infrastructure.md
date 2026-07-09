@@ -1,5 +1,10 @@
 ---
-date: 2026-05-12
+date: {created: 2026-05-12, updated: 2026-07-01}
+rating: 
+tags:
+  - MkDocs
+  - DevOps
+  - Infrastructure
 ---
 
 # How this blog is built

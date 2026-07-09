@@ -51,7 +51,7 @@
                 <nav class="md-nav">
                   <ul class="md-nav__list">
                     <li class="md-nav__item">
-                      <div class="md-nav__link">
+                      <div class="md-nav__link md-meta-item" data-tooltip="Created date">
                         {% include ".icons/material/calendar.svg" %}
                         <time datetime="{{ page.config.date.created }}" class="md-ellipsis">
                           {{- page.config.date.created | date -}}
@@ -60,7 +60,7 @@
                     </li>
                     {% if page.config.date.updated %}
                       <li class="md-nav__item">
-                        <div class="md-nav__link">
+                        <div class="md-nav__link md-meta-item" data-tooltip="Updated date">
                           {% include ".icons/material/calendar-clock.svg" %}
                           <time datetime="{{ page.config.date.updated }}" class="md-ellipsis">
                             {{- page.config.date.updated | date -}}
@@ -87,7 +87,7 @@
                     {% if page.config.readtime %}
                       {% set time = page.config.readtime %}
                       <li class="md-nav__item">
-                        <div class="md-nav__link">
+                        <div class="md-nav__link md-meta-item" data-tooltip="Read time">
                           {% include ".icons/material/clock-outline.svg" %}
                           <span class="md-ellipsis">
                             {% if time == 1 %}
@@ -99,10 +99,60 @@
                         </div>
                       </li>
                     {% endif %}
+                    {% set exclude_keys = ["date", "categories", "tags", "slug", "draft", "authors", "links", "readtime", "hide", "title", "description", "template", "icon"] %}
+                    {% if page.meta.rating %}
+                      {% set rating = page.meta.rating | int %}
+                      {% set stars = rating / 2 %}
+                      {% set full = stars | int %}
+                      {% set half = 1 if (stars - full) >= 0.5 else 0 %}
+                      {% set empty = 5 - full - half %}
+                      <li class="md-nav__item">
+                        <div class="md-nav__link md-meta-item" data-tooltip="Rating">
+                          {% include ".icons/material/thumb-up.svg" %}
+                          <span class="md-ellipsis md-rating-stars">
+                            {%- for _ in range(full) %}<span class="md-star-full">{% include ".icons/material/star.svg" %}</span>{% endfor %}{%- if half %}<span class="md-star-half">{% include ".icons/material/star-half.svg" %}</span>{% endif %}{%- for _ in range(empty) %}<span class="md-star-empty">{% include ".icons/material/star-outline.svg" %}</span>{% endfor %} {{ rating }}/10
+                          </span>
+                        </div>
+                      </li>
+                    {% endif %}
+                    {% for key, value in page.meta.items() %}
+                      {% if key not in exclude_keys and key != "rating" %}
+                        <li class="md-nav__item">
+                          <div class="md-nav__link md-meta-item" data-tooltip="{{ key | capitalize }}">
+                            {% include ".icons/material/information-outline.svg" %}
+                            <span class="md-ellipsis">
+                              <strong>{{ key | capitalize }}:</strong> {{ value }}
+                            </span>
+                          </div>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
                   </ul>
                 </nav>
               </li>
             </ul>
+            {% if page.meta.tags %}
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title md-tags-header">
+                    <span class="md-ellipsis md-tags-header-content">
+                      <span>Tags</span>
+                    </span>
+                  </div>
+                  <nav class="md-nav">
+                    <ul class="md-nav__list md-tags-list">
+                      {% for tag in page.meta.tags %}
+                        <li class="md-nav__item md-tag-pill-item">
+                          <span class="md-tag-pill" data-tag="{{ tag }}">
+                            {{- tag -}}
+                          </span>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            {% endif %}
             {% if page.config.links %}
               <ul class="md-post__meta md-nav__list">
                 <li class="md-nav__item md-nav__item--section">

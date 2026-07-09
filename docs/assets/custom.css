@@ -197,7 +197,7 @@ body,
    The left sidebar (nav) is 12.1rem wide but the right sidebar is absent,
    so we add an equal right margin to .md-content to re-balance the flex row. */
 @media screen and (min-width: 76.25em) {
-    .md-sidebar--secondary[hidden] ~ .md-content {
+    .md-sidebar--secondary[hidden]~.md-content {
         margin-right: 12.1rem;
     }
 }
@@ -334,4 +334,170 @@ body,
     font-family: var(--font-mono);
     color: var(--c-text-muted);
     white-space: nowrap;
+}
+
+.md-rating-stars {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+}
+
+.md-star-full svg,
+.md-star-half svg,
+.md-star-empty svg {
+    display: inline;
+    width: 0.9rem;
+    height: 0.9rem;
+    vertical-align: -0.1em;
+}
+
+.md-star-full svg {
+    color: #FFB800;
+}
+
+.md-star-half svg {
+    color: #FFB800;
+}
+
+.md-star-empty svg {
+    color: #C0C0C0;
+}
+
+.md-tags-metadata {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+/* Tags section styling */
+.md-tags-header {
+    display: flex;
+    align-items: center;
+}
+
+.md-tags-header-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.md-tags-icon {
+    display: flex;
+    align-items: center;
+    height: 1.25rem;
+    color: var(--c-text);
+}
+
+.md-tags-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+}
+
+.md-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    row-gap: 0.25rem;
+    margin-top: 0.2rem;
+}
+
+.md-tag-pill-item {
+    display: inline-block;
+}
+
+.md-tag-pill {
+    display: inline-block;
+    padding: 0.12rem 0.35rem;
+    border-radius: 10px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    background: #E0E0E0;
+    color: #424242;
+    white-space: nowrap;
+    cursor: default;
+    line-height: 1.2;
+}
+
+/* Tag color customization by tag name */
+.md-tag-pill[data-tag="Tools"] {
+    background: var(--c-blue-light);
+    color: var(--c-blue-text);
+}
+
+.md-tag-pill[data-tag="DevOps"] {
+    background: var(--c-green-light);
+    color: var(--c-green-text);
+}
+
+.md-tag-pill[data-tag="Infrastructure"] {
+    background: var(--c-blue-light);
+    color: var(--c-blue-text);
+}
+
+.md-tag-pill[data-tag="MkDocs"] {
+    background: var(--c-blue-light);
+    color: var(--c-blue-text);
+}
+
+.md-tag-pill[data-tag="People"] {
+    background: #FFE0D6;
+    color: #C65D3B;
+}
+
+.md-tag-pill[data-tag="Products"] {
+    background: #F3E5AB;
+    color: #8B7500;
+}
+
+.md-tag-pill[data-tag="Websites"] {
+    background: #E8D5F2;
+    color: #6A2F7D;
+}
+
+.md-tag-pill[data-tag="Movies"] {
+    background: #D4E8FF;
+    color: #1A4D7A;
+}
+
+.md-tag-pill[data-tag="Games"] {
+    background: #D4FFE8;
+    color: #1A7A4D;
+}
+
+/* Post metadata and tags section headers */
+.md-post__title {
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+/* Metadata item hover tooltips */
+.md-meta-item {
+    position: relative;
+    cursor: help;
+}
+
+.md-meta-item[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.2rem;
+    padding: 0.25rem 0.45rem;
+    background: var(--c-dark);
+    color: var(--c-surface);
+    border-radius: 3px;
+    font-size: 0.65rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 100ms ease, visibility 100ms ease;
+    z-index: 1000;
+}
+
+.md-meta-item[data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
 }

@@ -8,8 +8,6 @@ draft: true
 
 # Interstellar (2014)
 
-**Rating: 9/10**
-
 Christopher Nolan is already one of my all-time favorite directors with amazing movies such as: the Batman trilogy, The Prestige, Inception and Tenet.
 Science-Fiction movies are also one of my all-time favorite genres to watch, so it is not surprising that I was absolutely blown away by this movie.
 

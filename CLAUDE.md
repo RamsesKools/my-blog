@@ -53,6 +53,64 @@ ffmpeg -i input.mov -vcodec h264 -acodec aac -crf 28 -preset slow docs/assets/ou
 
 Create a Markdown file under `docs/likes/feed/posts/` with frontmatter that includes `date:` and `categories:` (e.g. `Tools`, `People`, `Products`, `Websites`, `Movies`). The category drives which section it lands in on `docs/likes/index.md`. To add a brand-new category, add a matching `<!-- likes:NewCategory ... -->` block to `docs/likes/index.md`.
 
+### Post metadata: tags, dates, and custom fields
+
+All posts (blog and likes) support **tags** and optional **created/updated date distinction**. Custom metadata fields can be added to individual posts and will automatically render in the post's sidebar "Metadata" block.
+
+#### Tags
+
+Add `tags:` as a list to any post frontmatter:
+
+```yaml
+---
+date: 2026-05-12
+tags:
+  - Tools
+  - DevOps
+  - Infrastructure
+---
+```
+
+Tags render as pill-shaped chips above the post title. Once a `docs/tags.md` index page is added (future work), tag chips become clickable links to filter posts by tag.
+
+#### Created and updated dates
+
+Use `date:` as a dict to distinguish **created** and **updated** dates:
+
+```yaml
+---
+date:
+  created: 2026-05-12
+  updated: 2026-07-01
+---
+```
+
+Both dates appear in the "Metadata" sidebar; only `created` is used for chronological sorting. Existing scalar `date: 2026-05-12` posts are internally normalized to `{created: 2026-05-12}` and continue to work unchanged.
+
+#### Custom metadata fields
+
+Any frontmatter field not in the reserved list (date, categories, tags, slug, draft, authors, links, readtime, hide, title, description, template, icon) is automatically rendered as a row in the post's "Metadata" sidebar with a generic icon and `Key: value` format.
+
+Two special cases are built in:
+
+1. **`rating`** — a 0-10 integer rendered as a 5-star scale. Example:
+
+```yaml
+rating: 9
+```
+
+Displays as `★★★★½ 9/10` (4 full stars + 1 half star for `9/10`).
+
+2. Other custom fields render as plain text. Example:
+
+```yaml
+myfield: "Some value"
+```
+
+Displays as `Myfield: Some value` with an info icon.
+
+To add a new special-cased field with custom rendering (e.g. a badge, colored pill, or different icon), edit `overrides/blog-post.html` lines 102–110 to add a `{% if page.meta.myfield %}` block following the same pattern as the `rating` block.
+
 ### Markdown extensions enabled
 
 `attr_list`, `pymdownx.blocks.caption`, and `pymdownx.superfences` with a `mermaid` fence — so ` ```mermaid ` code blocks render as diagrams.
