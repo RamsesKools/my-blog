@@ -15,7 +15,7 @@ With this app there is no proprietary dataformat, no vendor lock-in, no cloud de
 You don't need to sign up or share your data anywhere.
 Your notes are just files on your disk, readable and editable with any text editor, now and in ten years.
 
-The philosophy behind Obsidian is a reflection of how its CEO [[steph ango]] thinks about software.
+The philosophy behind Obsidian is a reflection of how its CEO [[steph-ango|Steph Ango]] thinks about software.
 *On a sidenote*, I really enjoy Steph Ango's [blog and writing](https://stephango.com/) and he is one of the reasons I decided to start this blog.
 
 Besides agreeing with the philosophy, I also really like that there are endless ways to structure your notes: tags, links, frontmatter, folders, and many more via plugins.
