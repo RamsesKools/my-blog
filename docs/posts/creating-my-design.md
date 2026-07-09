@@ -1,5 +1,8 @@
 ---
 date: 2026-06-03
+tags:
+  - Design
+  - Tools
 ---
 
 # How I created my personal design

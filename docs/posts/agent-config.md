@@ -1,6 +1,9 @@
 ---
 date: 2026-07-08
 slug: agent-config
+tags:
+  - Tools
+  - AI
 ---
 
 # How to configure your local coding AI agents once

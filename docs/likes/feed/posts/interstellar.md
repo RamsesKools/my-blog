@@ -1,9 +1,10 @@
 ---
 date: 2026-04-01
-categories:
-  - Movies
 rating: 9
 draft: true
+tags:
+  - Movies
+  - Sci-Fi
 ---
 
 # Interstellar (2014)

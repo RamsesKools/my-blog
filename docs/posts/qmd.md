@@ -1,5 +1,8 @@
 ---
 date: 2026-05-15
+tags:
+  - Tools
+  - AI
 ---
 
 # QMD: semantic search for your local markdown files

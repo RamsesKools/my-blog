@@ -1,6 +1,6 @@
 """
 MkDocs hook that:
-1. Auto-generates per-category post lists in docs/likes/index.md
+1. Auto-generates per-tag post lists in docs/likes/index.md
 2. Injects latest-posts and latest-likes sections into docs/index.md
 
 For likes/index.md, wrap each section in a block comment:
@@ -41,7 +41,7 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
         blog_dir = getattr(getattr(plugin, "config", None), "blog_dir", None)
         is_likes = (blog_dir == "likes/feed")
         for post in posts:
-            categories = post.meta.get("categories") or []
+            tags = post.meta.get("tags") or []
             date = getattr(getattr(post, "config", None), "date", None)
             created = getattr(date, "created", None)
             slug = post.url.rstrip("/").rsplit("/", 1)[-1]
@@ -54,10 +54,11 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
                 "url": post.url,
             }
             if is_likes:
-                if not categories:
-                    continue
-                for cat in categories:
-                    _likes_posts.append({**entry, "category": cat})
+                if tags:
+                    for tag in tags:
+                        _likes_posts.append({**entry, "tag": tag})
+                else:
+                    _likes_posts.append({**entry, "tag": "Others"})
             else:
                 _blog_posts.append(entry)
 
@@ -90,8 +91,8 @@ def _render_rows(posts: list[dict[str, Any]]) -> str:
     return '<div class="likes-list">\n' + "\n".join(rows) + "\n</div>"
 
 
-def _build_list(category: str, section: str) -> str:
-    matching = [p for p in _likes_posts if p["category"] == category]
+def _build_list(tag: str, section: str) -> str:
+    matching = [p for p in _likes_posts if p["tag"] == tag]
     matching.sort(key=lambda p: p["date"], reverse=True)
     if not matching:
         return ""
@@ -110,8 +111,40 @@ def _build_list(category: str, section: str) -> str:
 
 def on_page_markdown(markdown: str, page: Any, **__: Any) -> str:
     if page.file.src_path == "likes/index.md":
+        valid_tags = set(m.group(1).strip() for m in PLACEHOLDER.finditer(markdown))
+
         def replace_likes(m: Match[str]) -> str:
-            return _build_list(m.group(1).strip(), m.group(2).strip())
+            tag = m.group(1).strip()
+            section = m.group(2).strip()
+            if tag == "Others":
+                # Others = posts that don't have ANY tag in valid_tags (by slug)
+                posts_with_valid_tags = set()
+                for p in _likes_posts:
+                    if p["tag"] in valid_tags:
+                        posts_with_valid_tags.add(p["slug"])
+                # Deduplicate by slug (a post may have multiple invalid tags)
+                seen = set()
+                matching = []
+                for p in _likes_posts:
+                    if p["slug"] not in posts_with_valid_tags and p["slug"] not in seen:
+                        matching.append(p)
+                        seen.add(p["slug"])
+            else:
+                matching = [p for p in _likes_posts if p["tag"] == tag]
+            matching.sort(key=lambda p: p["date"], reverse=True)
+            if not matching:
+                return ""
+            rows = []
+            for p in matching:
+                date_str = p["date"].strftime("%Y-%m-%d")
+                rows.append(
+                    f'<a class="likes-row" href="{p["slug"]}/">'
+                    f'<span class="likes-title">{p["title"]}</span>'
+                    f'<span class="likes-date">{date_str}</span>'
+                    f'</a>'
+                )
+            list_html = '<div class="likes-list">\n' + "\n".join(rows) + "\n</div>"
+            return section + "\n" + list_html
         return PLACEHOLDER.sub(replace_likes, markdown)
 
     if page.file.src_path == "index.md":

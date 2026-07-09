@@ -1,5 +1,8 @@
 ---
 date: 2026-05-19
+tags:
+  - Design
+  - Tools
 ---
 
 # Creating my own logo

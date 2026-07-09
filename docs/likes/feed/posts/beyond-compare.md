@@ -1,6 +1,6 @@
 ---
 date: 2026-07-08
-categories:
+tags:
   - Tools
 ---
 

@@ -466,6 +466,32 @@ body,
     color: #1A7A4D;
 }
 
+.md-tag-pill[data-tag="Design"] {
+    background: #FFE5D0;
+    color: #B85C1F;
+}
+
+.md-tag-pill[data-tag="Workflow"] {
+    background: #F4EFE7;
+    color: #6B5D52;
+}
+
+.md-tag-pill[data-tag="AI"] {
+    background: #E8F0FF;
+    color: #1A3A8A;
+    border: 1px solid #1A3A8A;
+}
+
+.md-tag-pill[data-tag="Sci-Fi"] {
+    background: #F0E6FF;
+    color: #4A1A6F;
+}
+
+.md-tag-pill[data-tag="Book"] {
+    background: #F5E6D3;
+    color: #6B4423;
+}
+
 /* Post metadata and tags section headers */
 .md-post__title {
     font-size: 0.88rem;

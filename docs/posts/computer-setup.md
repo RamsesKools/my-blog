@@ -1,6 +1,9 @@
 ---
 date: 2026-07-08
 slug: computer-setup
+tags:
+  - Tools
+  - DevOps
 ---
 
 # Setting up my new macbook from a repo

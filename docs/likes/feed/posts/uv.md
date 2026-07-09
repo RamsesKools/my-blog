@@ -1,8 +1,8 @@
 ---
 date: 2026-04-24
-categories:
-  - Tools
 draft: true
+tags:
+  - Tools
 ---
 
 # <img src="/assets/uv.png" alt="uv logo" style="height:1em; vertical-align:middle; display:inline;"> uv

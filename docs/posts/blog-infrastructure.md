@@ -1,8 +1,8 @@
 ---
-date: {created: 2026-05-12, updated: 2026-07-01}
-rating: 
+date:
+  created: 2026-05-12
+  updated: 2026-07-01
 tags:
-  - MkDocs
   - DevOps
   - Infrastructure
 ---
