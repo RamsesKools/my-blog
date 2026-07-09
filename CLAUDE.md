@@ -49,6 +49,16 @@ Store videos in `docs/assets/` and embed with a plain `<video>` tag using an **a
 ffmpeg -i input.mov -vcodec h264 -acodec aac -crf 28 -preset slow docs/assets/output.mp4
 ```
 
+### Compressing images
+
+Store images in `docs/assets/` as JPEG with 85% quality to balance file size and visual fidelity. Convert PNG images before committing using `sips` (built into macOS):
+
+```bash
+sips -s format jpeg -s formatOptions 85 input.png --out docs/assets/output.jpg
+```
+
+This typically reduces file size by 70-80%. Use absolute paths in Markdown (`![alt](/assets/filename.jpg)`) so images load correctly regardless of page depth.
+
 ### Adding a "like"
 
 Create a Markdown file under `docs/likes/feed/posts/` with frontmatter that includes `date:` and `categories:` (e.g. `Tools`, `People`, `Products`, `Websites`, `Movies`). The category drives which section it lands in on `docs/likes/index.md`. To add a brand-new category, add a matching `<!-- likes:NewCategory ... -->` block to `docs/likes/index.md`.

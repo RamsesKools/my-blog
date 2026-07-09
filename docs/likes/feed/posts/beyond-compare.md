@@ -30,7 +30,7 @@ In [their own words](https://www.scootersoftware.com/about): an independent, emp
 They aim to provide a useful and affordable tool and to do right by their customers and employees, which they consider more important than growth and profit.
 And they have been profitable anyway, year after year, for over two decades.
 
-![Scooter Software team](scootersoftware_team.jpg)
+![Scooter Software team](/assets/scootersoftware_team.jpg)
 /// caption
 The Scooter Software team, from their [about page](https://www.scootersoftware.com/about).
 ///

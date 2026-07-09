@@ -16,7 +16,7 @@ He seems to genuinely embody the ideas he writes about, which is rare.
 
 The [[obsidian]] philosophy (local-first, plain files, no lock-in) feels like a direct expression of those values.
 
-![The wilderness of Kepano's mind](wilderness_kepano.png)
+![The wilderness of Kepano's mind](/assets/wilderness-kepano.jpg)
 
 /// caption
 *'The wilderness of my mind'*. Image from [Stephango's personal page](https://stephango.com/about)

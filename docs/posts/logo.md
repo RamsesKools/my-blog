@@ -29,7 +29,7 @@ I ended up choosing a simple design: my initials in my own font, both in a round
 One letter sits on a white or transparent background, the other on my primary accent blue.
 The boxes themselves carry the opposite color, with a primary blue outline tying them together.
 
-![RK logo](../assets/logo-rk.svg)
+![RK logo](/assets/logo-rk.svg)
 
 The result is something I can recognize at a glance, that fits the rest of my personal design system, and that scales cleanly from a favicon to a bigger image.
 
@@ -48,9 +48,9 @@ The generator gave me a live preview and export to SVG, PNG, or a YAML snippet f
 From the same generator I could produce my `[R|K]` logo, but also page-titles in the same style: `[Ramses|Kools]`, `[home|server]`, `[logo|generator]`, and so on.
 That turned out to be the unlock: one tool, one visual language, many logos.
 
-![ramses.kools logo](../assets/logo-ramseskools.svg)
-![home.server logo](../assets/logo-homeserver.svg)
-![logo.generator logo](../assets/logo-generator.svg)
+![ramses.kools logo](/assets/logo-ramseskools.svg)
+![home.server logo](/assets/logo-homeserver.svg)
+![logo.generator logo](/assets/logo-generator.svg)
 {: .image-row }
 
 ## CLI for batch generation

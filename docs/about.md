@@ -10,12 +10,12 @@ I studied Chemistry at the University of Amsterdam and completed a Bachelor's an
 My master specialised in computational and theoretical chemistry, which meant building simulation algorithms in C++, running large workloads on compute clusters, and extracting insight from the produced data.
 My studies taught me many things, but these are some skills I still use daily in my work: a research mindset, the ability to write code for complex systems, and the ability to communicate results clearly.
 
-### **<img src="/assets/zenz-logo.svg" alt="Zenz Technologies logo" style="height:1em; vertical-align:middle; display:inline;"> Zenz Technologies (2019 - 2021)**
+### **<img src="/assets/zenz-logo.jpg" alt="Zenz Technologies logo" style="height:1em; vertical-align:middle; display:inline;"> Zenz Technologies (2019 - 2021)**
 
 After graduating I joined [Zenz Technologies](https://www.zenztech.com/), a software company in Amsterdam building decision support systems for revenue management.
 There I worked as a consultant and developer, implementing and customising data processing and visualisation tools for clients, as well as developing the in-house-built C++ libraries.
 
-### **<img src="/assets/futurefacts-logo.svg" alt="Future Facts logo" style="height:1em; vertical-align:middle; display:inline;"> Future Facts (2022 - Today)**
+### **<img src="/assets/futurefacts-logo.jpg" alt="Future Facts logo" style="height:1em; vertical-align:middle; display:inline;"> Future Facts (2022 - Today)**
 
 In February 2022 I joined Future Facts, where I have been ever since.
 Here I started in the Fast Track together with 9 other colleagues.
