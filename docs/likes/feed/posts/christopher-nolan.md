@@ -2,6 +2,7 @@
 date: 2026-07-09
 tags:
   - People
+draft: true
 ---
 
 # Christopher Nolan
