@@ -3,7 +3,8 @@
     "allow": [
       "Bash(uv run mkdocs *)",
       "Bash(gh auth status *)",
-      "Bash(curl -s http://localhost:8000/likes/feed/)"
+      "Bash(curl -s http://localhost:8000/likes/feed/)",
+      "Bash(uv run *)"
     ]
   }
 }

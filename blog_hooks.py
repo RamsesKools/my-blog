@@ -1,15 +1,14 @@
 """
 MkDocs hook that:
 1. Generates tag styles CSS from mkdocs.yml extra.tags config
-2. Auto-generates per-tag post lists in docs/likes/index.md
+2. Renders a clickable tag-cloud + post table on docs/blog/index.md and
+   docs/likes/index.md via a single-line placeholder
 3. Injects latest-posts and latest-likes sections into docs/index.md
 
-For likes/index.md, wrap each section in a block comment:
+For docs/blog/index.md and docs/likes/index.md, use a single-line placeholder:
 
-    <!-- likes:Tools
-    ## Tools I like
-    Your description here.
-    -->
+    <!-- tag-index:blog -->
+    <!-- tag-index:likes -->
 
 For index.md, use single-line placeholders:
 
@@ -18,7 +17,8 @@ For index.md, use single-line placeholders:
 
 Draft handling: post lists are sourced from the blog plugin's resolved post
 list, so any post excluded by the blog plugin (drafts, future-dated, etc.) is
-automatically omitted here too.
+automatically omitted here too. When draft_on_serve makes drafts visible
+(local `mkdocs serve`), they carry a small "Draft" marker in the rendered table.
 
 Tag colors: defined in mkdocs.yml under extra.tags, generated as CSS at build time.
 """
@@ -28,7 +28,7 @@ from pathlib import Path
 from re import Match
 from typing import Any
 
-PLACEHOLDER = re.compile(r"<!-- likes:(.+?)\n(.*?)-->", re.DOTALL)
+TAG_INDEX_PLACEHOLDER = re.compile(r"<!-- tag-index:(blog|likes) -->")
 OVERVIEW_PLACEHOLDER = re.compile(r"<!-- overview:(.+?) -->")
 
 _blog_posts: list[dict[str, Any]] = []
@@ -69,9 +69,8 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
         if posts is None:
             continue
         blog_dir = getattr(getattr(plugin, "config", None), "blog_dir", None)
-        is_likes = (blog_dir == "likes/feed")
+        is_likes = (blog_dir == "likes")
         for post in posts:
-            tags = post.meta.get("tags") or []
             date = getattr(getattr(post, "config", None), "date", None)
             created = getattr(date, "created", None)
             slug = post.url.rstrip("/").rsplit("/", 1)[-1]
@@ -82,15 +81,10 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
                 "date": created,
                 "slug": slug,
                 "url": post.url,
+                "tags": list(post.meta.get("tags") or []),
+                "draft": bool(post.meta.get("draft", False)),
             }
-            if is_likes:
-                if tags:
-                    for tag in tags:
-                        _likes_posts.append({**entry, "tag": tag})
-                else:
-                    _likes_posts.append({**entry, "tag": "Others"})
-            else:
-                _blog_posts.append(entry)
+            (_likes_posts if is_likes else _blog_posts).append(entry)
 
 on_files.mkdocs_priority = -75  # type: ignore[attr-defined]  # run after blog plugin (priority -50)
 
@@ -137,61 +131,57 @@ def _render_rows(posts: list[dict[str, Any]]) -> str:
     return '<div class="likes-list">\n' + "\n".join(rows) + "\n</div>"
 
 
-def _build_list(tag: str, section: str) -> str:
-    matching = [p for p in _likes_posts if p["tag"] == tag]
-    matching.sort(key=lambda p: p["date"], reverse=True)
-    if not matching:
-        return ""
-    rows = []
-    for p in matching:
-        date_str = p["date"].strftime("%Y-%m-%d")
-        rows.append(
-            f'<a class="likes-row" href="{p["slug"]}/">'
-            f'<span class="likes-title">{p["title"]}</span>'
-            f'<span class="likes-date">{date_str}</span>'
-            f'</a>'
+def _render_tag_index(posts: list[dict[str, Any]]) -> str:
+    """Render a clickable tag cloud plus a filterable table of all posts."""
+    if not posts:
+        return "<p><em>Nothing here yet.</em></p>"
+
+    all_tags = sorted({tag for p in posts for tag in p["tags"]})
+    cloud = ""
+    if all_tags:
+        buttons = "\n".join(
+            f'<button type="button" class="md-tag-pill md-tag-pill--filter" '
+            f'data-tag="{tag}" aria-pressed="false">{tag}</button>'
+            for tag in all_tags
         )
-    list_html = '<div class="likes-list">\n' + "\n".join(rows) + "\n</div>"
-    return section + "\n" + list_html
+        cloud = f'<div class="tag-cloud" data-tag-filter-cloud>\n{buttons}\n</div>'
+
+    rows: list[str] = []
+    for p in sorted(posts, key=lambda p: p["date"], reverse=True):
+        date_str = p["date"].strftime("%Y-%m-%d")
+        tags_attr = ",".join(p["tags"])
+        pills = "".join(
+            f'<span class="md-tag-pill" data-tag="{t}">{t}</span>' for t in p["tags"]
+        )
+        draft_marker = (
+            ' <span class="tag-filter-draft-marker" title="Draft">Draft</span>'
+            if p["draft"] else ""
+        )
+        rows.append(
+            f'<div class="tag-filter-row" data-tags="{tags_attr}">'
+            f'<span class="tag-filter-title"><a href="/{p["url"]}">{p["title"]}</a>{draft_marker}</span>'
+            f'<span class="tag-filter-meta">'
+            f'<span class="tag-filter-tags">{pills}</span>'
+            f'<span class="tag-filter-date">{date_str}</span>'
+            f'</span>'
+            f'</div>'
+        )
+
+    list_html = '<div class="tag-filter-list" data-tag-filter-list>\n' + "\n".join(rows) + "\n</div>"
+    empty_html = (
+        '<p class="tag-filter-empty" data-tag-filter-empty style="display:none">'
+        'No posts match the selected tags.</p>'
+    )
+
+    return f'<div class="tag-filter" data-tag-filter>\n{cloud}\n{list_html}\n{empty_html}\n</div>'
 
 
 def on_page_markdown(markdown: str, page: Any, **__: Any) -> str:
-    if page.file.src_path == "likes/index.md":
-        valid_tags = set(m.group(1).strip() for m in PLACEHOLDER.finditer(markdown))
-
-        def replace_likes(m: Match[str]) -> str:
-            tag = m.group(1).strip()
-            section = m.group(2).strip()
-            if tag == "Others":
-                # Others = posts that don't have ANY tag in valid_tags (by slug)
-                posts_with_valid_tags = set()
-                for p in _likes_posts:
-                    if p["tag"] in valid_tags:
-                        posts_with_valid_tags.add(p["slug"])
-                # Deduplicate by slug (a post may have multiple invalid tags)
-                seen = set()
-                matching = []
-                for p in _likes_posts:
-                    if p["slug"] not in posts_with_valid_tags and p["slug"] not in seen:
-                        matching.append(p)
-                        seen.add(p["slug"])
-            else:
-                matching = [p for p in _likes_posts if p["tag"] == tag]
-            matching.sort(key=lambda p: p["date"], reverse=True)
-            if not matching:
-                return ""
-            rows = []
-            for p in matching:
-                date_str = p["date"].strftime("%Y-%m-%d")
-                rows.append(
-                    f'<a class="likes-row" href="{p["slug"]}/">'
-                    f'<span class="likes-title">{p["title"]}</span>'
-                    f'<span class="likes-date">{date_str}</span>'
-                    f'</a>'
-                )
-            list_html = '<div class="likes-list">\n' + "\n".join(rows) + "\n</div>"
-            return section + "\n" + list_html
-        return PLACEHOLDER.sub(replace_likes, markdown)
+    if page.file.src_path in ("blog/index.md", "likes/index.md"):
+        def replace_tag_index(m: Match[str]) -> str:
+            key = m.group(1)
+            return _render_tag_index(_blog_posts if key == "blog" else _likes_posts)
+        return TAG_INDEX_PLACEHOLDER.sub(replace_tag_index, markdown)
 
     if page.file.src_path == "index.md":
         def replace_overview(m: Match[str]) -> str:
@@ -199,13 +189,7 @@ def on_page_markdown(markdown: str, page: Any, **__: Any) -> str:
             if key == "latest-posts":
                 return _render_rows(_latest_groups(_blog_posts))
             if key == "latest-likes":
-                seen: set[str] = set()
-                unique: list[dict[str, Any]] = []
-                for p in _likes_posts:
-                    if p["slug"] not in seen:
-                        seen.add(p["slug"])
-                        unique.append(p)
-                return _render_rows(_latest_groups(unique))
+                return _render_rows(_latest_groups(_likes_posts))
             return m.group(0)
         return OVERVIEW_PLACEHOLDER.sub(replace_overview, markdown)
 

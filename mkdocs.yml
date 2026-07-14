@@ -19,10 +19,10 @@ theme:
     - navigation.tabs
 
 watch:
-  - likes_index_plugin.py
+  - blog_hooks.py
 
 hooks:
-  - likes_index_plugin.py
+  - blog_hooks.py
 
 plugins:
   - search
@@ -34,14 +34,16 @@ plugins:
       draft_on_serve: true
       post_url_format: "../{slug}"
       archive: false
+      categories: false
+      pagination: false
   - blog:
-      blog_dir: likes/feed
+      blog_dir: likes
       draft_on_serve: true
       archive: false
       categories: false
       authors: false
       pagination: false
-      post_url_format: "../{slug}"
+      post_url_format: "{slug}"
 
 markdown_extensions:
   - attr_list
@@ -99,6 +101,9 @@ extra:
 
 extra_css:
   - assets/custom.css
+
+extra_javascript:
+  - assets/tag-filter.js
 
 nav:
   - Blog: blog/index.md
