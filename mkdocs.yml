@@ -61,7 +61,7 @@ extra:
     DevOps:
       bg: "#DFF0DE"
       text: "#2D6B2B"
-    Infrastructure:
+    Infra:
       bg: "#D6E4FA"
       text: "#1E4A9C"
     MkDocs:
@@ -95,7 +95,7 @@ extra:
     Sci-Fi:
       bg: "#F0E6FF"
       text: "#4A1A6F"
-    Book:
+    Books:
       bg: "#F5E6D3"
       text: "#6B4423"
 

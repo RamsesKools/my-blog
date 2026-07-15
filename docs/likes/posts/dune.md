@@ -1,7 +1,7 @@
 ---
 date: 2026-07-15
 tags:
-  - Book
+  - Books
   - Sci-Fi
 draft: true
 ---

@@ -4,7 +4,7 @@ date:
   updated: 2026-07-01
 tags:
   - DevOps
-  - Infrastructure
+  - Infra
 ---
 
 # How this blog is built
