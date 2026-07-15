@@ -37,6 +37,10 @@ from pathlib import Path
 from re import Match
 from typing import Any
 
+from mkdocs.plugins import get_plugin_logger
+
+log = get_plugin_logger(__name__)
+
 TAG_INDEX_PLACEHOLDER = re.compile(r"<!-- tag-index:(blog|likes) -->")
 OVERVIEW_PLACEHOLDER = re.compile(r"<!-- overview:(.+?) -->")
 
@@ -115,6 +119,7 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
     global _post_preview_json
     _blog_posts.clear()
     _likes_posts.clear()
+    known_tags = config.get("extra", {}).get("tags", {})
     for _name, plugin in config["plugins"].items():
         posts = getattr(getattr(plugin, "blog", None), "posts", None)
         if posts is None:
@@ -133,12 +138,20 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
                 continue
             markdown_text = Path(post.file.abs_src_path).read_text(encoding="utf-8")
             synopsis, readtime = _synopsis_and_readtime(markdown_text)
+            post_tags = list(post.meta.get("tags") or [])
+            unknown_tags = [t for t in post_tags if t not in known_tags]
+            if unknown_tags:
+                log.warning(
+                    f"Doc file '{post.file.src_path}' uses tag(s) not defined in "
+                    f"mkdocs.yml extra.tags: {', '.join(sorted(unknown_tags))}. "
+                    "Add a color entry under extra.tags, or fix the typo."
+                )
             entry = {
                 "title": post.title,
                 "date": created,
                 "slug": slug,
                 "url": url,
-                "tags": list(post.meta.get("tags") or []),
+                "tags": post_tags,
                 "draft": bool(post.meta.get("draft", False)),
                 "synopsis": synopsis,
                 "readtime": readtime,
