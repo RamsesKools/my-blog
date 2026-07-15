@@ -261,6 +261,32 @@ body,
     /* ACD Blue dark */
 }
 
+/* Links to other posts on this blog (matched against post-preview.json
+   by docs/assets/link-preview.js), so they stand out from plain/external links */
+.md-typeset a.link-preview-internal {
+    color: var(--c-blue-text);
+    text-decoration: underline;
+    text-decoration-color: var(--c-blue-text);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.md-typeset a.link-preview-internal:hover {
+    color: #163A7A;
+}
+
+/* Exclude the /blog/ and /likes/ overview pages: their tag-index table
+   already conveys "this links to a post" via layout, so leave those links
+   in the original muted-gray table style */
+.md-typeset .tag-filter-title a.link-preview-internal {
+    color: inherit;
+    text-decoration: none;
+}
+
+.md-typeset .tag-filter-title a.link-preview-internal:hover {
+    color: var(--c-blue);
+}
+
 /* Footer */
 .md-footer {
     background: var(--c-dark);

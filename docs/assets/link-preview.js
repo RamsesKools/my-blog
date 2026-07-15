@@ -119,4 +119,21 @@
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") hideCard();
   });
+
+  function markInternalLinks() {
+    loadData().then(function (data) {
+      var links = document.querySelectorAll("a[href]");
+      for (var i = 0; i < links.length; i++) {
+        if (data[links[i].pathname]) {
+          links[i].classList.add("link-preview-internal");
+        }
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", markInternalLinks);
+  } else {
+    markInternalLinks();
+  }
 })();
