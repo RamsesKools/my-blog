@@ -18,7 +18,7 @@ That makes this an almost perfect movie in my eyes: crazy space visuals, great a
 
 ## Things I love
 
-- **Music.** Hans Zimmer's score is one of his best. 
+- **Music.** Hans Zimmer's score is one of his best.
     - The organ-driven tracks during the docking scene and the wormhole sequence are genuinely breathtaking and still give me goosebumps.
 - **Visuals.** The black hole (Gargantua) was rendered using actual physics simulations and produced a [paper-worthy result](https://arxiv.org/abs/1502.03808). It's still the most accurate on-screen depiction of a black hole.
 - **Acting.** Matthew McConaughey really carries this movie.
@@ -26,6 +26,12 @@ That makes this an almost perfect movie in my eyes: crazy space visuals, great a
 - **Spacecraft.** 'The Endurance' is really one of the coolest spacecrafts in movies.
     - The way it uses centrifugal force to replace gravity is grounded in reality.
     - I think it is quite realistic the way it is build from multiple modules: just like the international spacestation.
+
+![The Endurance flying towards Miller's planet orbiting Gargantua](/assets/interstellar-endurance-gargantua.jpg)
+
+/// caption
+The Endurance flying towards Miller's planet orbiting Gargantua.
+///
 
 ## Critique
 
@@ -38,7 +44,7 @@ Some things in the story don't really fit that well:
     - But how can humanity save itself from the future, if they first need to be saved to get to that point?
 - The 'love transcends time and space' concept in the movie is quite cheesy.
 - The final scene of Cooper inside Gargantua is also a bit confusing and hard to rationalize?
-    - But I can choose to ignore this one, because at this point in time it is literally impossible to scientifically explain what would happen when a person enters a 4-Dimensional space inside a blackhole.
+    - But I can forgive this one, because at this point in time it is literally impossible to scientifically explain what would happen when a person enters a 4-Dimensional space inside a blackhole.
 - What bothers me most: "Why does humanity have to leave earth in the first place?"
     - In the movie they explain there is '[The Blight](https://interstellarfilm.fandom.com/wiki/The_Blight)', which is killing of all plant-life.
     - But the movie does quite a poor job of explaining why this issue is solved by moving all humans off-world.
