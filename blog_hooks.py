@@ -4,6 +4,8 @@ MkDocs hook that:
 2. Renders a clickable tag-cloud + post table on docs/blog/index.md and
    docs/likes/index.md via a single-line placeholder
 3. Injects latest-posts and latest-likes sections into docs/index.md
+4. Writes a post-preview JSON file (title/synopsis/tags/readtime per post,
+   keyed by URL) for the hover-card link preview in docs/assets/link-preview.js
 
 For docs/blog/index.md and docs/likes/index.md, use a single-line placeholder:
 
@@ -21,9 +23,16 @@ automatically omitted here too. When draft_on_serve makes drafts visible
 (local `mkdocs serve`), they carry a small "Draft" marker in the rendered table.
 
 Tag colors: defined in mkdocs.yml under extra.tags, generated as CSS at build time.
+
+Synopsis/readtime: computed from each post's raw Markdown source (not the
+rendered HTML) so the data is available immediately in on_files, independent
+of per-page build order.
 """
 
+import json
+import posixpath
 import re
+from math import ceil
 from pathlib import Path
 from re import Match
 from typing import Any
@@ -31,8 +40,49 @@ from typing import Any
 TAG_INDEX_PLACEHOLDER = re.compile(r"<!-- tag-index:(blog|likes) -->")
 OVERVIEW_PLACEHOLDER = re.compile(r"<!-- overview:(.+?) -->")
 
+WORDS_PER_MINUTE = 265
+SYNOPSIS_LENGTH = 200
+
+_FRONTMATTER_RE = re.compile(r"^---\n.*?\n---\n", re.DOTALL)
+_CODE_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
+_IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
+_WIKILINK_PIPED_RE = re.compile(r"\[\[([^\]|]+)\|([^\]]+)\]\]")
+_WIKILINK_RE = re.compile(r"\[\[([^\]]+)\]\]")
+_LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
+_HTML_TAG_RE = re.compile(r"<[^>]+>")
+_MD_SYMBOLS_RE = re.compile(r"[#*_>`~|]")
+_WHITESPACE_RE = re.compile(r"\s+")
+
 _blog_posts: list[dict[str, Any]] = []
 _likes_posts: list[dict[str, Any]] = []
+_post_preview_json = "{}"
+
+
+def _plain_text(markdown_text: str) -> str:
+    """Strip frontmatter, Markdown syntax, and raw HTML down to plain text."""
+    text = _FRONTMATTER_RE.sub("", markdown_text, count=1)
+    text = _CODE_FENCE_RE.sub(" ", text)
+    text = _IMAGE_RE.sub(" ", text)
+    text = _WIKILINK_PIPED_RE.sub(r"\2", text)
+    text = _WIKILINK_RE.sub(r"\1", text)
+    text = _LINK_RE.sub(r"\1", text)
+    text = _HTML_TAG_RE.sub(" ", text)
+    text = _MD_SYMBOLS_RE.sub(" ", text)
+    return _WHITESPACE_RE.sub(" ", text).strip()
+
+
+def _synopsis_and_readtime(markdown_text: str) -> tuple[str, int]:
+    text = _plain_text(markdown_text)
+    words = text.split(" ") if text else []
+    readtime = max(1, ceil(len(words) / WORDS_PER_MINUTE))
+
+    synopsis = text
+    if len(synopsis) > SYNOPSIS_LENGTH:
+        cutoff = synopsis.rfind(" ", 0, SYNOPSIS_LENGTH)
+        if cutoff == -1:
+            cutoff = SYNOPSIS_LENGTH
+        synopsis = synopsis[:cutoff].rstrip() + "…"
+    return synopsis, readtime
 
 
 def on_config(config: Any, **__: Any) -> None:
@@ -62,6 +112,7 @@ on_config.mkdocs_priority = 100  # type: ignore[attr-defined]  # run early, befo
 
 
 def on_files(_files: Any, *, config: Any, **__: Any) -> None:
+    global _post_preview_json
     _blog_posts.clear()
     _likes_posts.clear()
     for _name, plugin in config["plugins"].items():
@@ -73,34 +124,56 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
         for post in posts:
             date = getattr(getattr(post, "config", None), "date", None)
             created = getattr(date, "created", None)
-            slug = post.url.rstrip("/").rsplit("/", 1)[-1]
+            # post_url_format can contain "../" (e.g. the main blog's
+            # "../{slug}"); normalize it so it matches the browser's
+            # normalized link.pathname used by link-preview.js.
+            url = posixpath.normpath(post.url) + "/"
+            slug = url.rstrip("/").rsplit("/", 1)[-1]
             if not (post.title and created):
                 continue
+            markdown_text = Path(post.file.abs_src_path).read_text(encoding="utf-8")
+            synopsis, readtime = _synopsis_and_readtime(markdown_text)
             entry = {
                 "title": post.title,
                 "date": created,
                 "slug": slug,
-                "url": post.url,
+                "url": url,
                 "tags": list(post.meta.get("tags") or []),
                 "draft": bool(post.meta.get("draft", False)),
+                "synopsis": synopsis,
+                "readtime": readtime,
             }
             (_likes_posts if is_likes else _blog_posts).append(entry)
+
+    preview = {
+        f'/{p["url"]}': {
+            "title": p["title"],
+            "date": p["date"].strftime("%Y-%m-%d"),
+            "tags": p["tags"],
+            "draft": p["draft"],
+            "synopsis": p["synopsis"],
+            "readtime": p["readtime"],
+        }
+        for p in (*_blog_posts, *_likes_posts)
+    }
+    _post_preview_json = json.dumps(preview)
 
 on_files.mkdocs_priority = -75  # type: ignore[attr-defined]  # run after blog plugin (priority -50)
 
 
 def on_post_build(config: Any, **__: Any) -> None:
-    """Append generated tag CSS to the built custom.css file."""
-    tags_css = config.get("extra", {}).get("tags_css")
-    if not tags_css:
-        return
-
+    """Append generated tag CSS to custom.css and write the post-preview JSON."""
     site_dir = Path(config.get("site_dir", "site"))
-    custom_css = site_dir / "assets" / "custom.css"
 
-    if custom_css.exists():
+    tags_css = config.get("extra", {}).get("tags_css")
+    custom_css = site_dir / "assets" / "custom.css"
+    if tags_css and custom_css.exists():
         current_css = custom_css.read_text()
         custom_css.write_text(current_css + "\n" + tags_css)
+
+    preview_path = site_dir / "assets" / "post-preview.json"
+    preview_path.parent.mkdir(parents=True, exist_ok=True)
+    preview_path.write_text(_post_preview_json)
 
 on_post_build.mkdocs_priority = -100  # type: ignore[attr-defined]  # run after all other processing
 

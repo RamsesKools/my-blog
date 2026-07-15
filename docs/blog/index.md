@@ -1,9 +1,13 @@
 ---
 template: main.html
+hide:
+  - navigation
 ---
 
 # Blog
 
-Click a tag to filter, click it again to clear.
+> *An overview of all my blog posts.*
+
+Here you can filter, at the top of the page you can search across the blog.
 
 <!-- tag-index:blog -->

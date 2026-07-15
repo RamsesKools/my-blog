@@ -1,5 +1,7 @@
 ---
 template: main.html
+hide:
+  - navigation
 ---
 
 # Things I Like

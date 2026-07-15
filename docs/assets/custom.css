@@ -619,3 +619,63 @@ body,
     opacity: 1;
     visibility: visible;
 }
+
+/* Link hover preview card (docs/assets/link-preview.js) */
+.link-preview-card {
+    position: absolute;
+    z-index: 1000;
+    width: 20rem;
+    max-width: calc(100vw - 1.6rem);
+    padding: 0.65rem 0.8rem;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(27, 38, 41, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-2px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+    pointer-events: none;
+}
+
+.link-preview-card--visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.link-preview-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--c-text);
+    margin-bottom: 0.3rem;
+}
+
+.link-preview-synopsis {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--c-text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.link-preview-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.link-preview-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.link-preview-info {
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    color: var(--c-text-muted);
+    white-space: nowrap;
+    margin-left: auto;
+}
