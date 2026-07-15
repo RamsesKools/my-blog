@@ -486,6 +486,7 @@ body,
 .tag-cloud {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 0.5rem 0.6rem;
     margin: 1rem 0 1.5rem;
 }
@@ -516,6 +517,40 @@ body,
 
 .md-tag-pill--filter.md-tag-pill--selected::before {
     content: "✓ ";
+}
+
+.md-tag-pill--clear {
+    /* Same formula as .md-tag-pill's natural height (padding + line-height,
+       plus this button's own border), forced onto both axes so the "x"
+       glyph's narrow content width can't shrink it into a rectangle. */
+    --clear-size: calc(0.65rem * 1.2 + 0.12rem * 2 + 2px * 2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--clear-size);
+    height: var(--clear-size);
+    padding: 0;
+    line-height: 1.2;
+    cursor: pointer;
+    border: 2px solid var(--c-border-strong);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--c-text-muted);
+    font-family: inherit;
+    font-size: 0.65rem;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: color 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.md-tag-pill--clear:hover:not(:disabled) {
+    color: var(--c-blue);
+    border-color: var(--c-blue);
+}
+
+.md-tag-pill--clear:disabled {
+    cursor: default;
+    opacity: 0.4;
 }
 
 .tag-filter-list {

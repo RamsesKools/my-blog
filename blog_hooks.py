@@ -217,7 +217,11 @@ def _render_tag_index(posts: list[dict[str, Any]]) -> str:
             f'data-tag="{tag}" aria-pressed="false">{tag}</button>'
             for tag in all_tags
         )
-        cloud = f'<div class="tag-cloud" data-tag-filter-cloud>\n{buttons}\n</div>'
+        clear_button = (
+            '<button type="button" class="md-tag-pill--clear" '
+            'data-tag-clear disabled aria-label="Clear selected tags">&times;</button>'
+        )
+        cloud = f'<div class="tag-cloud" data-tag-filter-cloud>\n{buttons}\n{clear_button}\n</div>'
 
     rows: list[str] = []
     for p in sorted(posts, key=lambda p: p["date"], reverse=True):

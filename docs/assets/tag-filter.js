@@ -5,6 +5,7 @@
     var cloud = root.querySelector("[data-tag-filter-cloud]");
     var list = root.querySelector("[data-tag-filter-list]");
     var empty = root.querySelector("[data-tag-filter-empty]");
+    var clearBtn = root.querySelector("[data-tag-clear]");
     if (!cloud || !list) return;
 
     var selected = new Set();
@@ -25,6 +26,7 @@
         if (visible) anyVisible = true;
       });
       if (empty) empty.style.display = anyVisible ? "none" : "block";
+      if (clearBtn) clearBtn.disabled = selected.size === 0;
     }
 
     buttons.forEach(function (btn) {
@@ -41,6 +43,17 @@
         applyFilter();
       });
     });
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", function () {
+        selected.clear();
+        buttons.forEach(function (btn) {
+          btn.classList.remove("md-tag-pill--selected");
+          btn.setAttribute("aria-pressed", "false");
+        });
+        applyFilter();
+      });
+    }
   }
 
   function init() {
