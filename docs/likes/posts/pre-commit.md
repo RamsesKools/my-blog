@@ -45,4 +45,4 @@ Or maybe I was doing a quick commit directly via [Github's web vscode editor](ht
 ## What's next
 
 There's a Rust rewrite of pre-commit in the works: [prek](https://github.com/j178/prek).
-I'm curious to see if it turns into the next `uv` or `ty` for this space, speeding up and improving my workflow the same way those did for Python tooling.
+I'm curious to see if it turns into the next [`uv`](uv.md) or `ty` for this space, speeding up and improving my workflow the same way those did for Python tooling.
