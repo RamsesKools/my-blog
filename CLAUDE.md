@@ -22,18 +22,20 @@ There are no tests, linters, or formatters configured in this repo.
 
 ### Two blog plugins, one site
 
-`mkdocs.yml` configures the `blog` plugin twice — once for actual posts (`docs/posts/` → `blog/`) and once for the "Things I Like" feed (`docs/likes/feed/posts/` → `likes/feed/`). Both use `post_url_format: "../{slug}"` so post URLs are flat (no date prefix).
+`mkdocs.yml` configures the `blog` plugin twice — once for actual posts (`docs/posts/` → `blog/`) and once for the "Things I Like" posts (`docs/likes/posts/` → `likes/`). Both disable `pagination` and `categories` (unused) and use flat post URLs (no date prefix): the blog instance via `post_url_format: "../{slug}"`, the likes instance via `post_url_format: "{slug}"` since its `blog_dir` is already `likes`.
 
-### `likes_index_plugin.py` — custom MkDocs hook
+Both `docs/blog/index.md` and `docs/likes/index.md` set `template: main.html` in frontmatter, which overrides the blog plugin's default `template: blog.html` (a `meta.setdefault` the plugin only applies if the page doesn't already set one) — this makes them render as plain content pages instead of getting an auto-generated post list/pagination appended. The actual post listing on both pages is hand-rendered by `blog_hooks.py` instead (see below).
 
-This is the one piece of non-obvious machinery. It is registered both as a `hook` and under `watch` in `mkdocs.yml`. It runs after the blog plugin (`mkdocs_priority = -75`, blog plugin is `-50`) so it can read the resolved post lists — meaning drafts and future-dated posts the blog plugin already filtered out are automatically excluded here too.
+### `blog_hooks.py` — custom MkDocs hook
+
+This is the one piece of non-obvious machinery. It is registered both as a `hook` and under `watch` in `mkdocs.yml`. Its `on_files` runs after the blog plugin (`mkdocs_priority = -75`, blog plugin is `-50`) so it can read the resolved post lists — meaning drafts and future-dated posts the blog plugin already filtered out are automatically excluded here too.
 
 It does two things:
 
-1. In `docs/likes/index.md`, expands `<!-- likes:CategoryName ... -->` block comments into a section header plus an HTML list of all "likes" posts whose frontmatter `categories:` includes that category. Posts without categories are skipped.
+1. On `docs/blog/index.md` and `docs/likes/index.md`, replaces a single-line `<!-- tag-index:blog -->` / `<!-- tag-index:likes -->` placeholder with an alphabetical tag "cloud" of clickable pills followed by a table of all posts (title, created date, tags). Clicking a tag pill filters the table client-side (see `docs/assets/tag-filter.js`) — OR logic across multiple selected tags, deselecting all tags shows everything again. Posts with `draft: true` (only ever visible locally, since `draft_on_serve: true`) get a small "Draft" badge next to the title.
 2. In `docs/index.md`, replaces `<!-- overview:latest-posts -->` and `<!-- overview:latest-likes -->` with rows for the latest items: whole same-date groups are added newest first, and no further group is added once the list has at least 3 items (so ties can make the list longer than 3).
 
-Rendered rows use the `.likes-list` / `.likes-row` / `.likes-title` / `.likes-date` classes styled in `docs/assets/custom.css`.
+The tag-index table uses `.tag-filter` / `.tag-cloud` / `.tag-filter-table` / `.tag-filter-row` classes; the homepage overview rows still use the older `.likes-list` / `.likes-row` / `.likes-title` / `.likes-date` classes. Both are styled in `docs/assets/custom.css`.
 
 ### Theme overrides
 
@@ -61,7 +63,7 @@ This typically reduces file size by 70-80%. Use absolute paths in Markdown (`![a
 
 ### Adding a "like"
 
-Create a Markdown file under `docs/likes/feed/posts/` with frontmatter that includes `date:` and `categories:` (e.g. `Tools`, `People`, `Products`, `Websites`, `Movies`). The category drives which section it lands in on `docs/likes/index.md`. To add a brand-new category, add a matching `<!-- likes:NewCategory ... -->` block to `docs/likes/index.md`.
+Create a Markdown file under `docs/likes/posts/` with frontmatter that includes `date:` and `tags:` (e.g. `Tools`, `People`, `Products`, `Websites`, `Movies`). Tags drive the tag-cloud filter on `docs/likes/index.md` — no separate registration step needed, any tag used on a post automatically appears in the cloud.
 
 ### Post metadata: tags, dates, and custom fields
 
@@ -81,7 +83,7 @@ tags:
 ---
 ```
 
-Tags render as pill-shaped chips above the post title. Once a `docs/tags.md` index page is added (future work), tag chips become clickable links to filter posts by tag.
+Tags render as pill-shaped chips above the post title. They're also clickable, filterable elements on the tag-cloud overview pages — see `docs/blog/index.md` and `docs/likes/index.md`.
 
 ##### Customizing tag colors
 
@@ -99,7 +101,7 @@ extra:
       border: "1px solid #1A3A8A"
 ```
 
-Tag colors are generated at build time (via the `on_config` and `on_post_build` hooks in `likes_index_plugin.py`) and appended to the final `site/assets/custom.css` file. No source file changes needed — just edit the YAML config and rebuild.
+Tag colors are generated at build time (via the `on_config` and `on_post_build` hooks in `blog_hooks.py`) and appended to the final `site/assets/custom.css` file. No source file changes needed — just edit the YAML config and rebuild.
 
 #### Created and updated dates
 

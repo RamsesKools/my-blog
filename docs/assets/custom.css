@@ -261,6 +261,43 @@ body,
     /* ACD Blue dark */
 }
 
+/* Links to other posts on this blog (matched against post-preview.json
+   by docs/assets/link-preview.js), so they stand out from plain/external links */
+.md-typeset a.link-preview-internal {
+    color: var(--c-blue-text);
+    text-decoration: underline;
+    text-decoration-color: var(--c-blue-text);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.md-typeset a.link-preview-internal:hover {
+    color: #163A7A;
+}
+
+/* Exclude the /blog/ and /likes/ overview pages: their tag-index table
+   already conveys "this links to a post" via layout, so leave those links
+   in the original muted-gray table style */
+.md-typeset .tag-filter-title a.link-preview-internal {
+    color: inherit;
+    text-decoration: none;
+}
+
+.md-typeset .tag-filter-title a.link-preview-internal:hover {
+    color: var(--c-blue);
+}
+
+/* Exclude the homepage's latest-posts / latest-likes rows for the same
+   reason: keep them in their original muted-gray row style */
+.md-typeset .likes-row.link-preview-internal {
+    color: var(--c-text-muted);
+    text-decoration: none;
+}
+
+.md-typeset .likes-row.link-preview-internal:hover {
+    color: var(--c-blue);
+}
+
 /* Footer */
 .md-footer {
     background: var(--c-dark);
@@ -330,7 +367,7 @@ body,
     align-items: baseline;
     gap: 1.5rem;
     padding: 0.45rem 0.25rem;
-    color: var(--c-text);
+    color: var(--c-text-muted);
     text-decoration: none;
     border-radius: var(--r);
     transition: background 120ms ease, color 120ms ease;
@@ -347,7 +384,7 @@ body,
 
 .likes-title {
     flex: 1;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: inherit;
 }
 
@@ -445,6 +482,180 @@ body,
 
 /* Tag colors are generated dynamically from mkdocs.yml in generated-tags.css */
 
+/* Tag-cloud filter (blog/index.md, likes/index.md) */
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    margin: 1rem 0 1.5rem;
+}
+
+.md-tag-pill--filter {
+    cursor: pointer;
+    border: 2px solid transparent;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: box-shadow 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.md-tag-pill--filter:hover {
+    transform: translateY(-1px);
+}
+
+.md-tag-pill--filter:focus-visible {
+    outline: 2px solid var(--c-blue);
+    outline-offset: 2px;
+}
+
+.md-tag-pill--filter.md-tag-pill--selected {
+    border-color: var(--c-dark);
+    box-shadow: 0 0 0 1px var(--c-dark);
+    font-weight: 700;
+}
+
+.md-tag-pill--filter.md-tag-pill--selected::before {
+    content: "✓ ";
+}
+
+.md-tag-pill--clear {
+    /* Same formula as .md-tag-pill's natural height (padding + line-height,
+       plus this button's own border), forced onto both axes so the "x"
+       glyph's narrow content width can't shrink it into a rectangle. */
+    --clear-size: calc(0.65rem * 1.2 + 0.12rem * 2 + 2px * 2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--clear-size);
+    height: var(--clear-size);
+    padding: 0;
+    line-height: 1.2;
+    cursor: pointer;
+    border: 2px solid var(--c-border-strong);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--c-text-muted);
+    font-family: inherit;
+    font-size: 0.65rem;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: color 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.md-tag-pill--clear:hover:not(:disabled) {
+    color: var(--c-blue);
+    border-color: var(--c-blue);
+}
+
+.md-tag-pill--clear:disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+.tag-filter-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+}
+
+.tag-filter-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 1.5rem;
+    row-gap: 0.35rem;
+    padding: 0.55rem 0.25rem;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.tag-filter-row:hover {
+    background: var(--c-neutral);
+}
+
+.tag-filter-title {
+    flex: 1 1 0%;
+    min-width: 0;
+    word-break: break-word;
+    font-size: 1.1rem;
+    color: var(--c-text-muted);
+}
+
+.tag-filter-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.tag-filter-title a:hover {
+    color: var(--c-blue);
+}
+
+.tag-filter-meta {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: auto;
+}
+
+.tag-filter-date {
+    flex: 0 0 5.5rem;
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    color: var(--c-text-muted);
+    white-space: nowrap;
+    text-align: right;
+}
+
+.tag-filter-tags {
+    flex: 0 0 7rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    gap: 0.25rem;
+}
+
+.tag-filter-draft-marker {
+    display: inline-block;
+    margin-left: 0.4rem;
+    padding: 0.05rem 0.3rem;
+    border-radius: 8px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    background: var(--c-neutral);
+    color: var(--c-text-muted);
+}
+
+.tag-filter-row--hidden {
+    display: none !important;
+}
+
+.tag-filter-empty {
+    color: var(--c-text-muted);
+    font-style: italic;
+}
+
+@media (max-width: 37.5em) {
+    .tag-filter-meta {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.35rem;
+    }
+
+    .tag-filter-date {
+        flex: 0 0 auto;
+    }
+
+    .tag-filter-tags {
+        flex: 0 0 auto;
+        justify-content: flex-end;
+        max-width: 100%;
+    }
+}
+
 /* Post metadata and tags section headers */
 .md-post__title {
     font-size: 0.88rem;
@@ -479,4 +690,64 @@ body,
 .md-meta-item[data-tooltip]:hover::after {
     opacity: 1;
     visibility: visible;
+}
+
+/* Link hover preview card (docs/assets/link-preview.js) */
+.link-preview-card {
+    position: absolute;
+    z-index: 1000;
+    width: 20rem;
+    max-width: calc(100vw - 1.6rem);
+    padding: 0.65rem 0.8rem;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(27, 38, 41, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-2px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+    pointer-events: none;
+}
+
+.link-preview-card--visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.link-preview-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--c-text);
+    margin-bottom: 0.3rem;
+}
+
+.link-preview-synopsis {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--c-text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.link-preview-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.link-preview-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.link-preview-info {
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    color: var(--c-text-muted);
+    white-space: nowrap;
+    margin-left: auto;
 }
