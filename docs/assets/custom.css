@@ -193,12 +193,18 @@ body,
     margin-right: auto;
 }
 
-/* Center content on pages with ToC hidden (e.g. the overview page).
-   The left sidebar (nav) is 12.1rem wide but the right sidebar is absent,
-   so we add an equal right margin to .md-content to re-balance the flex row. */
+/* When only one sidebar shows, add a 12.1rem margin (one sidebar's width) on
+   the opposite side so content stays centered. Row order is always
+   primary (nav) -> secondary (ToC) -> content. */
 @media screen and (min-width: 76.25em) {
-    .md-sidebar--secondary[hidden]~.md-content {
+    /* Only nav visible (e.g. homepage). */
+    .md-sidebar--primary:not([hidden])~.md-sidebar--secondary[hidden]~.md-content {
         margin-right: 12.1rem;
+    }
+
+    /* Only ToC visible (e.g. blog/likes/about). */
+    .md-sidebar--primary[hidden]~.md-sidebar--secondary:not([hidden])~.md-content {
+        margin-left: 12.1rem;
     }
 }
 
