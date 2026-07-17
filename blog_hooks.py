@@ -48,6 +48,7 @@ WORDS_PER_MINUTE = 265
 SYNOPSIS_LENGTH = 200
 
 _FRONTMATTER_RE = re.compile(r"^---\n.*?\n---\n", re.DOTALL)
+_HEADING_RE = re.compile(r"^#{1,6}[ \t].*$", re.MULTILINE)
 _CODE_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
 _IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 _WIKILINK_PIPED_RE = re.compile(r"\[\[([^\]|]+)\|([^\]]+)\]\]")
@@ -65,6 +66,7 @@ _post_preview_json = "{}"
 def _plain_text(markdown_text: str) -> str:
     """Strip frontmatter, Markdown syntax, and raw HTML down to plain text."""
     text = _FRONTMATTER_RE.sub("", markdown_text, count=1)
+    text = _HEADING_RE.sub(" ", text)
     text = _CODE_FENCE_RE.sub(" ", text)
     text = _IMAGE_RE.sub(" ", text)
     text = _WIKILINK_PIPED_RE.sub(r"\2", text)
