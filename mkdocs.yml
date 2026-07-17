@@ -19,10 +19,10 @@ theme:
     - navigation.tabs
 
 watch:
-  - likes_index_plugin.py
+  - blog_hooks.py
 
 hooks:
-  - likes_index_plugin.py
+  - blog_hooks.py
 
 plugins:
   - search
@@ -34,14 +34,16 @@ plugins:
       draft_on_serve: true
       post_url_format: "../{slug}"
       archive: false
+      categories: false
+      pagination: false
   - blog:
-      blog_dir: likes/feed
+      blog_dir: likes
       draft_on_serve: true
       archive: false
       categories: false
       authors: false
       pagination: false
-      post_url_format: "../{slug}"
+      post_url_format: "{slug}"
 
 markdown_extensions:
   - attr_list
@@ -59,7 +61,7 @@ extra:
     DevOps:
       bg: "#DFF0DE"
       text: "#2D6B2B"
-    Infrastructure:
+    Infra:
       bg: "#D6E4FA"
       text: "#1E4A9C"
     MkDocs:
@@ -93,12 +95,16 @@ extra:
     Sci-Fi:
       bg: "#F0E6FF"
       text: "#4A1A6F"
-    Book:
+    Books:
       bg: "#F5E6D3"
       text: "#6B4423"
 
 extra_css:
   - assets/custom.css
+
+extra_javascript:
+  - assets/tag-filter.js
+  - assets/link-preview.js
 
 nav:
   - Blog: blog/index.md

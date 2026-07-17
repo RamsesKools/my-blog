@@ -16,10 +16,10 @@ Below you find an overview of my latest blog posts and new pages with things I l
 
 **You can also read more [[about|about me]]**.
 
-## [[blog|Latest posts]]
+## [[blog/index|Latest posts]]
 
 <!-- overview:latest-posts -->
 
-## [[likes|Latest things I like]]
+## [[likes/index|Latest things I like]]
 
 <!-- overview:latest-likes -->
