@@ -1,6 +1,11 @@
 (function () {
   "use strict";
 
+  // Disable preview on mobile
+  if (window.matchMedia && window.matchMedia("(hover: none), (pointer: coarse)").matches) {
+    return;
+  }
+
   var scriptUrl = document.currentScript && document.currentScript.src;
   var dataUrl = scriptUrl
     ? new URL("post-preview.json", scriptUrl).toString()
