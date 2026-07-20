@@ -171,6 +171,12 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
         }
         for p in (*_blog_posts, *_likes_posts)
     }
+
+    about_path = Path(config["docs_dir"]) / "about.md"
+    if about_path.exists():
+        synopsis, _readtime = _synopsis_and_readtime(about_path.read_text(encoding="utf-8"))
+        preview["/about/"] = {"title": "About", "synopsis": synopsis}
+
     _post_preview_json = json.dumps(preview)
 
 on_files.mkdocs_priority = -75  # type: ignore[attr-defined]  # run after blog plugin (priority -50)

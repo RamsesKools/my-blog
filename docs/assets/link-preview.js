@@ -42,17 +42,22 @@
     var draft = entry.draft
       ? ' <span class="tag-filter-draft-marker" title="Draft">Draft</span>'
       : "";
-    var readtimeLabel = entry.readtime === 1 ? "1 min read" : entry.readtime + " min read";
+
+    var metaParts = [];
+    if (tags) metaParts.push('<span class="link-preview-tags">' + tags + "</span>");
+    if (entry.date) {
+      var readtimeLabel = entry.readtime === 1 ? "1 min read" : entry.readtime + " min read";
+      metaParts.push('<span class="link-preview-info">' + entry.date + " &middot; " + readtimeLabel + "</span>");
+    }
 
     card.innerHTML =
       '<div class="link-preview-title">' + entry.title + draft + "</div>" +
       (entry.synopsis
         ? '<div class="link-preview-synopsis">' + entry.synopsis + "</div>"
         : "") +
-      '<div class="link-preview-meta">' +
-      (tags ? '<span class="link-preview-tags">' + tags + "</span>" : "") +
-      '<span class="link-preview-info">' + entry.date + " &middot; " + readtimeLabel + "</span>" +
-      "</div>";
+      (metaParts.length
+        ? '<div class="link-preview-meta">' + metaParts.join("") + "</div>"
+        : "");
   }
 
   function positionCard(link) {
