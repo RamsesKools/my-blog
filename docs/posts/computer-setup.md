@@ -9,11 +9,9 @@ tags:
 # Setting up my new macbook from a repo
 
 I recently got a new MacBook for work.
-Normally that means days of reinstalling apps, digging up settings, and slowly rediscovering all the little tweaks I forgot I made.
+Normally that means days of reinstalling apps, digging up settings, and slowly rediscovering all the little tweaks I forgot I made. <!-- more -->
 This time I did it differently: I turned my old machine's configuration into a repo, and installed the new machine from that.
 This post is about that repo, why I think this is worth doing, and how the setup works.
-
-<!-- more -->
 
 ## The problem with configuring by hand
 

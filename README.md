@@ -42,6 +42,14 @@ dagu start /opt/dagu/dags/blog-preview-deploy.yaml -- MODE=force
 dagu start /opt/dagu/dags/blog-preview-deploy.yaml -- MODE=deploy
 ```
 
+## Post excerpts and the hover preview
+
+Internal links show a hover-card preview (see `docs/assets/link-preview.js`) built from the content up to a `<!-- more -->` marker in the post.
+Put `<!-- more -->` right after the intro paragraph(s), since that's the actual rendered Markdown shown in the card, headings/code/links/images and all.
+Skip the marker and the whole page becomes the preview instead, which is rarely what you want.
+
+Always hover the link locally (`uv run mkdocs serve`) before publishing to check the card looks right.
+
 ## Embedding videos
 
 Videos are stored in `docs/assets/` and embedded using a plain HTML `<video>` tag with an absolute path:

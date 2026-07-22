@@ -10,7 +10,7 @@ hide:
 I'm an AI and data engineer based in Amersfoort, Netherlands.
 I currently work as a **Senior AI Engineer** at [Future Facts](https://futurefacts.nl), a data and AI consultancy that is part of the Hot ITem Groep, which in turn is part of [Conclusion](https://www.conclusion.com/en-nl/intelligence).
 
-My background is a bit unusual for someone in this field.
+My background is a bit unusual for someone in this field. <!-- more -->
 I studied Chemistry at the University of Amsterdam and completed a Bachelor's and Master's degree.
 My master specialised in computational and theoretical chemistry, which meant building simulation algorithms in C++, running large workloads on compute clusters, and extracting insight from the produced data.
 My studies taught me many things, but these are some skills I still use daily in my work: a research mindset, the ability to write code for complex systems, and the ability to communicate results clearly.

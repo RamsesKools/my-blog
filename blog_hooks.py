@@ -4,7 +4,7 @@ MkDocs hook that:
 2. Renders a clickable tag-cloud + post table on docs/blog/index.md and
    docs/likes/index.md via a single-line placeholder
 3. Injects latest-posts and latest-likes sections into docs/index.md
-4. Writes a post-preview JSON file (title/synopsis/tags/readtime per post,
+4. Writes a post-preview JSON file (title/excerpt HTML/tags/readtime per post,
    keyed by URL) for the hover-card link preview in docs/assets/link-preview.js
 
 For docs/blog/index.md and docs/likes/index.md, use a single-line placeholder:
@@ -24,9 +24,12 @@ automatically omitted here too. When draft_on_serve makes drafts visible
 
 Tag colors: defined in mkdocs.yml under extra.tags, generated as CSS at build time.
 
-Synopsis/readtime: computed from each post's raw Markdown source (not the
+Excerpt/readtime: computed from each post's raw Markdown source (not the
 rendered HTML) so the data is available immediately in on_files, independent
-of per-page build order.
+of per-page build order. The excerpt is everything up to the post's
+`<!-- more -->` marker, rendered through the site's own Markdown pipeline
+(same extensions as mkdocs.yml) so headings/code/links/images keep their
+formatting in the hover-card preview.
 """
 
 import json
@@ -37,6 +40,7 @@ from pathlib import Path
 from re import Match
 from typing import Any
 
+import markdown
 from mkdocs.plugins import get_plugin_logger
 
 log = get_plugin_logger(__name__)
@@ -45,7 +49,9 @@ TAG_INDEX_PLACEHOLDER = re.compile(r"<!-- tag-index:(blog|likes) -->")
 OVERVIEW_PLACEHOLDER = re.compile(r"<!-- overview:(.+?) -->")
 
 WORDS_PER_MINUTE = 265
-SYNOPSIS_LENGTH = 200
+EXCERPT_LENGTH_HINT = 600  # plain-text characters; just a build-time nudge,
+                            # actual visual cutoff is handled client-side in
+                            # link-preview.js (real layout, not a guess)
 
 _FRONTMATTER_RE = re.compile(r"^---\n.*?\n---\n", re.DOTALL)
 _HEADING_RE = re.compile(r"^#{1,6}[ \t].*$", re.MULTILINE)
@@ -57,6 +63,8 @@ _LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 _HTML_TAG_RE = re.compile(r"<[^>]+>")
 _MD_SYMBOLS_RE = re.compile(r"[#*_>`~|]")
 _WHITESPACE_RE = re.compile(r"\s+")
+_MORE_MARKER_RE = re.compile(r"<!--\s*more\s*-->")
+_LEADING_H1_RE = re.compile(r"\A\s*#[ \t][^\n]*\n+")
 
 _blog_posts: list[dict[str, Any]] = []
 _likes_posts: list[dict[str, Any]] = []
@@ -77,18 +85,45 @@ def _plain_text(markdown_text: str) -> str:
     return _WHITESPACE_RE.sub(" ", text).strip()
 
 
-def _synopsis_and_readtime(markdown_text: str) -> tuple[str, int]:
-    text = _plain_text(markdown_text)
-    words = text.split(" ") if text else []
-    readtime = max(1, ceil(len(words) / WORDS_PER_MINUTE))
+def _readtime(markdown_text: str) -> int:
+    words = _plain_text(markdown_text).split(" ")
+    return max(1, ceil(len(words) / WORDS_PER_MINUTE))
 
-    synopsis = text
-    if len(synopsis) > SYNOPSIS_LENGTH:
-        cutoff = synopsis.rfind(" ", 0, SYNOPSIS_LENGTH)
-        if cutoff == -1:
-            cutoff = SYNOPSIS_LENGTH
-        synopsis = synopsis[:cutoff].rstrip() + "…"
-    return synopsis, readtime
+
+def _excerpt_html(markdown_text: str, file_label: str, md: markdown.Markdown) -> str:
+    """Render the Markdown up to `<!-- more -->` (dropping a leading H1 title,
+    since the card already shows the post/page title on its own). The full
+    excerpt is rendered as-is; link-preview.js decides at hover time how much
+    of it actually fits the card and trims the rest, since only the browser
+    knows real line heights/wrapping."""
+    text = _FRONTMATTER_RE.sub("", markdown_text, count=1)
+    match = _MORE_MARKER_RE.search(text)
+    if match:
+        text = text[: match.start()]
+    else:
+        log.warning(
+            f"'{file_label}' has no <!-- more --> excerpt marker; using the "
+            "full page content for its hover preview card. Add a "
+            "<!-- more --> marker to control what shows up there."
+        )
+    text = _LEADING_H1_RE.sub("", text, count=1).strip()
+    if not text:
+        return ""
+    excerpt_length = len(_plain_text(text))
+    if excerpt_length > EXCERPT_LENGTH_HINT:
+        log.warning(
+            f"'{file_label}' excerpt is {excerpt_length} characters (over the "
+            f"~{EXCERPT_LENGTH_HINT} that comfortably fit the hover preview "
+            "card); it'll likely get trimmed there. Consider moving "
+            "<!-- more --> earlier or trimming the intro."
+        )
+    # The ezlinks plugin (not a Markdown extension) resolves [[wikilinks]]
+    # during the normal page build; our standalone converter never sees that
+    # step, so drop the [[ ]] syntax to plain text rather than show it raw.
+    text = _WIKILINK_PIPED_RE.sub(r"\2", text)
+    text = _WIKILINK_RE.sub(r"\1", text)
+    md.reset()
+    return md.convert(text)
 
 
 def on_config(config: Any, **__: Any) -> None:
@@ -122,6 +157,10 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
     _blog_posts.clear()
     _likes_posts.clear()
     known_tags = config.get("extra", {}).get("tags", {})
+    md = markdown.Markdown(
+        extensions=config.get("markdown_extensions", []),
+        extension_configs=config.get("mdx_configs") or {},
+    )
     for _name, plugin in config["plugins"].items():
         posts = getattr(getattr(plugin, "blog", None), "posts", None)
         if posts is None:
@@ -139,7 +178,8 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
             if not (post.title and created):
                 continue
             markdown_text = Path(post.file.abs_src_path).read_text(encoding="utf-8")
-            synopsis, readtime = _synopsis_and_readtime(markdown_text)
+            readtime = _readtime(markdown_text)
+            excerpt_html = _excerpt_html(markdown_text, post.file.src_path, md)
             post_tags = list(post.meta.get("tags") or [])
             unknown_tags = [t for t in post_tags if t not in known_tags]
             if unknown_tags:
@@ -155,7 +195,7 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
                 "url": url,
                 "tags": post_tags,
                 "draft": bool(post.meta.get("draft", False)),
-                "synopsis": synopsis,
+                "excerptHtml": excerpt_html,
                 "readtime": readtime,
             }
             (_likes_posts if is_likes else _blog_posts).append(entry)
@@ -166,7 +206,7 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
             "date": p["date"].strftime("%Y-%m-%d"),
             "tags": p["tags"],
             "draft": p["draft"],
-            "synopsis": p["synopsis"],
+            "excerptHtml": p["excerptHtml"],
             "readtime": p["readtime"],
         }
         for p in (*_blog_posts, *_likes_posts)
@@ -174,8 +214,9 @@ def on_files(_files: Any, *, config: Any, **__: Any) -> None:
 
     about_path = Path(config["docs_dir"]) / "about.md"
     if about_path.exists():
-        synopsis, _readtime = _synopsis_and_readtime(about_path.read_text(encoding="utf-8"))
-        preview["/about/"] = {"title": "About", "synopsis": synopsis}
+        about_text = about_path.read_text(encoding="utf-8")
+        excerpt_html = _excerpt_html(about_text, "about.md", md)
+        preview["/about/"] = {"title": "About", "excerptHtml": excerpt_html}
 
     _post_preview_json = json.dumps(preview)
 

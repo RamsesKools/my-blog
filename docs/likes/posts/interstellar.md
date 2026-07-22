@@ -11,10 +11,9 @@ tags:
 
 Directed by Christopher Nolan, who is already one of my all-time favorite directors with amazing movies such as: the Batman trilogy, The Prestige, Inception and Tenet.
 A soundtrack made by Hans Zimmer, who can lift up any story with his great musical scores.
+And superb acting! <!-- more -->
 The story's setting is, in my opinion, the best type of science fiction: not too fantastical, and giving a glimpse into what might be possible in our far future.
 That makes this an almost perfect movie in my eyes: crazy space visuals, great acting, great score, and an epic setting.
-
-<!-- more -->
 
 ## Things I love
 

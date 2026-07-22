@@ -30,10 +30,11 @@ Both `docs/blog/index.md` and `docs/likes/index.md` set `template: main.html` in
 
 This is the one piece of non-obvious machinery. It is registered both as a `hook` and under `watch` in `mkdocs.yml`. Its `on_files` runs after the blog plugin (`mkdocs_priority = -75`, blog plugin is `-50`) so it can read the resolved post lists — meaning drafts and future-dated posts the blog plugin already filtered out are automatically excluded here too.
 
-It does two things:
+It does three things:
 
 1. On `docs/blog/index.md` and `docs/likes/index.md`, replaces a single-line `<!-- tag-index:blog -->` / `<!-- tag-index:likes -->` placeholder with an alphabetical tag "cloud" of clickable pills followed by a table of all posts (title, created date, tags). Clicking a tag pill filters the table client-side (see `docs/assets/tag-filter.js`) — OR logic across multiple selected tags, deselecting all tags shows everything again. Posts with `draft: true` (only ever visible locally, since `draft_on_serve: true`) get a small "Draft" badge next to the title.
 2. In `docs/index.md`, replaces `<!-- overview:latest-posts -->` and `<!-- overview:latest-likes -->` with rows for the latest items: whole same-date groups are added newest first, and no further group is added once the list has at least 3 items (so ties can make the list longer than 3).
+3. Writes `site/assets/post-preview.json`, keyed by URL, consumed by `docs/assets/link-preview.js` to show a hover-card preview over internal links. Each entry's `excerptHtml` is the Markdown up to that page's `<!-- more -->` marker, rendered through a standalone `markdown.Markdown()` instance built from the same `markdown_extensions`/`mdx_configs` as the real build — so headings, code blocks, links, and images keep their formatting in the card. See [Post excerpts and the hover preview](#post-excerpts-and-the-hover-preview) below. Note: this standalone converter doesn't run the `ezlinks` plugin, so `[[wikilinks]]` inside an excerpt degrade to plain text rather than a resolved link.
 
 The tag-index table uses `.tag-filter` / `.tag-cloud` / `.tag-filter-table` / `.tag-filter-row` classes; the homepage overview rows still use the older `.likes-list` / `.likes-row` / `.likes-title` / `.likes-date` classes. Both are styled in `docs/assets/custom.css`.
 
@@ -60,6 +61,17 @@ sips -s format jpeg -s formatOptions 85 input.png --out docs/assets/output.jpg
 ```
 
 This typically reduces file size by 70-80%. Use absolute paths in Markdown (`![alt](/assets/filename.jpg)`) so images load correctly regardless of page depth.
+
+### Post excerpts and the hover preview
+
+Every post and page that should get a hover-card preview needs a `<!-- more -->` marker after its intro paragraph(s) — the marker is what `blog_hooks.py` cuts the excerpt at (see [`blog_hooks.py`](#blog_hookspy--custom-mkdocs-hook) above). Everything before it is rendered through the real Markdown pipeline and shown verbatim in the hover card, so:
+
+- Write the intro so it reads well standalone — it's the actual preview text, not just a plain-text summary anymore.
+- Headings, code blocks, links, and images in that section keep their formatting in the card.
+- `[[wikilinks]]` inside the excerpt degrade to plain unlinked text (the `ezlinks` plugin that resolves them doesn't run in the standalone converter used for previews).
+- If a page has no `<!-- more -->` marker, the *entire* page becomes the excerpt and a build warning is logged — always add the marker rather than rely on that fallback.
+
+Always check the rendered hover preview locally before publishing: run `uv run mkdocs serve`, hover an internal link to the new post/page, and confirm the card looks right (not overflowing, nothing look broken).
 
 ### Adding a "like"
 
