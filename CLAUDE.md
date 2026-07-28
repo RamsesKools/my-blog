@@ -62,6 +62,30 @@ sips -s format jpeg -s formatOptions 85 input.png --out docs/assets/output.jpg
 
 This typically reduces file size by 70-80%. Use absolute paths in Markdown (`![alt](/assets/filename.jpg)`) so images load correctly regardless of page depth.
 
+### Diagrams (Excalidraw)
+
+For architecture/flow diagrams, use the `excalidraw` skill (installed at `~/.agents/skills/excalidraw-skill`, symlinked into `~/.claude/skills`).
+Preferred style: hand-drawn shapes and arrows (`roughness: 1`, Virgil font) but clean, non-sketchy icons/logos (`roughness: 0`), so tool logos stay crisp while the diagram itself keeps the drawn look.
+Real logos should come from the [Excalidraw community libraries](https://libraries.excalidraw.com) via `scripts/excalidraw_lib.py` when available; for a logo not in any library, embed the actual brand PNG as a native Excalidraw `image` element rather than hand-drawing a substitute.
+Wrap the whole diagram in a single hand-drawn border rectangle (white fill, solid stroke, `roughness: 1`) as the very first element in the scene, so it renders behind everything else and gives the diagram a contained edge instead of bleeding into the page background.
+
+Keep **two files** per diagram in `docs/assets/`, sharing a basename:
+
+- `<name>.excalidraw`: the editable source, opened/edited directly in the Excalidraw app.
+- `<name>.png`: the exported image actually embedded in the post.
+
+Do not use the exporter's `--embed-scene` flag, it bakes the full editable scene (plus any embedded logo images) into the PNG's metadata, which bloats the file for no benefit on a page that only displays it.
+The `.excalidraw` file is the single source of truth for editing; the PNG is a disposable render of it.
+
+**The two files don't auto-sync.** Whenever `<name>.excalidraw` changes, re-export the PNG:
+
+```bash
+excalidraw-brute-export-cli -i docs/assets/<name>.excalidraw -f png -o docs/assets/<name>.png -b false -s 1
+```
+
+`-b false` exports a transparent background outside the diagram's own border rectangle, instead of a solid white canvas, so the image doesn't show a hard rectangle on a page with a different background color.
+`-s 1` (scale) is the diagram's native resolution, enough to keep text and arrows readable at the size these render on the blog; going higher only inflates file size without a visible benefit, and lower isn't offered (scale is `1`, `2`, or `3`).
+
 ### Post excerpts and the hover preview
 
 Every post and page that should get a hover-card preview needs a `<!-- more -->` marker after its intro paragraph(s) — the marker is what `blog_hooks.py` cuts the excerpt at (see [`blog_hooks.py`](#blog_hookspy--custom-mkdocs-hook) above). Everything before it is rendered through the real Markdown pipeline and shown verbatim in the hover card, so:
