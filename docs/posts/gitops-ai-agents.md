@@ -75,7 +75,7 @@ You can genuinely do anything with Python across the stack and still get one coh
 Everything else in the repo follows the same "one source of truth" idea: `infra/` for the Terraform/Bicep/CDK definitions, `docs/` for the MkDocs site, `notebooks/` for exploratory work, and `dbt/` for the data transformations and their generated documentation.
 Keeping tests and documentation in the same repo with the code they cover is a strong preference and recommendation of mine.
 
-![GitOps monorepo and runtime architecture for a Python-heavy data + AI product using dbt and infrastructure as code](/assets/gitops-ai-agents-architecture.png)
+![GitOps monorepo and runtime architecture for a Python-heavy data + AI product using dbt and infrastructure as code](/assets/gitops-ai-agents-architecture.png){: .zoomable }
 
 ## GitOps and agentic coding
 
