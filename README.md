@@ -17,6 +17,24 @@ Topics (will) range from:
 - Honest about what's in progress or unfinished
 - No tracking, no ads, no newsletter prompts
 
+## Plugins and features
+
+### MkDocs plugins
+
+Configured in `mkdocs.yml` under `plugins:`.
+
+- `search` — built-in full-text search.
+- `ezlinks` — resolves `[[wikilinks]]` between pages.
+- `blog` (configured twice) — powers `/blog/` (posts) and `/likes/` (things I like); `blog_hooks.py` layers the tag-index table and post listings on top.
+
+### Custom JS features
+
+Small hand-rolled features, each opt-in or scoped to specific pages rather than applied site-wide.
+
+- Tag filter (`docs/assets/tag-filter.js`) — click a tag pill on the blog/likes overview page to filter the post table; deselect all tags to show everything again.
+- Link preview (`docs/assets/link-preview.js`) — hovering an internal link shows a card previewing the linked post, built from the content up to its `<!-- more -->` marker. See [Post excerpts and the hover preview](#post-excerpts-and-the-hover-preview).
+- Image zoom (`docs/assets/image-zoom.js`) — click-to-zoom lightbox for a single image. Opt in per image by adding `{: .zoomable }` after the Markdown image (uses the `attr_list` extension), rather than applying it to every image on the site. Close with Escape, a click on the backdrop, a click on the enlarged image, or the × button.
+
 ## Deployment
 
 Two deployment targets: `blog-preview.ramseskools.nl` (private preview, accessible via VPN or local network) and `blog.ramseskools.nl` (public, on GitHub Pages).

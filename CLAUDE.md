@@ -179,7 +179,7 @@ To add a new special-cased field with custom rendering (e.g. a badge, colored pi
 
 ### Markdown extensions enabled
 
-`attr_list`, `pymdownx.blocks.caption`, and `pymdownx.superfences` with a `mermaid` fence — so ` ```mermaid ` code blocks render as diagrams.
+`attr_list`, `pymdownx.blocks.caption`, and `pymdownx.superfences` with a `mermaid` fence — so ` ```mermaid ` code blocks render as diagrams. `attr_list` also powers the opt-in image lightbox: add `{: .zoomable }` after an image to make it open full-page on click (see `docs/assets/image-zoom.js`).
 
 ## Writing style
 
