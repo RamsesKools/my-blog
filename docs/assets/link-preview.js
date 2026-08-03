@@ -209,6 +209,7 @@
   function onEnter(e) {
     var link = e.target.closest && e.target.closest("a[href]");
     if (!link) return;
+    if (link.pathname === window.location.pathname) return;
     loadData().then(function (data) {
       var entry = data[link.pathname];
       if (!entry) return;
@@ -234,6 +235,7 @@
     loadData().then(function (data) {
       var links = document.querySelectorAll("a[href]");
       for (var i = 0; i < links.length; i++) {
+        if (links[i].pathname === window.location.pathname) continue;
         if (data[links[i].pathname]) {
           links[i].classList.add("link-preview-internal");
         }
