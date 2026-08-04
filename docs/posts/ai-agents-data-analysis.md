@@ -162,6 +162,8 @@ I wrapped both routes behind one function, so a direct connector and the Data AP
 The agent never has to know or care which one is underneath.
 It is quite straightforward, but some standardization like this prevents an agent from reinventing the wheel and discovering the same bugs over and over.
 
+![Local Jupyter environment connecting to Redshift via a direct psycopg2 connection or the async Data API, with Databricks, Snowflake, Postgres and BigQuery shown as unused alternatives](/assets/ai-agents-data-analysis-architecture.png){: .zoomable }
+
 ## The habit that makes the output trustworthy
 
 If you take one thing from this: **make the agent write its findings as markdown cells, in the notebook, directly under the output that supports them, with the actual numbers pasted in.**
