@@ -1,5 +1,5 @@
 ---
-date: 2026-08-03
+date: 2026-08-04
 slug: ai-agents-data-analysis
 tags:
   - AI
@@ -18,7 +18,7 @@ Skip either one and you get a confident, well formatted, completely wrong answer
 
 <!-- more -->
 
-Recently I needed to validate data migration: the same tables produced by an old pipeline and a new one, and a decision to make about whether consumers of the data could switch to the new source.
+Recently I needed to validate a data migration: the same tables produced by an old pipeline and a new one, and a decision to make about whether consumers of the data could switch to the new source.
 Dozens of tables, the same method each time, high enough stakes that a wrong "looks fine" would land in production.
 That is exactly the kind of work an agent should be good at.
 It took a while before it actually was.
@@ -30,7 +30,7 @@ The first version of this was not automation. It was me, copying and pasting rel
 1. Explain the problem to the agent, paste in whatever context I thought it needed.
 2. Agent writes a query.
 3. Query is not correct for one of many reasons.
-    - Agent didn't use database specific SQL dialect correctly.
+    - Agent didn't use database-specific SQL dialect correctly.
     - Agent didn't use the correct schema name, table name, or column name.
     - Agent made an incorrect assumption about how to answer the question: the SQL itself might be technically correct, but it can still be functionally incorrect for a large number of reasons.
 4. I give feedback on the query.
@@ -46,17 +46,17 @@ Every one of those steps is me hand-carrying either access or context across a g
 
 ## The two gaps
 
-**Access.** The agent could not run a query .
+**Access.** The agent could not run a query.
 It could only write text and wait for me to execute it.
 That turns every syntax error into a two-minute human round trip instead of a quick retry.
 
 **Context.** This is the bigger one, and it has two halves.
 There is the structural half: the view and table definitions, the documentation, the lineage.
 And there is the half that lives in people's heads.
-What do all the company specific abbrevations mean?
+What do all the company specific abbreviations mean?
 What a given column actually means, which of the five date fields is the one that matters, why a specific table has a weird gap in 2024, and what specifically you are trying to find out.
 
-An agent that has neither is just like a very fast junior on their first morning: no access yet, and no understanding of the business context and technical context..
+An agent that has neither is just like a very fast junior on their first morning: no access yet, and no understanding of the business context and technical context.
 
 ## Fix 1: run the agent where the code lives
 
@@ -66,7 +66,7 @@ But in my opinion this is essential.
 
 There are many ways to configure a git repo to handle all your database logic and the details differ per platform.
 They all come down to the same thing: a deployment pipeline that syncs code in a repo to your database, warehouse or lakehouse.
-[dbt](https://www.getdbt.com/) is on of my preferred tools that help accomplish this in a nice way.
+[dbt](https://www.getdbt.com/) is one of my preferred tools that help accomplish this in a nice way.
 
 Once you have all your database's logic in one git repository, it is quite trivial to give access to your AI agent.
 Now it can read the table definitions, follow a column back through the transformations that produced it, and work out the lineage by itself instead of asking me for it.
@@ -79,17 +79,17 @@ It does not tell the agent what any of it means, or how to work with it, and it 
 
 So I started writing that part down, in markdown, in the repo.
 `README.md`, `AGENTS.md`, and other additional context files can be really nice for this.
-Documenting the code itself is also important, inline comments can be nice, but a tool like `dbt` also provides strong mechanisms for this.
+Documenting the code itself is also important. Inline comments can be nice, but a tool like `dbt` also provides strong mechanisms for this.
 Agent [Skills](https://code.claude.com/docs/en/skills) are another great mechanism: instructions an agent loads when a task matches the skill documentation.
 
-For my specific usecase I did it in the following layered approach:
+For my specific use case I did it in the following layered approach:
 
-- `README.md` describe everything that is relevant for the human-reader as well as the agent reader.
-- `AGENTS.md` describe everything that is only relevant for the agent-reader.
+- `README.md` describes everything that is relevant for the human-reader as well as the agent reader.
+- `AGENTS.md` describes everything that is only relevant for the agent-reader.
     - Since this is added to every agent session, it is important to keep it concise.
-    - A powerfull method is to point to additional documentation from this file and explain when the agent should read the additional docs.
-- `skills/jupyter-data-analysis/SKILLS.md` explains all the relevant information on how to analyze data in jupyter. The agent will pick up this information automatically whenever the given task matched the skill's description's keywords.
-- `prompts/<specific_source>_table_validation.prompt.md` is a started prompt that explains exactly how to do data validation for a specific data source.
+    - A powerful method is to point to additional documentation from this file and explain when the agent should read the additional docs.
+- `skills/jupyter-data-analysis/SKILLS.md` explains all the relevant information on how to analyze data in Jupyter. The agent will pick up this information automatically whenever the given task matches the skill's description's keywords.
+- `prompts/<specific_source>_table_validation.prompt.md` is a starter prompt that explains exactly how to do data validation for a specific data source.
 
 None of this is clever.
 It is the stuff a new colleague picks up in their first two weeks, written down.
@@ -97,17 +97,17 @@ The difference is that the agent starts every single session as a new colleague.
 
 ### What missing context costs
 
-Letting the agent write and run it's own querys has hidden risks that can cause serious costs.
-Without proper context, the agent still produces an answer, it just guesses at the parts nobody wrote down.
-I have two examples of hidden cost that because of missing context:
+Letting the agent write and run its own queries has hidden risks that can cause serious costs.
+Without proper context, the agent still produces an answer; it just guesses at the parts nobody wrote down.
+I have two examples of hidden cost caused by missing context:
 
-- Generated querys can be 'silently' wrong.
-    - A KPI or definitions is guessed and doesn't align with the business. An answer is still generated, but it is actually wrong.
+- Generated queries can be 'silently' wrong.
+    - A KPI or definition is guessed and doesn't align with the business. An answer is still generated, but it is actually wrong.
     - If follow up actions or business decisions rely on the correctness of the answer, then serious costs can be incurred.
-- Generated querys can be technically correct, but very inefficient.
-    - Without context the agent might not know what tables are big and which are small, which tables are materialized and can be queryd effeciently and which objects are actually views that are very slow to process.
+- Generated queries can be technically correct, but very inefficient.
+    - Without context the agent might not know what tables are big and which are small, which tables are materialized and can be queried efficiently, and which objects are actually views that are very slow to process.
     - The agent might write broad `JOIN`s that take a long time to process or forget to include partition filtering properly.
-    - If you are using serverless compute that scales well (for example via SnowFlake or Databricks), then the actual processing cost can be huge, while the answers still appear rather quickly.
+    - If you are using serverless compute that scales well (for example via Snowflake or Databricks), then the actual processing cost can be huge, while the answers still appear rather quickly.
 
 ## Fix 3: let the agent run the queries itself
 
@@ -115,10 +115,10 @@ This is the one that closes the loop, and the one worth being careful about.
 
 The safety story is boring, which is the point.
 The agent connects with a dev role I own that gives it read access to specific tables, but does not allow it to modify records or drop tables.
-Additionally, whenever possible I do all analysis work on an acceptance database cluster, this prevents any analysis work from interfering with production workloads.
+Additionally, whenever possible I do all analysis work on an acceptance database cluster; this prevents any analysis work from interfering with production workloads.
 
 The workspace enforces that rather than trusting anyone to remember it.
-In general I never trust an AI agent to follow safety instructions, instead I configure it's access such that it can't do any harm.
+In general I never trust an AI agent to follow safety instructions, instead I configure its access such that it can't do any harm.
 
 ### Why a notebook
 
@@ -127,7 +127,7 @@ There are several ways to give an agent query access. For data analysis specific
 1. It keeps everything in one place: the query, the result it produced, and the markdown explaining what that result means.
     - No other format holds all three at once.
 2. Both of us can work in the same environment.
-    - I can read what it did and run a cell myself without moving code or data between run time environments.
+    - I can read what it did and run a cell myself without moving code or data between runtime environments.
 3. The results outlive the chat session.
     - No code or results stay stuck in the chat session.
     - No code or results stay stuck in some database manager.
@@ -140,7 +140,7 @@ Getting the notebook connected to Redshift was a bit of a problem at first.
 
 The obvious first move is a regular database connector: `psycopg2` wired up through SQLAlchemy.
 Redshift can use the Postgres wire protocol, so any Postgres driver works against it.
-That's also roughly how a tool like DBeaver connects, but the team behind dbeaver had years to improve this process.
+That's also roughly how a tool like DBeaver connects, but the team behind DBeaver had years to improve this process.
 
 That a direct connection is not without issues showed up as soon as a query ran long.
 A twenty-minute query has to survive the Jupyter cell's own timeout, the connector's idle timeout, and the database's timeout on that same connection.
@@ -160,7 +160,7 @@ So this setup might not work for everyone. Some of our users only get a database
 
 I wrapped both routes behind one function, so a direct connector and the Data API both return a pandas DataFrame from the same `run_sql` call.
 The agent never has to know or care which one is underneath.
-It is quite straightforward, but some standardiation like this prevents an agent from reinventing the wheel and discovering the same bugs over and over.
+It is quite straightforward, but some standardization like this prevents an agent from reinventing the wheel and discovering the same bugs over and over.
 
 ## The habit that makes the output trustworthy
 
@@ -173,10 +173,10 @@ The same logic holds for me as the reviewer.
 Reading the query, its result, and the explanation together, in one place, produces a better conclusion than reading the same three things in isolation.
 The notebook stops being a scratchpad this way and becomes the deliverable.
 
-Writing things down like this is also the only thing that survives a jupyter kernel restart, which happens more often than you'd expect.
+Writing things down like this is also the only thing that survives a Jupyter kernel restart, which happens more often than you'd expect.
 The SSO token expires and boto3 caches the session inside it, so a restart is the standard fix, not an edge case.
 Or when your device is turned on and off.
-Data can change when you read it at different times and I think it can be wastefull to rerun expensive querys.
+Data can change when you read it at different times, and I think it can be wasteful to rerun expensive queries.
 A markdown cell with the actual numbers pasted in survives that restart; a Python object sitting in kernel memory does not.
 The same problem is why the notebook parameterises everything at the top: table name, date window, column list, all in one setup cell.
 The whole thing is then a function of that cell, and reruns cleanly from the top whenever the kernel dies.
@@ -192,7 +192,6 @@ Root cause tends to live in that kind of timeline, and it is rarely written down
 Treat the agent's account of what a number is as reliable.
 Treat its account of why the number is what it is as a hypothesis you still have to check yourself.
 
-
 ## What this process brings you
 
 In short: automation and consistency.
@@ -206,10 +205,10 @@ The agent is good at the mechanical parts: writing the query, casting the column
 It is bad at knowing which of those outputs is meaningless.
 That judgement stays with you, and everything above is how you hand over the first part without giving away the second.
 
-What is also brings is a consistent 'data analysis product'.
+What it also brings is a consistent 'data analysis product'.
 As a human, when I do my data analysis I will jump straight to the conclusion whenever I feel like I have the answer.
 That is because I'm a bit lazy (in a good way).
-But this means I will miss a nice documented report with an overview of why something went wrong and what is wrong exactly.
+But this means I will miss a nicely documented report with an overview of why something went wrong and what exactly is wrong.
 
 ## The starter repo
 
@@ -219,4 +218,7 @@ Two modules, two example notebooks, a skill file and a prompt file.
 The getting-started notebook walks through connecting, running inline SQL, running SQL from a file, pushing the result into pandas, charting it, and writing the finding down.
 The second notebook is a full table comparison with the gates in the order they have to run.
 
-It is a template, not a framework. Clone it, point it at a question, throw the notebooks away when you are done.
+It is a template, not a framework.
+Clone it, point it at your specific database, and specify your data analysis question.
+
+Good luck with your agentic data analysis! Remember: check your agent's assumptions and conclusions!
