@@ -9,15 +9,19 @@ document.addEventListener("DOMContentLoaded", () => {
   overlay.className = "image-zoom-overlay";
   overlay.innerHTML =
     '<button class="image-zoom-close" aria-label="Close">&times;</button>' +
+    '<a class="image-zoom-open-tab" target="_blank" rel="noopener">Open image<br>in tab</a>' +
     '<img class="image-zoom-full" alt="">';
   document.body.appendChild(overlay);
 
   const fullImg = overlay.querySelector(".image-zoom-full");
   const closeBtn = overlay.querySelector(".image-zoom-close");
+  const openTabLink = overlay.querySelector(".image-zoom-open-tab");
 
   function open(img) {
-    fullImg.src = img.currentSrc || img.src;
+    const src = img.currentSrc || img.src;
+    fullImg.src = src;
     fullImg.alt = img.alt || "";
+    openTabLink.href = src;
     overlay.classList.add("image-zoom-overlay--visible");
     document.body.classList.add("image-zoom-lock");
   }
