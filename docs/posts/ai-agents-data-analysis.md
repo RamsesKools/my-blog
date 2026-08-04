@@ -1,5 +1,5 @@
 ---
-date: 2026-07-30
+date: 2026-08-03
 slug: ai-agents-data-analysis
 tags:
   - AI
@@ -9,139 +9,207 @@ tags:
 
 # Automating data analysis with AI coding agents
 
-Asking an AI agent to "check whether these two tables match" gets you an answer in about ninety seconds.
-The answer is confident, well formatted, and there is a decent chance it is wrong.
+"Just let the agent query the database" hides a surprising amount of setup.
 
-The problem isn't that the agent can't write SQL; it can.
-The problem is that a question about data can be interpreted in a large number of ways, and the agent has no way to know how to answer unless you tell it.
-So I stopped asking better questions and started building the workspace the question gets asked in.
+Writing SQL is the part an agent is already good at.
+Answering a question about your data is a different job, and it needs two things that do not come for free.
+The agent needs a safe way to reach the data, and it needs enough context to know what that data actually means.
+Skip either one and you get a confident, well formatted, completely wrong answer in about ninety seconds.
 
 <!-- more -->
 
-I spent a few sprints validating a data platform migration: the same tables produced by an old pipeline and a new one, and a decision to make about whether consumers could switch.
+Recently I needed to validate data migration: the same tables produced by an old pipeline and a new one, and a decision to make about whether consumers of the data could switch to the new source.
 Dozens of tables, the same method each time, high enough stakes that a wrong "looks fine" would land in production.
-That is exactly the shape of work an agent should be good at, and exactly the shape it fails at by default.
+That is exactly the kind of work an agent should be good at.
+It took a while before it actually was.
 
-Here is what actually made it work.
+## The loop I started with
 
-## What doesn't work: just asking
+The first version of this was not automation. It was me, copying and pasting relevant information.
 
-The first attempt was the obvious one.
-Point the agent at the cluster, describe the two tables, ask whether they match.
+1. Explain the problem to the agent, paste in whatever context I thought it needed.
+2. Agent writes a query.
+3. Query is not correct for one of many reasons.
+    - Agent didn't use database specific SQL dialect correctly.
+    - Agent didn't use the correct schema name, table name, or column name.
+    - Agent made an incorrect assumption about how to answer the question: the SQL itself might be technically correct, but it can still be functionally incorrect for a large number of reasons.
+4. I give feedback on the query.
+    - Copy back the error if there is any.
+    - I explain what schema/table/view/column to actually use.
+    - I explain the relevant business context needed to understand the question better.
+5. Back to step 2.
 
-It wrote a query joining both sides on the id column, per day, counted the mismatches, and reported 8% data loss.
+**Ten or more** iterations like this for a single question was normal.
 
-Every part of that was wrong, and none of it looked wrong:
+The agent was not the bottleneck in that loop. I was.
+Every one of those steps is me hand-carrying either access or context across a gap the agent could not cross by itself.
 
-- The id column was not the business key. It was only unique within a partner, so the join fanned out.
-- The two pipelines partition on different clocks, so a record that shifted across midnight was counted as both missing on one day and extra on the next. The same healthy record, reported twice as a fault.
-- The new table's history had two eras. Older rows were bulk-migrated and completely empty, newer rows were produced natively and fine. Averaged together, that reads as uniform corruption.
+## The two gaps
 
-The agent did nothing unreasonable.
-It just didn't know any of that, and nothing in the environment was going to tell it.
+**Access.** The agent could not run a query .
+It could only write text and wait for me to execute it.
+That turns every syntax error into a two-minute human round trip instead of a quick retry.
 
-## The fix is three files, not a better prompt
+**Context.** This is the bigger one, and it has two halves.
+There is the structural half: the view and table definitions, the documentation, the lineage.
+And there is the half that lives in people's heads.
+What do all the company specific abbrevations mean?
+What a given column actually means, which of the five date fields is the one that matters, why a specific table has a weird gap in 2024, and what specifically you are trying to find out.
 
-What changed things was treating the agent's environment as the deliverable.
-Three pieces, in increasing order of how much they helped.
+An agent that has neither is just like a very fast junior on their first morning: no access yet, and no understanding of the business context and technical context..
 
-### 1. A workspace it can actually run
+## Fix 1: run the agent where the code lives
 
-A small `uv` project: two modules, a `sql/` folder, a `notebooks/` folder.
-The modules wrap the [Redshift Data API](https://docs.aws.amazon.com/redshift/latest/mgmt/data-api.html) and a direct connector so that every query, either route, returns a pandas DataFrame.
+The logic that produces our data lives in a git repo.
+I know that is not universally true and some teams still update views/tables directly in the database.
+But in my opinion this is essential.
 
-That sounds trivial. It removes an entire category of failure.
-When `run_sql` is one import away and always returns a DataFrame, the agent spends its effort on the question instead of reinventing connection handling in every notebook, slightly differently, with a new bug each time.
+There are many ways to configure a git repo to handle all your database logic and the details differ per platform.
+They all come down to the same thing: a deployment pipeline that syncs code in a repo to your database, warehouse or lakehouse.
+[dbt](https://www.getdbt.com/) is on of my preferred tools that help accomplish this in a nice way.
 
-The other thing the workspace buys you is target safety.
-Config is read from target-prefixed variables, `REDSHIFT_DATA_API_ACC_*` and `REDSHIFT_DATA_API_PRD_*`, and every call takes an explicit `target="ACC"`.
-A kernel you have had open all afternoon cannot silently start answering from production.
+Once you have all your database's logic in one git repository, it is quite trivial to give access to your AI agent.
+Now it can read the table definitions, follow a column back through the transformations that produced it, and work out the lineage by itself instead of asking me for it.
+That one change removed most of the "paste in whatever context I thought it needed" step, and it removed it permanently, because the repo stays current on its own.
 
-### 2. A skill file: the operating manual
+## Fix 2: write down what the repo does not say
 
-This is the one that mattered most, and it is just a markdown file.
+The repo tells the agent what the code does.
+It does not tell the agent what any of it means, or how to work with it, and it never explains 'why'.
 
-[Skills](https://code.claude.com/docs/en/skills) are instructions an agent loads when a task matches.
-Mine covers the things that are true about this environment and nowhere else:
+So I started writing that part down, in markdown, in the repo.
+`README.md`, `AGENTS.md`, and other additional context files can be really nice for this.
+Documenting the code itself is also important, inline comments can be nice, but a tool like `dbt` also provides strong mechanisms for this.
+Agent [Skills](https://code.claude.com/docs/en/skills) are another great mechanism: instructions an agent loads when a task matches the skill documentation.
 
-- Which notebook editing tools to use, and that it must never touch raw `.ipynb` JSON.
-- The setup-cell pattern: every schema, table, window and column list is a constant in one cell.
-- That the SSO token will expire mid-analysis, that `aws login` needs a human at a browser, and that the agent should stop and ask rather than burn twenty minutes retrying.
-- A table of Redshift-specific SQL traps. `count(distinct a, b)` isn't valid. `rows` is reserved. `<>` silently drops NULL-vs-value pairs, so use `is distinct from`. Each of those costs an afternoon exactly once, and then never again.
+For my specific usecase I did it in the following layered approach:
 
-None of this is clever. It is the stuff a new colleague learns in their first two weeks, written down.
-The difference is that the agent starts every session as a new colleague.
+- `README.md` describe everything that is relevant for the human-reader as well as the agent reader.
+- `AGENTS.md` describe everything that is only relevant for the agent-reader.
+    - Since this is added to every agent session, it is important to keep it concise.
+    - A powerfull method is to point to additional documentation from this file and explain when the agent should read the additional docs.
+- `skills/jupyter-data-analysis/SKILLS.md` explains all the relevant information on how to analyze data in jupyter. The agent will pick up this information automatically whenever the given task matched the skill's description's keywords.
+- `prompts/<specific_source>_table_validation.prompt.md` is a started prompt that explains exactly how to do data validation for a specific data source.
 
-### 3. A prompt file: the method
+None of this is clever.
+It is the stuff a new colleague picks up in their first two weeks, written down.
+The difference is that the agent starts every single session as a new colleague.
 
-The skill says how to work here.
-The prompt file says what to do, in order, for one recurring job.
+### What missing context costs
 
-Mine is about twenty lines and its most valuable feature is that it tells the agent when to stop:
+Letting the agent write and run it's own querys has hidden risks that can cause serious costs.
+Without proper context, the agent still produces an answer, it just guesses at the parts nobody wrote down.
+I have two examples of hidden cost that because of missing context:
 
-> Confirm the parameters with me before running the gates: business key, message key, child arrays, consumers, consumed columns. **Measure the business key**, do not take it from the documentation, it has been wrong before.
->
-> Stop and check with me if a gate fails, if a result contradicts what you read in step 2, or if a query is about to run against anything other than the scratch tables.
+- Generated querys can be 'silently' wrong.
+    - A KPI or definitions is guessed and doesn't align with the business. An answer is still generated, but it is actually wrong.
+    - If follow up actions or business decisions rely on the correctness of the answer, then serious costs can be incurred.
+- Generated querys can be technically correct, but very inefficient.
+    - Without context the agent might not know what tables are big and which are small, which tables are materialized and can be queryd effeciently and which objects are actually views that are very slow to process.
+    - The agent might write broad `JOIN`s that take a long time to process or forget to include partition filtering properly.
+    - If you are using serverless compute that scales well (for example via SnowFlake or Databricks), then the actual processing cost can be huge, while the answers still appear rather quickly.
 
-An agent that runs the whole method unsupervised produces a report nobody trusts.
-An agent that stops at three checkpoints produces one that survives review.
+## Fix 3: let the agent run the queries itself
+
+This is the one that closes the loop, and the one worth being careful about.
+
+The safety story is boring, which is the point.
+The agent connects with a dev role I own that gives it read access to specific tables, but does not allow it to modify records or drop tables.
+Additionally, whenever possible I do all analysis work on an acceptance database cluster, this prevents any analysis work from interfering with production workloads.
+
+The workspace enforces that rather than trusting anyone to remember it.
+In general I never trust an AI agent to follow safety instructions, instead I configure it's access such that it can't do any harm.
+
+### Why a notebook
+
+There are several ways to give an agent query access. For data analysis specifically, a notebook wins, for three reasons.
+
+1. It keeps everything in one place: the query, the result it produced, and the markdown explaining what that result means.
+    - No other format holds all three at once.
+2. Both of us can work in the same environment.
+    - I can read what it did and run a cell myself without moving code or data between run time environments.
+3. The results outlive the chat session.
+    - No code or results stay stuck in the chat session.
+    - No code or results stay stuck in some database manager.
+    - The notebook is a finished 'data analysis product' once we are done.
+
+### Synchronous vs asynchronous database calls
+
+A notebook is mostly Python, which happens to be my language of choice.
+Getting the notebook connected to Redshift was a bit of a problem at first.
+
+The obvious first move is a regular database connector: `psycopg2` wired up through SQLAlchemy.
+Redshift can use the Postgres wire protocol, so any Postgres driver works against it.
+That's also roughly how a tool like DBeaver connects, but the team behind dbeaver had years to improve this process.
+
+That a direct connection is not without issues showed up as soon as a query ran long.
+A twenty-minute query has to survive the Jupyter cell's own timeout, the connector's idle timeout, and the database's timeout on that same connection.
+It also has to survive anything in between that decides to drop it: a VPN reconnecting, a switch from wifi to ethernet, whatever.
+Any one of those kills the connection, and the query dies with it, so you start over from zero.
+A direct connection is fine for something that comes back in a few seconds; it gets worse the longer the query runs.
+
+The fix is the same one you'd reach for with any slow synchronous call to an external service: stop waiting on it synchronously.
+Submit the query, let it run server-side, come back later for the result.
+For Redshift that's the [Data API](https://docs.aws.amazon.com/redshift/latest/mgmt/data-api.html), called through the AWS SDK boto3.
+A statement id is just a string, so the query keeps running after the cell, or even the kernel, that started it is gone.
+The whole thing works over `aws login`.
+
+It also has some downsides.
+This route needs an AWS account and IAM permissions on top of database access, not just a database user and network access.
+So this setup might not work for everyone. Some of our users only get a database account and not access to AWS.
+
+I wrapped both routes behind one function, so a direct connector and the Data API both return a pandas DataFrame from the same `run_sql` call.
+The agent never has to know or care which one is underneath.
+It is quite straightforward, but some standardiation like this prevents an agent from reinventing the wheel and discovering the same bugs over and over.
 
 ## The habit that makes the output trustworthy
 
 If you take one thing from this: **make the agent write its findings as markdown cells, in the notebook, directly under the output that supports them, with the actual numbers pasted in.**
 
-Not a summary in the chat window. Not a separate report written afterwards from memory.
-A markdown cell, next to the query result, saying what that specific number means.
+Not a summary in the chat window, and not a separate report written afterwards from memory: a markdown cell, right next to the query result, explaining what that specific number means.
+Keeping the finding next to its evidence forces the claim to sit where a reviewer can check it in one glance, and it means the reasoning outlives the chat session that produced it.
+I also feel that agents are better at reasoning about context that sits together: describing a table it just produced and can still see, instead of reconstructing it from memory several messages later.
+The same logic holds for me as the reviewer.
+Reading the query, its result, and the explanation together, in one place, produces a better conclusion than reading the same three things in isolation.
+The notebook stops being a scratchpad this way and becomes the deliverable.
 
-This does three things at once.
-It forces the claim to sit next to its evidence, where a reviewer can check it in one glance.
-It survives the chat session, which is where analysis normally goes to die.
-And it is genuinely the thing agents are best at, because they can read the output they just produced and describe it accurately.
+Writing things down like this is also the only thing that survives a jupyter kernel restart, which happens more often than you'd expect.
+The SSO token expires and boto3 caches the session inside it, so a restart is the standard fix, not an edge case.
+Or when your device is turned on and off.
+Data can change when you read it at different times and I think it can be wastefull to rerun expensive querys.
+A markdown cell with the actual numbers pasted in survives that restart; a Python object sitting in kernel memory does not.
+The same problem is why the notebook parameterises everything at the top: table name, date window, column list, all in one setup cell.
+The whole thing is then a function of that cell, and reruns cleanly from the top whenever the kernel dies.
 
-The notebook stops being a scratchpad and becomes the deliverable.
+### None of this makes the conclusion true
 
-Two supporting habits make that hold up:
+A markdown cell may record what the agent believes the numbers mean, and that belief **still needs a human to check it**.
+That matters most once the conclusion goes beyond a simple technical fact and starts pointing at a root cause.
+In my experience an agent is genuinely poor at that kind of diagnosis.
+Even with all the context described in Fix 2, it is usually missing the pieces that actually determine cause.
+Things like when a pipeline was failing, when someone else's pipeline was having a bad week at the same time, or when the business first started noticing something was off.
+Root cause tends to live in that kind of timeline, and it is rarely written down anywhere the agent can read it.
+Treat the agent's account of what a number is as reliable.
+Treat its account of why the number is what it is as a hypothesis you still have to check yourself.
 
-**Parameterise at the top.** Every table name, date window and column list lives in the setup cell.
-The notebook is then a function of that cell, it can be re-pointed at the next table in one edit, and it re-runs top to bottom after a kernel restart.
 
-**Assume the kernel will restart.** It will, because the SSO token expires and boto3 caches its session, so a restart is the only fix.
-Any cell that depends on a variable which only exists because some exploratory cell happened to run once is a cell you will lose.
-Expensive intermediates belong in scratch tables, not in kernel memory.
+## What this process brings you
 
-## Traps an agent walks into cheerfully
+In short: automation and consistency.
 
-Worth writing into your own skill file, because they generalise past my specific migration:
-
-**Check whether the history is uniform before comparing anything.**
-A backfilled table is often two datasets wearing one name.
-Find the boundary first, then run your comparisons on one era at a time.
-
-**Compare at set level, not per day.**
-If two systems partition on different clocks, a day-by-day join reports every boundary-crossing record as two separate faults.
-Take keys from one side's window and search the *entire* opposite table.
-
-**Run it in both directions.**
-Missing records and extra records have completely different causes and completely different fixes.
-In my case the "extra" records turned out to be rows the *old* pipeline had dropped, which flipped the conclusion from a concern into a point in the new pipeline's favour.
-
-**A concentrated difference is a boundary artefact. A spread one is a broken pipeline.**
-Same percentage, opposite meaning. Always look at the distribution, never just the total.
-
-**No dual-axis charts.**
-Two measures on different scales get two panels sharing an x-axis.
-A second y-axis lets you slide the crossover point anywhere you like, which means the chart shows whatever you want it to show.
-Agents produce dual-axis charts constantly, because most plotting tutorials do.
-
-## What it actually buys you
-
-Not speed, exactly. The first table took longer than doing it by hand.
+This will not save you a lot of work or time at first.
+The first table took longer than doing it by hand, and the setup above took longer still.
 
 What it buys is that table twelve is done the same way as table one, that the reasoning is written down next to the numbers, and that when someone asks "how did you decide this" in four months there is a notebook that answers.
 
 The agent is good at the mechanical parts: writing the query, casting the columns, formatting the chart, describing the output in prose.
 It is bad at knowing which of those outputs is meaningless.
-That judgement stays with you, and the three files above are how you hand over the first part without giving away the second.
+That judgement stays with you, and everything above is how you hand over the first part without giving away the second.
+
+What is also brings is a consistent 'data analysis product'.
+As a human, when I do my data analysis I will jump straight to the conclusion whenever I feel like I have the answer.
+That is because I'm a bit lazy (in a good way).
+But this means I will miss a nice documented report with an overview of why something went wrong and what is wrong exactly.
 
 ## The starter repo
 
