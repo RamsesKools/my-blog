@@ -162,27 +162,27 @@ I wrapped both routes behind one function, so a direct connector and the Data AP
 The agent never has to know or care which one is underneath.
 It is quite straightforward, but some standardization like this prevents an agent from reinventing the wheel and discovering the same bugs over and over.
 
-#### Agentic workspace diagram
+## Agentic workspace diagram
 
-The diagram lays out the whole workspace, not just the Redshift connection this section covers.
+The diagram lays out the whole workspace, not just the Redshift connection described above.
 
 ![Local Jupyter environment connecting to Redshift via a direct psycopg2 connection or the async Data API, with Databricks, Snowflake, Postgres and BigQuery shown as unused alternatives](/assets/ai-agents-data-analysis-architecture.png){: .zoomable }
 
 /// caption
-**Diagram**: The agentic workspace; a coding agent driving a local Jupyter kernel and the rest of the workspace visualized around it.
+The agentic workspace: a coding agent driving a local Jupyter kernel and the rest of the workspace visualized around it.
 ///
 
 - A coding agent (Copilot, ChatGPT, or similar) drives a Jupyter kernel inside a local `uv` Python environment, with the code, docs, prompts, and skills from Fix 1 and Fix 2 available to it as context.
 - The kernel reaches Redshift over the direct `psycopg2` connection or the async Data API, both wrapped behind the same `run_sql()` call described above.
 - **Added, but not discussed, nor configured in the starter repo:** Databricks, Snowflake, Postgres, and BigQuery connections.
-    - This isn't configured yet, but a logical extension to use the same `run_sql()` pattern extended to warehouses I haven't wired up yet.
+    - Not configured yet, but a logical extension of the same `run_sql()` pattern to warehouses I haven't wired up.
 - **Added, but not discussed, nor configured in the starter repo:** Jira and Confluence access appear as further tools the agent could reach, either over MCP or a direct connection.
-    - Jira and Confluence access requires the `acli` cli tool and skill or Atlassian MCP server.
+    - Jira and Confluence access requires the `acli` CLI tool and skill, or the Atlassian MCP server.
 - **Added, but not discussed, nor configured in the starter repo:** access to additional context.
     - How to configure the additional context is quite important.
-    - Access to github repositories where your code and documentation lives is very usefull.
+    - Access to GitHub repositories where your code and documentation live is very useful.
 
-That last items in the list above, is not something this post or the [starter repo](https://github.com/RamsesKools/redshift-agent-workspace) covers.
+Those last items in the list above aren't something this post or the [starter repo](https://github.com/RamsesKools/redshift-agent-workspace) covers.
 It's a natural extension, though: point the same agent at the relevant repositories and documentation, and the same "read the code, read the docs" approach from Fix 1 and Fix 2 applies just as well to a wiki page as it does to a dbt model.
 
 ## The habit that makes the output trustworthy
