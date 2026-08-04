@@ -98,6 +98,9 @@ extra:
     Books:
       bg: "#F5E6D3"
       text: "#6B4423"
+    Data:
+      bg: "#D9F0F5"
+      text: "#1B5E6B"
 
 extra_css:
   - assets/custom.css
