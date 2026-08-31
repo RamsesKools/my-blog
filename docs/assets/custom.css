@@ -905,3 +905,7 @@ body,
 body.image-zoom-lock {
     overflow: hidden;
 }
+
+/* Per-component styles live in their own files under assets/css/, wired up
+   in mkdocs.yml extra_css:
+   - assets/css/peon-demo.css — sound demo widget (peon-ping post) */

@@ -104,6 +104,7 @@ extra:
 
 extra_css:
   - assets/custom.css
+  - assets/css/peon-demo.css
 
 extra_javascript:
   - assets/tag-filter.js
