@@ -1,7 +1,6 @@
 ---
 date: 2026-10-30
 slug: orca
-draft: true
 tags:
   - Tools
   - AI
