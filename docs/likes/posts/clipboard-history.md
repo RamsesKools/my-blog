@@ -5,7 +5,7 @@ tags:
   - Tools
 ---
 
-# <img class="key-icon" src="/assets/windows-logo.png" alt="Windows logo" style="height:1em; vertical-align:middle; display:inline;"> + V - Clipboard History
+# <img src="/assets/windows-logo.png#only-light" alt="Windows logo" style="height:1em; vertical-align:middle;"><img src="/assets/windows-logo-dark.png#only-dark" alt="Windows logo" style="height:1em; vertical-align:middle;"> + V - Clipboard History
 
 This is one of those small Windows features that I absolutely love: press `Windows + V` and you get a scrollable history of everything you've copied recently, not just the last item.
 [Microsoft added it around 2018](https://www.microsoft.com/en-gb/windows/tips/clipboard-history), which is just about when I started using computers professionally, and I haven't been able to work without it since.

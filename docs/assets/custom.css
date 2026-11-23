@@ -1093,8 +1093,3 @@ body[data-md-color-scheme="slate"],
 [data-md-color-scheme="slate"] .link-preview-crop-fade {
     background: linear-gradient(to bottom, transparent, var(--sk-raised) 70%);
 }
-
-[data-md-color-scheme="slate"] img.key-icon {
-    background: #fff;
-    border-radius: 18%;
-}
