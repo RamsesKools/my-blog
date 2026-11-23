@@ -1,0 +1,66 @@
+/* Sound demo widget (peon-ping post).
+   Depends on the design tokens defined in custom.css (:root / [data-md-color-scheme]). */
+
+.peon-demo {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px solid var(--c-border);
+    border-radius: var(--r);
+    background: var(--c-surface);
+}
+
+.peon-demo-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--c-text-secondary);
+}
+
+.peon-demo-label img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--r);
+    object-fit: cover;
+}
+
+.peon-demo-label:not(:first-child) {
+    margin-top: 1rem;
+}
+
+.peon-demo-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem;
+}
+
+.peon-demo-buttons button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--c-border-strong);
+    border-radius: var(--r);
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font);
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 120ms ease, border-color 120ms ease;
+}
+
+.peon-demo-buttons button:hover {
+    background: var(--c-blue-light);
+    border-color: var(--c-blue);
+}
+
+.peon-demo-buttons button span {
+    font-size: 0.72rem;
+    color: var(--c-text-muted);
+}

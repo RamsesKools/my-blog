@@ -94,11 +94,14 @@ The public site at `https://blog.ramseskools.nl` is deployed via the GitHub Acti
 
 **Triggers:**
 
-- **GitHub Release** - automatically deploys the tagged commit when a release is published.
+- **Push to `main`** - every merged PR deploys automatically.
+- **GitHub Release** - deploys the tagged commit when a release is published.
 - **Manual (`workflow_dispatch`)** - can be triggered from the Actions tab in GitHub.
+
+`main` is protected: no direct pushes, changes go through a PR and are squash-merged.
 
 **What it does:**
 
-When triggered manually, the workflow first checks whether the current commit already has a tag.
-If not, it creates a CalVer release tag (`YYYY.MM.DD`, auto-incrementing on same-day releases) and generates release notes from commits.
+On push or manual trigger, the workflow first checks whether the current commit already has a tag.
+If not, it creates a CalVer release tag (`vYYYY.MM.DD.N`, auto-incrementing on same-day releases) and generates release notes from commits.
 It then checks out that tagged commit, builds the site with `uv run mkdocs build`, and deploys the `site/` directory to GitHub Pages.

@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal blog built with MkDocs Material. Content is Markdown under `docs/`, the site is built to `site/`, and there are two deployment targets:
 
-- `blog.ramseskools.nl` — public, GitHub Pages, deployed via `.github/workflows/deploy-gh-pages.yml` on release publish or manual `workflow_dispatch` (which auto-creates a CalVer tag `YYYY.MM.DD`).
+- `blog.ramseskools.nl` — public, GitHub Pages, deployed via `.github/workflows/deploy-gh-pages.yml` on every push to `main` (plus release publish or manual `workflow_dispatch`); push and dispatch auto-create a CalVer release `vYYYY.MM.DD.N`. `main` is protected: changes land via squash-merged PRs only.
 - `blog-preview.ramseskools.nl` — private preview, served by the nginx container in `docker-compose.yml`. A Dagu DAG (`blog-preview-deploy`) on the host polls this repo every 5 minutes and rebuilds with `mkdocs build`.
 
 ## Common commands
@@ -41,6 +41,12 @@ The tag-index table uses `.tag-filter` / `.tag-cloud` / `.tag-filter-table` / `.
 ### Theme overrides
 
 `overrides/` is the Material theme `custom_dir`. `overrides/partials/header.html` and `nav.html` override stock partials; `overrides/blog-post.html` overrides the blog post template.
+
+### Dark mode
+
+Material's `default`/`slate` palette toggle (`mkdocs.yml`), ported from wayfinder-maps minus its starfield.
+The `[data-md-color-scheme="slate"]` block at the end of `docs/assets/custom.css` re-points the `--c-*` tokens at `--sk-*` dark values, so styles using tokens recolor automatically.
+Hardcoded colors need their own slate override there.
 
 ## Content conventions
 
