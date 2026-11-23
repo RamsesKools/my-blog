@@ -1083,6 +1083,7 @@ body[data-md-color-scheme="slate"],
 
 [data-md-color-scheme="slate"] .md-typeset a.link-preview-internal:hover {
     color: var(--sk-blue-hover);
+    text-decoration-color: var(--sk-blue-hover);
 }
 
 [data-md-color-scheme="slate"] .link-preview-card {
