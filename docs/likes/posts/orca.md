@@ -6,7 +6,7 @@ tags:
   - AI
 ---
 
-# Orca
+# <img src="/assets/orca.png" alt="Orca logo" style="height:1em; vertical-align:middle; display:inline;"> Orca
 
 [Orca](https://onorca.dev/) is an Agent Development Environment (ADE): a desktop app where you run, track, and coordinate a bunch of coding agents in parallel, each in its own workspace and git worktree.
 It works with whatever agent harness you like (Claude Code, Codex, Copilot CLI, and more), and that's what sold me.
