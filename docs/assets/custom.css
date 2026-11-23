@@ -909,3 +909,191 @@ body.image-zoom-lock {
 /* Per-component styles live in their own files under assets/css/, wired up
    in mkdocs.yml extra_css:
    - assets/css/peon-demo.css — sound demo widget (peon-ping post) */
+
+/* Dark mode: Material's slate scheme, ported from wayfinder-maps without the starfield */
+html {
+    --sk-bg: #08090c;
+    --sk-surface: #0f1115;
+    --sk-raised: #171a20;
+    --sk-text: #e8eaee;
+    --sk-text2: #b0b5be;
+    --sk-muted: #858b96;
+    --sk-line: rgba(232, 234, 238, 0.13);
+    --sk-line-strong: rgba(232, 234, 238, 0.24);
+    --sk-blue: #8ba9ff;
+    --sk-blue-hover: #ffd873;
+    --sk-green: #9bd9a3;
+    --sk-code: #d0d4dc;
+    --sk-glass: rgba(14, 16, 20, 0.72);
+    --sk-glow:
+        radial-gradient(ellipse 60% 45% at 85% 8%, rgba(255, 255, 255, 0.075), transparent 70%),
+        radial-gradient(ellipse 55% 50% at 8% 92%, rgba(200, 205, 215, 0.06), transparent 70%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(255, 255, 255, 0.03), transparent 75%);
+}
+
+:root:has(body[data-md-color-scheme="slate"]) {
+    background: var(--sk-glow), var(--sk-bg);
+    background-attachment: fixed;
+}
+
+[data-md-color-scheme="slate"] {
+    color-scheme: dark;
+
+    --c-bg: var(--sk-bg);
+    --c-surface: var(--sk-surface);
+    --c-dark: var(--sk-text);
+    --c-mid: var(--sk-code);
+    --c-blue: var(--sk-blue);
+    --c-blue-light: rgba(108, 156, 242, 0.14);
+    --c-blue-muted: rgba(139, 169, 255, 0.35);
+    --c-blue-hover: var(--sk-blue-hover);
+    --c-blue-text: var(--sk-blue);
+    --c-green: var(--sk-green);
+    --c-green-light: rgba(141, 201, 139, 0.14);
+    --c-green-border: rgba(141, 201, 139, 0.4);
+    --c-green-text: var(--sk-green);
+    --c-text: var(--sk-text);
+    --c-text-secondary: var(--sk-text2);
+    --c-text-muted: var(--sk-muted);
+    --c-border: var(--sk-line);
+    --c-border-strong: var(--sk-line-strong);
+    --c-neutral: var(--sk-glass);
+
+    --md-primary-fg-color: var(--sk-blue);
+    --md-primary-fg-color--light: var(--c-blue-muted);
+    --md-primary-fg-color--dark: var(--sk-blue-hover);
+    --md-primary-bg-color: var(--sk-text);
+    --md-accent-fg-color: var(--sk-blue-hover);
+
+    --md-default-bg-color: var(--sk-bg);
+    --md-default-fg-color: var(--sk-text);
+    --md-default-fg-color--light: var(--sk-text2);
+    --md-default-fg-color--lighter: var(--sk-muted);
+    --md-default-fg-color--lightest: var(--sk-line);
+
+    --md-code-bg-color: var(--sk-surface);
+    --md-code-fg-color: var(--sk-code);
+    --md-code-hl-color: rgba(139, 169, 255, 0.2);
+    --md-typeset-a-color: var(--sk-blue);
+    --md-typeset-color: var(--sk-text);
+    --md-typeset-table-color: var(--sk-line);
+    --md-footer-bg-color: var(--sk-surface);
+    --md-footer-bg-color--dark: var(--sk-bg);
+    --md-footer-fg-color: var(--sk-text);
+    --md-footer-fg-color--light: var(--sk-text2);
+    --md-footer-fg-color--lighter: var(--sk-muted);
+    --md-admonition-bg-color: var(--sk-surface);
+    --md-admonition-fg-color: var(--sk-text);
+    --md-shadow-z1: 0 0 0.25rem rgba(0, 0, 0, 0.5);
+}
+
+body[data-md-color-scheme="slate"],
+[data-md-color-scheme="slate"] .md-main,
+[data-md-color-scheme="slate"] .md-container {
+    background: transparent;
+}
+
+[data-md-color-scheme="slate"] .md-header,
+[data-md-color-scheme="slate"] .md-tabs {
+    background: var(--sk-glass);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+[data-md-color-scheme="slate"] .md-header__button,
+[data-md-color-scheme="slate"] .md-source,
+[data-md-color-scheme="slate"] .md-search__icon {
+    color: var(--sk-text);
+}
+
+[data-md-color-scheme="slate"] .md-footer {
+    background: var(--sk-surface);
+}
+
+[data-md-color-scheme="slate"] .md-footer-meta {
+    background: var(--sk-bg);
+}
+
+[data-md-color-scheme="slate"] .md-search__input {
+    color: var(--sk-text);
+}
+
+[data-md-color-scheme="slate"] .md-search__input::placeholder {
+    color: var(--sk-text2);
+}
+
+[data-md-color-scheme="slate"] .md-search__input:hover {
+    background-color: rgba(108, 156, 242, 0.24) !important;
+    box-shadow: none !important;
+}
+
+[data-md-color-scheme="slate"] .md-search__output,
+[data-md-color-scheme="slate"] .md-search-result__meta {
+    background: var(--sk-surface);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .md-button,
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) {
+    border-color: var(--sk-line-strong);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) {
+    background: var(--sk-surface);
+    box-shadow: none;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+    background: var(--sk-raised);
+    color: var(--sk-text);
+}
+
+[data-md-color-scheme="slate"] .md-typeset code {
+    background: var(--sk-raised);
+}
+
+[data-md-color-scheme="slate"] .md-typeset pre > code {
+    background: var(--sk-surface);
+    border: 1px solid var(--sk-line);
+    border-radius: var(--r);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition,
+[data-md-color-scheme="slate"] .md-typeset details {
+    background: var(--sk-surface);
+    border-color: var(--sk-line-strong);
+    box-shadow: none;
+}
+
+[data-md-color-scheme="slate"] .md-typeset hr {
+    border-color: var(--sk-line);
+}
+
+[data-md-color-scheme="slate"] .md-typeset img {
+    box-shadow: 0 0 0 1px var(--sk-line);
+}
+
+[data-md-color-scheme="slate"] .image-zoom-open-tab {
+    color: var(--sk-bg);
+}
+
+[data-md-color-scheme="slate"] .md-sidebar .md-nav__title {
+    background: transparent;
+    box-shadow: none;
+}
+
+[data-md-color-scheme="slate"] .md-content__inner::before {
+    display: none;
+}
+
+[data-md-color-scheme="slate"] .md-typeset a.link-preview-internal:hover {
+    color: var(--sk-blue-hover);
+}
+
+[data-md-color-scheme="slate"] .link-preview-card {
+    background: var(--sk-raised);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-md-color-scheme="slate"] .link-preview-crop-fade {
+    background: linear-gradient(to bottom, transparent, var(--sk-raised) 70%);
+}
