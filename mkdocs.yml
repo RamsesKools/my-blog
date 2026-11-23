@@ -92,12 +92,6 @@ extra:
       bg: "#E8F0FF"
       text: "#1A3A8A"
       border: "1px solid #1A3A8A"
-    Sci-Fi:
-      bg: "#F0E6FF"
-      text: "#4A1A6F"
-    Books:
-      bg: "#F5E6D3"
-      text: "#6B4423"
     Data:
       bg: "#D9F0F5"
       text: "#1B5E6B"
