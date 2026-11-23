@@ -1,9 +1,15 @@
 name: Deploy to GitHub Pages
 
 on:
+  push:
+    branches: [main]
   release:
     types: [published]
   workflow_dispatch:
+
+concurrency:
+  group: deploy-gh-pages
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -15,7 +21,7 @@ jobs:
     name: Ensure CalVer tag
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name != 'release'
     outputs:
       ref: ${{ steps.resolve.outputs.ref }}
     steps:
@@ -48,6 +54,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.calver.outputs.next_version }}
+          target_commitish: ${{ github.sha }}
           generate_release_notes: true
 
       - name: Set output ref
