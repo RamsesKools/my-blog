@@ -1094,3 +1094,8 @@ body[data-md-color-scheme="slate"],
 [data-md-color-scheme="slate"] .link-preview-crop-fade {
     background: linear-gradient(to bottom, transparent, var(--sk-raised) 70%);
 }
+
+[data-md-color-scheme="slate"] .md-tag-pill {
+    background: #2b2f38;
+    color: #c4c9d2;
+}
