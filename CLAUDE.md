@@ -143,6 +143,20 @@ extra:
       border: "1px solid #1A3A8A"
 ```
 
+In dark mode (`slate`) the pills keep each tag's hue: a muted dark fill with light text, derived from `bg`/`text` in `blog_hooks.py` and checked for WCAG AA contrast (a build warning is logged if an override fails it).
+Override per tag with optional `dark_bg`, `dark_text`, and `dark_border` (full CSS border value, default is `border` recolored to the dark text).
+Tags without an entry use the grey fallback pill, whose dark variant lives in the slate block of `docs/assets/custom.css`.
+
+```yaml
+extra:
+  tags:
+    Tools:
+      bg: "#D6E4FA"
+      text: "#1E4A9C"
+      dark_bg: "#223759"   # optional
+      dark_text: "#A1BBED" # optional
+```
+
 Tag colors are generated at build time (via the `on_config` and `on_post_build` hooks in `blog_hooks.py`) and appended to the final `site/assets/custom.css` file. No source file changes needed — just edit the YAML config and rebuild.
 
 #### Created and updated dates

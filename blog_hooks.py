@@ -23,6 +23,8 @@ automatically omitted here too. When draft_on_serve makes drafts visible
 (local `mkdocs serve`), they carry a small "Draft" marker in the rendered table.
 
 Tag colors: defined in mkdocs.yml under extra.tags, generated as CSS at build time.
+Dark-mode colors are derived from the light ones (same hue) unless the tag sets
+dark_bg / dark_text / dark_border.
 
 Excerpt/readtime: computed from each post's raw Markdown source (not the
 rendered HTML) so the data is available immediately in on_files, independent
@@ -32,6 +34,7 @@ of per-page build order. The excerpt is everything up to the post's
 formatting in the hover-card preview.
 """
 
+import colorsys
 import json
 import posixpath
 import re
@@ -126,6 +129,49 @@ def _excerpt_html(markdown_text: str, file_label: str, md: markdown.Markdown) ->
     return md.convert(text)
 
 
+_HEX_RE = re.compile(r"#[0-9a-fA-F]{6}")
+_MIN_CONTRAST = 4.5  # WCAG AA for normal text
+
+
+def _rgb(hex_color: str) -> tuple[float, float, float]:
+    h = hex_color.lstrip("#")
+    return tuple(int(h[i : i + 2], 16) / 255 for i in (0, 2, 4))  # type: ignore[return-value]
+
+
+def _hex(rgb: tuple[float, float, float]) -> str:
+    return "#" + "".join(f"{round(c * 255):02X}" for c in rgb)
+
+
+def _luminance(hex_color: str) -> float:
+    r, g, b = (c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in _rgb(hex_color))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def _contrast(a: str, b: str) -> float:
+    hi, lo = sorted((_luminance(a), _luminance(b)), reverse=True)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def _derive_dark(bg: str, text: str) -> tuple[str, str]:
+    """Same hues as the light pair: muted dark fill, light text lifted until it passes AA."""
+    bh, _, bs = colorsys.rgb_to_hls(*_rgb(bg))
+    th, _, ts = colorsys.rgb_to_hls(*_rgb(text))
+    dark_bg = _hex(colorsys.hls_to_rgb(bh, 0.24, min(bs * 0.6, 0.45)))
+    lightness = 0.78
+    dark_text = _hex(colorsys.hls_to_rgb(th, lightness, ts))
+    while _contrast(dark_text, dark_bg) < _MIN_CONTRAST and lightness < 1:
+        lightness += 0.02
+        dark_text = _hex(colorsys.hls_to_rgb(th, min(lightness, 1), ts))
+    return dark_bg, dark_text
+
+
+def _tag_rule(selector: str, bg: str, text: str, border: str) -> str:
+    css = f"{selector} {{\n    background: {bg};\n    color: {text};\n"
+    if border:
+        css += f"    border: {border};\n"
+    return css + "}\n"
+
+
 def on_config(config: Any, **__: Any) -> None:
     """Generate tag styles CSS from mkdocs.yml extra.tags config and store in memory."""
     tags = config.get("extra", {}).get("tags", {})
@@ -133,21 +179,24 @@ def on_config(config: Any, **__: Any) -> None:
         return
 
     css_lines = ["/* Generated tag styles from mkdocs.yml extra.tags */\n"]
+    dark_lines = ["/* Generated dark-mode tag styles */\n"]
     for tag_name, tag_spec in tags.items():
         bg = tag_spec.get("bg", "#E0E0E0")
         text = tag_spec.get("text", "#424242")
         border = tag_spec.get("border", "")
+        sel = f'.md-tag-pill[data-tag="{tag_name}"]'
+        css_lines.append(_tag_rule(sel, bg, text, border))
 
-        css = f'.md-tag-pill[data-tag="{tag_name}"] {{\n'
-        css += f'    background: {bg};\n'
-        css += f'    color: {text};\n'
-        if border:
-            css += f'    border: {border};\n'
-        css += "}\n"
-        css_lines.append(css)
+        derived_bg, derived_text = _derive_dark(bg, text)
+        dark_bg = tag_spec.get("dark_bg", derived_bg)
+        dark_text = tag_spec.get("dark_text", derived_text)
+        dark_border = tag_spec.get("dark_border") or _HEX_RE.sub(dark_text, border)
+        if _contrast(dark_text, dark_bg) < _MIN_CONTRAST:
+            log.warning("Tag %r dark colors fail WCAG AA contrast (%.1f)", tag_name, _contrast(dark_text, dark_bg))
+        dark_lines.append(_tag_rule(f'[data-md-color-scheme="slate"] {sel}', dark_bg, dark_text, dark_border))
 
     # Store generated CSS in config.extra for use in on_post_build
-    config.setdefault("extra", {})["tags_css"] = "\n".join(css_lines)
+    config.setdefault("extra", {})["tags_css"] = "\n".join(css_lines + dark_lines)
 
 on_config.mkdocs_priority = 100  # type: ignore[attr-defined]  # run early, before other plugins
 
