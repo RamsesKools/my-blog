@@ -7,7 +7,7 @@ tags:
   - AI
 ---
 
-# Markdown is King, especially for AI agents
+# Markdown is King
 
 In my opinion, Markdown is the best and most widely supported format for writing.
 It takes ten minutes to learn, it works almost everywhere, and it stays perfectly readable without any special tool.
@@ -145,15 +145,19 @@ def hello():
 ```
 ````
 
-## Markdown and AI agents
+## Especially for AI agents
 
 This is where Markdown really shines.
 Making your writing, docs, and presentations available to AI agents as Markdown has great benefits:
 
+- **It is SO much more token-efficient.** No XML soup, no styling metadata, no binary blobs to unpack: almost every token is actual content.
 - **Content is separated from visualization.** The agent only sees lean content, so it can focus on what matters.
-- **It is very token-efficient.** No XML soup, no styling metadata, just text with a bit of structure.
 - **Layout is handled separately and reused.** CSS and HTML are endlessly extendable, so one theme serves all your content.
-- **Agents read and write it natively.** LLMs are great at Markdown, so they can edit your docs just like they edit code.
+- **Agents read and write it natively.** LLMs have seen mountains of Markdown, so they edit your docs just like they edit code.
+
+I strongly believe agents are also more accurate when they work with Markdown.
+Partly because of the token efficiency: less noise in the context window means more attention for what actually matters.
+And partly because they understand the format so well: headings, lists, and code blocks give clear structure they already know by heart.
 
 That is also why my [[agent-config|agent configuration]] is plain Markdown files.
 
