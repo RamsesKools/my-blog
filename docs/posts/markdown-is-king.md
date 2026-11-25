@@ -6,7 +6,6 @@ tags:
   - Workflow
   - AI
 ---
-
 # Markdown is King
 
 In my opinion, Markdown is the best and most widely supported format for writing.
@@ -115,16 +114,16 @@ And they know the format by heart, so headings, lists, and code blocks give them
 I went looking for numbers and found a few.
 
 - Tokens: when Cloudflare launched [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/), one of their blog posts went from 16,180 tokens as HTML to 3,150 as Markdown, 80% fewer.
-  [TQA-Bench](https://arxiv.org/abs/2411.19504) found the same for tables, where HTML needs roughly twice the tokens of Markdown for the same data.
+[TQA-Bench](https://arxiv.org/abs/2411.19504) found the same for tables, where HTML needs roughly twice the tokens of Markdown for the same data.
 - Speed and cost: fewer input tokens means cheaper, faster responses and more room in the context window.
 - Accuracy: [Does Prompt Formatting Have Any Impact on LLM Performance?](https://arxiv.org/abs/2411.10541) compared plain text, Markdown, JSON, and YAML prompts on GPT models.
-  GPT-3.5's score on a code translation task moved by up to 40% just by changing the format.
-  GPT-4 was more stable and did best with Markdown on several benchmarks, while GPT-3.5 preferred JSON.
-  No format wins for every model and task, so I read this as a strong hint, not proof.
+GPT-3.5's score on a code translation task moved by up to 40% just by changing the format.
+GPT-4 was more stable and did best with Markdown on several benchmarks, while GPT-3.5 preferred JSON.
+No format wins for every model and task, so I read this as a strong hint, not proof.
 - Lost in conversion: [a study that converted PowerPoint and PDF files to Markdown](https://arxiv.org/abs/2508.15817) for LLM question answering found that text survives fine, but meaning carried by layout and images gets lost.
-  So it pays to write in Markdown from the start instead of converting later.
+So it pays to write in Markdown from the start instead of converting later.
 - Industry adoption: Cloudflare now serves Markdown to agents that ask for it, and the [llms.txt proposal](https://llmstxt.org/) asks websites to offer a Markdown version of their content for LLMs.
-  OpenAI, Anthropic, and Google already publish one for their docs.
+OpenAI, Anthropic, and Google already publish one for their docs.
 
 It's also why my [[agent-config|agent configuration]] is a folder of plain Markdown files.
 
@@ -165,12 +164,6 @@ It isn't part of the Markdown spec itself.
 It lets you enrich a plain text file with metadata like dates, tags, authors, or anything else you need.
 More and more Markdown tools pick it up: Hugo, MkDocs, and Pandoc read it, GitHub shows it as a table, Obsidian edits it as [Properties](https://obsidian.md/help/properties), and agent skills use it to describe what they do.
 This blog uses it for every post's date and tags.
-
-### Images
-
-```markdown
-![Alt text](/assets/my-image.jpg)
-```
 
 ### Mermaid diagrams
 
@@ -218,8 +211,8 @@ Callouts aren't standard Markdown either, so support varies.
 A renderer that doesn't know them shows the Obsidian and GitHub versions as a plain quote, and MkDocs needs the `admonition` extension turned on.
 On this blog it is, so that last one renders as:
 
-!!! tip "Callouts work here too"
-    Use them for the stuff readers should not skip.
+!!! tip "Callouts work in mkdocs websites such as this blog also"
+    Which can be useful to highlight text.
 
 ### Code blocks with syntax highlighting
 
