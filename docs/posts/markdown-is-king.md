@@ -132,7 +132,11 @@ It's also why my [[agent-config|agent configuration]] is a folder of plain Markd
 
 A `.docx` or `.pptx` file is a zipped archive of XML, full of styling and metadata.
 You need specific tools to edit one, and good luck getting an agent to make a clean change.
-Git can't show a readable diff of them either, so collaborating usually means emailing `final_v3_really_final.docx` around.
+Git can't show a readable diff of them either, so version control with git is out.
+
+I must admit Office 365 wins on collaboration, though.
+Editing the same file in real time via SharePoint is really useful, and much easier for people who don't know git.
+For version control, git is still miles ahead.
 
 Sometimes you do need them.
 Pandoc or Marp can generate them from Markdown when you do, and the source stays plain text.
