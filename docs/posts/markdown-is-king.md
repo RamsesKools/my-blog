@@ -64,6 +64,24 @@ The core works almost everywhere, though.
 Using these conventions outside a Markdown editor has made my writing more precise and efficient.
 A Teams message to a colleague with a short list and a `code snippet` is way easier to read than a wall of text, and I never touch a formatting menu.
 
+## Own your data and your tools
+
+Then there's the question of who owns your writing.
+A `.pptx`, a `.docx`, a OneNote notebook, or a Notion page is usually locked into tools you don't fully control, and you can only do with it what those tools allow.
+I learned that the hard way getting my notes out of OneNote, which I wrote about in [[obsidian|my Obsidian post]].
+
+[[steph-ango|Steph Ango]], CEO of Obsidian, puts it well in his article [File over App](https://stephango.com/file-over-app):
+
+> File over app is an appeal to tool makers: accept that all software is ephemeral, and give people ownership over their data.
+
+And:
+
+> Apps are ephemeral, but your files have a chance to last.
+
+Markdown files sit on your own disk.
+Open them in any editor, run your own scripts on them, version them in git, search them with [[qmd]], or hand them to an AI agent.
+When the next tool comes along, your writing comes with you.
+
 ## Tools I use with Markdown
 
 - Notes and writing: [[obsidian]].
@@ -77,6 +95,47 @@ A few more worth knowing:
 - [Pandoc](https://pandoc.org/), which converts Markdown to Word, PDF, HTML, slides, and basically anything else.
 - [Docusaurus](https://docusaurus.io/) and [VitePress](https://vitepress.dev/), alternatives to MkDocs for documentation sites.
 - GitHub and GitLab, where every `README.md`, issue, and PR description is Markdown.
+
+## Especially for AI agents
+
+If you want AI agents to work with your writing, docs, or presentations, give them Markdown.
+
+It is SO much more token efficient.
+There's no XML soup, no styling metadata, and no binary blob to unpack, so almost every token is actual content.
+Layout lives somewhere else (CSS and HTML, endlessly extendable), and one theme can serve all your content.
+The agent only sees the lean text and can focus on it.
+LLMs have also seen mountains of Markdown, so they edit your docs as easily as they edit code.
+
+I strongly believe agents are more accurate with Markdown too.
+Less noise in the context window leaves more attention for what matters.
+And they know the format by heart, so headings, lists, and code blocks give them structure they already understand.
+
+### What does the research say?
+
+I went looking for numbers and found a few.
+
+- Tokens: when Cloudflare launched [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/), one of their blog posts went from 16,180 tokens as HTML to 3,150 as Markdown, 80% fewer.
+  [TQA-Bench](https://arxiv.org/abs/2411.19504) found the same for tables, where HTML needs roughly twice the tokens of Markdown for the same data.
+- Speed and cost: fewer input tokens means cheaper, faster responses and more room in the context window.
+- Accuracy: [Does Prompt Formatting Have Any Impact on LLM Performance?](https://arxiv.org/abs/2411.10541) compared plain text, Markdown, JSON, and YAML prompts on GPT models.
+  GPT-3.5's score on a code translation task moved by up to 40% just by changing the format.
+  GPT-4 was more stable and did best with Markdown on several benchmarks, while GPT-3.5 preferred JSON.
+  No format wins for every model and task, so I read this as a strong hint, not proof.
+- Lost in conversion: [a study that converted PowerPoint and PDF files to Markdown](https://arxiv.org/abs/2508.15817) for LLM question answering found that text survives fine, but meaning carried by layout and images gets lost.
+  So it pays to write in Markdown from the start instead of converting later.
+- Industry adoption: Cloudflare now serves Markdown to agents that ask for it, and the [llms.txt proposal](https://llmstxt.org/) asks websites to offer a Markdown version of their content for LLMs.
+  OpenAI, Anthropic, and Google already publish one for their docs.
+
+It's also why my [[agent-config|agent configuration]] is a folder of plain Markdown files.
+
+## What about Word and PowerPoint?
+
+A `.docx` or `.pptx` file is a zipped archive of XML, full of styling and metadata.
+You need specific tools to edit one, and good luck getting an agent to make a clean change.
+Git can't show a readable diff of them either, so collaborating usually means emailing `final_v3_really_final.docx` around.
+
+Sometimes you do need them.
+Pandoc or Marp can generate them from Markdown when you do, and the source stays plain text.
 
 ## Taking Markdown further
 
@@ -168,62 +227,3 @@ def hello():
     print("Hello, Markdown!")
 ```
 ````
-
-## Especially for AI agents
-
-If you want AI agents to work with your writing, docs, or presentations, give them Markdown.
-
-It is SO much more token efficient.
-There's no XML soup, no styling metadata, and no binary blob to unpack, so almost every token is actual content.
-Layout lives somewhere else (CSS and HTML, endlessly extendable), and one theme can serve all your content.
-The agent only sees the lean text and can focus on it.
-LLMs have also seen mountains of Markdown, so they edit your docs as easily as they edit code.
-
-I strongly believe agents are more accurate with Markdown too.
-Less noise in the context window leaves more attention for what matters.
-And they know the format by heart, so headings, lists, and code blocks give them structure they already understand.
-
-### What does the research say?
-
-I went looking for numbers and found a few.
-
-- Tokens: when Cloudflare launched [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/), one of their blog posts went from 16,180 tokens as HTML to 3,150 as Markdown, 80% fewer.
-  [TQA-Bench](https://arxiv.org/abs/2411.19504) found the same for tables, where HTML needs roughly twice the tokens of Markdown for the same data.
-- Speed and cost: fewer input tokens means cheaper, faster responses and more room in the context window.
-- Accuracy: [Does Prompt Formatting Have Any Impact on LLM Performance?](https://arxiv.org/abs/2411.10541) compared plain text, Markdown, JSON, and YAML prompts on GPT models.
-  GPT-3.5's score on a code translation task moved by up to 40% just by changing the format.
-  GPT-4 was more stable and did best with Markdown on several benchmarks, while GPT-3.5 preferred JSON.
-  No format wins for every model and task, so I read this as a strong hint, not proof.
-- Lost in conversion: [a study that converted PowerPoint and PDF files to Markdown](https://arxiv.org/abs/2508.15817) for LLM question answering found that text survives fine, but meaning carried by layout and images gets lost.
-  So it pays to write in Markdown from the start instead of converting later.
-- Industry adoption: Cloudflare now serves Markdown to agents that ask for it, and the [llms.txt proposal](https://llmstxt.org/) asks websites to offer a Markdown version of their content for LLMs.
-  OpenAI, Anthropic, and Google already publish one for their docs.
-
-It's also why my [[agent-config|agent configuration]] is a folder of plain Markdown files.
-
-## What about Word and PowerPoint?
-
-A `.docx` or `.pptx` file is a zipped archive of XML, full of styling and metadata.
-You need specific tools to edit one, and good luck getting an agent to make a clean change.
-Git can't show a readable diff of them either, so collaborating usually means emailing `final_v3_really_final.docx` around.
-
-Sometimes you do need them.
-Pandoc or Marp can generate them from Markdown when you do, and the source stays plain text.
-
-## Own your data and your tools
-
-Then there's the question of who owns your writing.
-A `.pptx`, a `.docx`, a OneNote notebook, or a Notion page is usually locked into tools you don't fully control, and you can only do with it what those tools allow.
-I learned that the hard way getting my notes out of OneNote, which I wrote about in [[obsidian|my Obsidian post]].
-
-[[steph-ango|Steph Ango]], CEO of Obsidian, puts it well in his article [File over App](https://stephango.com/file-over-app):
-
-> File over app is an appeal to tool makers: accept that all software is ephemeral, and give people ownership over their data.
-
-And:
-
-> Apps are ephemeral, but your files have a chance to last.
-
-Markdown files sit on your own disk.
-Open them in any editor, run your own scripts on them, version them in git, search them with [[qmd]], or hand them to an AI agent.
-When the next tool comes along, your writing comes with you.
