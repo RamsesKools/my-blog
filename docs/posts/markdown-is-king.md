@@ -73,16 +73,35 @@ A Teams message to a colleague with a short list and a `code snippet` is way eas
 
 A few more worth knowing:
 
-- [Typora](https://typora.io/), an editor that renders Markdown in place while you type.
-- [Pandoc](https://pandoc.org/), which converts Markdown to Word, PDF, HTML, slides, and basically anything else.
-- [Quarto](https://quarto.org/), Markdown plus executable code for reports, papers, websites, and slides.
-- [Docusaurus](https://docusaurus.io/) and [VitePress](https://vitepress.dev/), alternatives to MkDocs for documentation sites.
 - [Jupyter](https://jupyter.org/), with Markdown cells next to your code, which I wrote about in [[ai-agents-data-analysis|automating data analysis with AI agents]].
+- [Pandoc](https://pandoc.org/), which converts Markdown to Word, PDF, HTML, slides, and basically anything else.
+- [Docusaurus](https://docusaurus.io/) and [VitePress](https://vitepress.dev/), alternatives to MkDocs for documentation sites.
 - GitHub and GitLab, where every `README.md`, issue, and PR description is Markdown.
 
 ## Taking Markdown further
 
 The basics get you far, and most tools support a few extras on top.
+
+### Frontmatter
+
+Frontmatter is a block of YAML between two `---` lines at the very top of a file:
+
+```markdown
+---
+date: 2026-11-25
+tags:
+  - Tools
+  - AI
+---
+
+# My note
+```
+
+It isn't part of the Markdown spec itself.
+[Jekyll](https://jekyllrb.com/docs/front-matter/) popularized it for static sites, and tools simply split off the YAML before rendering the rest as Markdown.
+It lets you enrich a plain text file with metadata like dates, tags, authors, or anything else you need.
+More and more Markdown tools pick it up: Hugo, MkDocs, and Pandoc read it, GitHub shows it as a table, Obsidian edits it as [Properties](https://obsidian.md/help/properties), and agent skills use it to describe what they do.
+This blog uses it for every post's date and tags.
 
 ### Images
 
@@ -110,6 +129,9 @@ flowchart LR
     B --> C[Happy reader]
 ```
 
+Not every renderer draws diagrams by default, though.
+VS Code's built-in preview needs an extension, and MkDocs needs a bit of config, while anywhere else you just see the code block.
+
 ### Callouts
 
 Callouts are boxes that make a note or warning stand out from the text.
@@ -129,7 +151,9 @@ Sadly, every tool has its own syntax:
     Content
 ```
 
-On this blog, that last one renders as:
+Callouts aren't standard Markdown either, so support varies.
+A renderer that doesn't know them shows the Obsidian and GitHub versions as a plain quote, and MkDocs needs the `admonition` extension turned on.
+On this blog it is, so that last one renders as:
 
 !!! tip "Callouts work here too"
     Use them for the stuff readers should not skip.
