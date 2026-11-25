@@ -7,10 +7,11 @@ tags:
   - AI
 ---
 
-# Markdown is King
+# Markdown is King, especially for AI agents
 
 In my opinion, Markdown is the best and most widely supported format for writing.
 It takes ten minutes to learn, it works almost everywhere, and it stays perfectly readable without any special tool.
+And now that AI agents read and write a lot of our text, it has become even more valuable.
 Notes, docs, this blog, presentations: I write all of it in Markdown these days.
 
 <!-- more -->
@@ -23,7 +24,19 @@ This post goes a bit wider.
 Markdown is just plain text with a few conventions.
 Open a `.md` file in Notepad, `cat` it in a terminal, or read it on your phone: it still makes sense.
 No app needed to decode it, no proprietary format, no lock-in.
-[[steph-ango|Steph Ango]] calls this [File over App](https://stephango.com/file-over-app), and I fully agree.
+
+## Made for git
+
+Because Markdown is plain text, it fits perfectly in git.
+I write one sentence per line, so a diff shows exactly which sentence changed.
+That gives you everything developers already enjoy for code:
+
+- A full history of every change, with the why in the commit message.
+- Branches and pull requests to review writing, just like code.
+- Multiple people working on the same document without overwriting each other.
+- Docs living right next to the code they describe.
+
+This very post went through a branch and a PR before it landed here.
 
 ## The conventions are everywhere
 
@@ -116,6 +129,11 @@ The syntax differs per tool, unfortunately:
     Content
 ```
 
+On this blog, that last one renders as:
+
+!!! tip "Callouts work here too"
+    Use them for the stuff readers should not skip.
+
 ### Code blocks with syntax highlighting
 
 Tip: always add the language after the opening backticks, so the code gets proper highlighting.
@@ -150,4 +168,23 @@ Compare that to `.docx` and `.pptx` files:
 Sure, sometimes you need them.
 But with Pandoc or Marp you can generate them from Markdown when you do, and keep the source in plain text.
 
-Markdown is king.
+## Own your data and your tools
+
+There is a bigger point behind all this: who actually owns your writing?
+A `.pptx`, a `.docx`, a OneNote notebook, or a Notion page is usually locked into an ecosystem of tools you don't fully control.
+You can only do with it what that ecosystem allows.
+I learned that the hard way getting my notes out of OneNote, which I wrote about in [[obsidian|my Obsidian post]].
+
+[[steph-ango|Steph Ango]], CEO of Obsidian, puts it well in his article [File over App](https://stephango.com/file-over-app):
+
+> File over app is an appeal to tool makers: accept that all software is ephemeral, and give people ownership over their data.
+
+And:
+
+> Apps are ephemeral, but your files have a chance to last.
+
+Markdown breaks the lock-in.
+Your files sit on your own disk, and you can open them in any editor, run your own scripts on them, version them in git, search them with [[qmd]], or hand them to an AI agent.
+Whatever tool comes next, your writing comes along.
+
+Markdown is king, especially for AI agents.
