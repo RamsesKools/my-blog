@@ -159,6 +159,21 @@ I strongly believe agents are also more accurate when they work with Markdown.
 Partly because of the token efficiency: less noise in the context window means more attention for what actually matters.
 And partly because they understand the format so well: headings, lists, and code blocks give clear structure they already know by heart.
 
+### What does the research say?
+
+I went looking for numbers, and found a few:
+
+- **Tokens:** when Cloudflare launched [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/), one of their blog posts went from 16,180 tokens as HTML to 3,150 as Markdown: an 80% reduction.
+  [TQA-Bench](https://arxiv.org/abs/2411.19504) found the same direction for tables: HTML needs roughly twice the tokens of Markdown for the same data.
+- **Speed and cost:** fewer input tokens means cheaper and faster responses, and more room in the context window for the stuff that matters.
+- **Accuracy:** [Does Prompt Formatting Have Any Impact on LLM Performance?](https://arxiv.org/abs/2411.10541) compared plain text, Markdown, JSON, and YAML prompts on GPT models.
+  Performance varied by up to 40% just by changing the format, and GPT-4 did best with Markdown on several benchmarks.
+  To be fair: there is no single winner for every model and task, so this one is a strong hint rather than hard proof.
+- **Conversion loses information:** [a study converting PowerPoint and PDF files to Markdown](https://arxiv.org/abs/2508.15817) for LLM question answering found text survives fine, but meaning carried by layout and images gets lost.
+  Another reason to write in Markdown from the start, instead of converting later.
+- **The industry is moving this way:** Cloudflare now serves Markdown to agents that ask for it, and the [llms.txt proposal](https://llmstxt.org/) asks websites to offer a Markdown version of their content for LLMs.
+  OpenAI, Anthropic, and Google already publish one for their docs.
+
 That is also why my [[agent-config|agent configuration]] is plain Markdown files.
 
 ## What about Word and PowerPoint?
