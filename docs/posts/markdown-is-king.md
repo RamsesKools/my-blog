@@ -167,7 +167,8 @@ I went looking for numbers, and found a few:
   [TQA-Bench](https://arxiv.org/abs/2411.19504) found the same direction for tables: HTML needs roughly twice the tokens of Markdown for the same data.
 - **Speed and cost:** fewer input tokens means cheaper and faster responses, and more room in the context window for the stuff that matters.
 - **Accuracy:** [Does Prompt Formatting Have Any Impact on LLM Performance?](https://arxiv.org/abs/2411.10541) compared plain text, Markdown, JSON, and YAML prompts on GPT models.
-  Performance varied by up to 40% just by changing the format, and GPT-4 did best with Markdown on several benchmarks.
+  GPT-3.5's performance on a code translation task varied by up to 40% just by changing the format.
+  GPT-4 was more robust, and did best with Markdown on several benchmarks (GPT-3.5 preferred JSON).
   To be fair: there is no single winner for every model and task, so this one is a strong hint rather than hard proof.
 - **Conversion loses information:** [a study converting PowerPoint and PDF files to Markdown](https://arxiv.org/abs/2508.15817) for LLM question answering found text survives fine, but meaning carried by layout and images gets lost.
   Another reason to write in Markdown from the start, instead of converting later.
