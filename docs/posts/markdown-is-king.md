@@ -1,5 +1,5 @@
 ---
-date: 2026-11-25
+date: 2026-11-27
 slug: markdown-is-king
 tags:
   - Tools
